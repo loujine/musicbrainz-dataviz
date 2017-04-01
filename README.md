@@ -6,3 +6,8 @@ Repository to store bits of code playing with the [MusicBrainz](https://musicbra
 The repo will probably contain Jupyter notebooks centered around the different MusicBrainz entities (artists, works, recordings, series...) and giving examples of SQL queries to extract important data.
 
 Other notebooks will look into the history of edits (artist activity, edits using userscripts, etc.)
+
+
+d3
+vis.js
+sigmajs ?
