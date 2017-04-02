@@ -2,6 +2,8 @@
 <html>
 <head>
 <meta charset="utf-8">
+<script type="text/javascript" src="./jquery.min.js"></script>
+
 <script type="text/javascript" src="./timesheet/timesheet-advanced.min.js"></script>
 <link rel="stylesheet" type="text/css" href="./timesheet/timesheet.min.css" />
 
@@ -13,7 +15,9 @@
 
 <body>
 
-<h2>Beatles</h2>
+<h2>Band timelines</h2>
+
+<h3>Beatles</h3>
 
 <div id="timesheet-container" style="width:100%"></div>
 
@@ -76,7 +80,7 @@ new Timesheet(bubbles, {
 });
 </script>
 
-<h2>Beethoven String Quartet</h2>
+<h3>Beethoven String Quartet</h3>
 
 <div id="timesheet-container2" style="width:100%"></div>
 
@@ -124,69 +128,159 @@ new Timesheet(bubbles, {
 });
 </script>
 
+<h2>Family trees</h2>
 
-<h2>Graph</h2>
+<h3>Neuhaus direct teachers/students</h3>
 
-<div id="vis-container"></div>
+<div id="vis-container1"></div>
 
 <script type="text/javascript">
-var container = document.getElementById('vis-container');
+var container1 = document.getElementById('vis-container1');
 
 // create an array with nodes
-var nodes = new vis.DataSet([
- {'id': '2b075237-6e90-4e78-a4f8-a66170c682fe', 'label': 'Heinrich Neuhaus'},
- {'id': '2014bfbb-c65d-45dc-9973-35bead3833fa',
-  'label': 'Richter, Sviatoslav Teofilovich'},
- {'id': '88b4ad33-63ba-4923-947e-26a720631156',
-  'label': 'Gilels, Emil Grigoryevich'},
- {'id': 'bec02ec4-34be-43db-9be1-006606174fd2', 'label': 'Lupu, Radu'},
- {'id': '385cb39b-f06c-4635-84fd-ecc8fff56c97', 'label': 'Lubimov, Alexei'},
- {'id': 'fcfc3731-3b67-4b1d-8096-6a1537b61daf',
-  'label': 'Vedernikov, Anatoly Ivanovich'},
- {'id': 'ab095a51-18c1-43ab-ba96-2b1c8cdb7019',
-  'label': 'Kameníková, Valentina'},
- {'id': 'd1cea2e7-0ef6-4434-8890-61f22f85827c', 'label': 'Bakst, Ryszard'},
- {'id': 'a460e14c-a004-4ead-be61-8d3956c3de17', 'label': 'Sepp, Heljo'},
- {'id': 'ff5ce524-7794-4e84-ad42-a586c29c4f90', 'label': 'Meitus, Yuliy'},
- {'id': 'f5b8d14c-3adb-4cd3-aa97-140a557c7302', 'label': 'Godowsky, Leopold'},
- {'id': '695de63f-d20a-4e8f-bba9-2ae645f109a9',
-  'label': 'Barth, Karl Heinrich'}
-]);
+var $ = jQuery;
+$.getJSON('./nodes1.json', function(nodeData) {
+    var nodes = new vis.DataSet(nodeData);
+    // create an array with edges
+    $.getJSON('./edges1.json', function(edgeData) {
+        var edges = new vis.DataSet(edgeData);
 
-// create an array with edges
-var edges = new vis.DataSet([
- {'from': '2b075237-6e90-4e78-a4f8-a66170c682fe',
-  'to': '2014bfbb-c65d-45dc-9973-35bead3833fa'},
- {'from': '2b075237-6e90-4e78-a4f8-a66170c682fe',
-  'to': '88b4ad33-63ba-4923-947e-26a720631156'},
- {'from': '2b075237-6e90-4e78-a4f8-a66170c682fe',
-  'to': 'bec02ec4-34be-43db-9be1-006606174fd2'},
- {'from': '2b075237-6e90-4e78-a4f8-a66170c682fe',
-  'to': '385cb39b-f06c-4635-84fd-ecc8fff56c97'},
- {'from': '2b075237-6e90-4e78-a4f8-a66170c682fe',
-  'to': 'fcfc3731-3b67-4b1d-8096-6a1537b61daf'},
- {'from': '2b075237-6e90-4e78-a4f8-a66170c682fe',
-  'to': 'ab095a51-18c1-43ab-ba96-2b1c8cdb7019'},
- {'from': '2b075237-6e90-4e78-a4f8-a66170c682fe',
-  'to': 'd1cea2e7-0ef6-4434-8890-61f22f85827c'},
- {'from': '2b075237-6e90-4e78-a4f8-a66170c682fe',
-  'to': 'a460e14c-a004-4ead-be61-8d3956c3de17'},
- {'from': '2b075237-6e90-4e78-a4f8-a66170c682fe',
-  'to': 'ff5ce524-7794-4e84-ad42-a586c29c4f90'},
- {'from': 'f5b8d14c-3adb-4cd3-aa97-140a557c7302',
-  'to': '2b075237-6e90-4e78-a4f8-a66170c682fe'},
- {'from': '695de63f-d20a-4e8f-bba9-2ae645f109a9',
-  'to': '2b075237-6e90-4e78-a4f8-a66170c682fe'}
-]);
+        // create a network
+        var data = {
+            nodes: nodes,
+            edges: edges
+        };
+        var options = {
+            layout: {
+                hierarchical: {
+                  sortMethod: 'directed'
+                }
+            },
+            edges: {
+                smooth: true,
+                arrows: {to : true}
+            }
+        };
+        var network = new vis.Network(container1, data, options);
+    });
+});
 
-// create a network
-var data = {
-    nodes: nodes,
-    edges: edges
-};
-var options = {};
-var network = new vis.Network(container, data, options);
 </script>
+
+
+<h3>Neuhaus tree of teachers</h3>
+
+<div id="vis-container2"></div>
+
+<script type="text/javascript">
+var container2 = document.getElementById('vis-container2');
+
+// create an array with nodes
+var $ = jQuery;
+$.getJSON('./nodes2.json', function(nodeData) {
+    var nodes = new vis.DataSet(nodeData);
+    // create an array with edges
+    $.getJSON('./edges2.json', function(edgeData) {
+        var edges = new vis.DataSet(edgeData);
+
+        // create a network
+        var data = {
+            nodes: nodes,
+            edges: edges
+        };
+        var options = {
+            layout: {
+                hierarchical: {
+                  sortMethod: 'directed'
+                }
+            },
+            edges: {
+                smooth: true,
+                arrows: {to : true}
+            }
+        };
+        var network = new vis.Network(container2, data, options);
+    });
+});
+
+</script>
+
+
+<h3>Neuhaus tree of students</h3>
+
+<div id="vis-container3"></div>
+
+<script type="text/javascript">
+var container3 = document.getElementById('vis-container3');
+
+// create an array with nodes
+var $ = jQuery;
+$.getJSON('./nodes3.json', function(nodeData) {
+    var nodes = new vis.DataSet(nodeData);
+    // create an array with edges
+    $.getJSON('./edges3.json', function(edgeData) {
+        var edges = new vis.DataSet(edgeData);
+
+        // create a network
+        var data = {
+            nodes: nodes,
+            edges: edges
+        };
+        var options = {
+            layout: {
+                hierarchical: {
+                  sortMethod: 'directed'
+                }
+            },
+            edges: {
+                smooth: true,
+                arrows: {to : true}
+            }
+        };
+        var network = new vis.Network(container3, data, options);
+    });
+});
+
+</script>
+
+
+<h3>Cortot tree of teachers/students</h3>
+
+<div id="vis-container4"></div>
+
+<script type="text/javascript">
+var container4 = document.getElementById('vis-container4');
+
+// create an array with nodes
+var $ = jQuery;
+$.getJSON('./nodes4.json', function(nodeData) {
+    var nodes = new vis.DataSet(nodeData);
+    // create an array with edges
+    $.getJSON('./edges4.json', function(edgeData) {
+        var edges = new vis.DataSet(edgeData);
+
+        // create a network
+        var data = {
+            nodes: nodes,
+            edges: edges
+        };
+        var options = {
+            layout: {
+                hierarchical: {
+                  sortMethod: 'directed'
+                }
+            },
+            edges: {
+                smooth: true,
+                arrows: {to : true}
+            }
+        };
+        var network = new vis.Network(container4, data, options);
+    });
+});
+
+</script>
+
 
 </body></html>
 
