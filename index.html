@@ -7,17 +7,19 @@
 <script type="text/javascript" src="./timesheet/timesheet-advanced.min.js"></script>
 <link rel="stylesheet" type="text/css" href="./timesheet/timesheet.min.css" />
 
-<link rel="stylesheet" type="text/css" href="./vis/vis.css" />
-<!-- <link rel="stylesheet" type="text/css" href="./vis/vis-network.min.css" /> -->
-<script type="text/javascript" src="./vis/vis.js"></script>
-<!-- <script type="text/javascript" src="./vis/vis-network.min.js"></script> -->
+<!-- <link rel="stylesheet" type="text/css" href="./vis/vis.css" /> -->
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.19.1/vis.min.css" />
+<!-- <script type="text/javascript" src="./vis/vis.js"></script> -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.19.1/vis.min.js"></script>
 </head>
 
 <body>
 
 <h2>Band timelines</h2>
 
-<h3>Beatles</h3>
+<p>&nbsp;</p>
+
+<h3 id="beatles-timeline">Beatles</h3>
 
 <div id="timesheet-container" style="width:100%"></div>
 
@@ -80,7 +82,9 @@ new Timesheet(bubbles, {
 });
 </script>
 
-<h3>Beethoven String Quartet</h3>
+<p>&nbsp;</p>
+
+<h3 id="beethoven-timeline">Beethoven String Quartet</h3>
 
 <div id="timesheet-container2" style="width:100%"></div>
 
@@ -128,9 +132,11 @@ new Timesheet(bubbles, {
 });
 </script>
 
+<p>&nbsp;</p>
+
 <h2>Family trees</h2>
 
-<h3>Neuhaus direct teachers/students</h3>
+<h3 id="neuhaus-tree">Neuhaus direct teachers/students</h3>
 
 <div id="vis-container1"></div>
 
@@ -168,7 +174,9 @@ $.getJSON('./nodes1.json', function(nodeData) {
 </script>
 
 
-<h3>Neuhaus tree of teachers</h3>
+<p>&nbsp;</p>
+
+<h3 id="neuhaus-teachers">Neuhaus tree of teachers</h3>
 
 <div id="vis-container2"></div>
 
@@ -206,7 +214,9 @@ $.getJSON('./nodes2.json', function(nodeData) {
 </script>
 
 
-<h3>Neuhaus tree of students</h3>
+<p>&nbsp;</p>
+
+<h3 id="neuhaus-students">Neuhaus tree of students</h3>
 
 <div id="vis-container3"></div>
 
@@ -244,7 +254,9 @@ $.getJSON('./nodes3.json', function(nodeData) {
 </script>
 
 
-<h3>Cortot tree of teachers/students</h3>
+<p>&nbsp;</p>
+
+<h3 id="cortot-tree">Cortot tree of teachers/students</h3>
 
 <div id="vis-container4"></div>
 
