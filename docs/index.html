@@ -4,12 +4,10 @@
 <meta charset="utf-8">
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 
-<script type="text/javascript" src="./timesheet/timesheet-advanced.min.js"></script>
-<link rel="stylesheet" type="text/css" href="./timesheet/timesheet.min.css" />
+<script type="text/javascript" src="../timesheet/timesheet-advanced.min.js"></script>
+<link rel="stylesheet" type="text/css" href="../timesheet/timesheet.min.css" />
 
-<!-- <link rel="stylesheet" type="text/css" href="./vis/vis.css" /> -->
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.19.1/vis.min.css" />
-<!-- <script type="text/javascript" src="./vis/vis.js"></script> -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.19.1/vis.min.js"></script>
 
 
@@ -173,10 +171,10 @@ var container1 = document.getElementById('vis-container1');
 
 // create an array with nodes
 var $ = jQuery;
-$.getJSON('./nodes1.json', function(nodeData) {
+$.getJSON('./data/nodes1.json', function(nodeData) {
     var nodes = new vis.DataSet(nodeData);
     // create an array with edges
-    $.getJSON('./edges1.json', function(edgeData) {
+    $.getJSON('./data/edges1.json', function(edgeData) {
         var edges = new vis.DataSet(edgeData);
 
         // create a network
@@ -213,10 +211,10 @@ var container2 = document.getElementById('vis-container2');
 
 // create an array with nodes
 var $ = jQuery;
-$.getJSON('./nodes2.json', function(nodeData) {
+$.getJSON('./data/nodes2.json', function(nodeData) {
     var nodes = new vis.DataSet(nodeData);
     // create an array with edges
-    $.getJSON('./edges2.json', function(edgeData) {
+    $.getJSON('./data/edges2.json', function(edgeData) {
         var edges = new vis.DataSet(edgeData);
 
         // create a network
@@ -253,10 +251,10 @@ var container3 = document.getElementById('vis-container3');
 
 // create an array with nodes
 var $ = jQuery;
-$.getJSON('./nodes3.json', function(nodeData) {
+$.getJSON('./data/nodes3.json', function(nodeData) {
     var nodes = new vis.DataSet(nodeData);
     // create an array with edges
-    $.getJSON('./edges3.json', function(edgeData) {
+    $.getJSON('./data/edges3.json', function(edgeData) {
         var edges = new vis.DataSet(edgeData);
 
         // create a network
@@ -293,10 +291,10 @@ var container4 = document.getElementById('vis-container4');
 
 // create an array with nodes
 var $ = jQuery;
-$.getJSON('./nodes4.json', function(nodeData) {
+$.getJSON('./data/nodes4.json', function(nodeData) {
     var nodes = new vis.DataSet(nodeData);
     // create an array with edges
-    $.getJSON('./edges4.json', function(edgeData) {
+    $.getJSON('./data/edges4.json', function(edgeData) {
         var edges = new vis.DataSet(edgeData);
 
         // create a network
