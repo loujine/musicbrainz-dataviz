@@ -11764,8 +11764,8 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>I intend to use this repository to store notebooks presenting some examples of data manipulation and visualisation using a copy of the <a href="https://musicbrainz.org">MusicBrainz</a> database.</p>
 <p>This introductory notebook will explain how I get database from MusicBrainz and how I transform it to Python format for display in tables or plots.</p>
+<p>A static HTML version of this notebook and the next ones should be available on <a href="https://loujine.github.io/musicbrainz-dataviz/">github.io</a>.</p>
 
 </div>
 </div>
@@ -11800,7 +11800,7 @@ div#notebook {
 <ul>
 <li><p>if you already have or can have PostgreSQL installed (MusicBrainz uses version 9.5 for the moment) on your machine, you can use the <a href="https://bitbucket.org/lalinsky/mbslave">mbslave</a> project that will recreate the database structure on your machine. You will also be able to synchronise your database and fetch the latest changes when you want.</p>
 </li>
-<li><p>another possibility is to use virtual machines to store the database and create a local copy of the website also (this is <em>not</em> required for what I intend to show here). I'm using the <a href="https://github.com/metabrainz/musicbrainz-docker">musicbrainz-docker</a> project that uses Docker to create several machines for the different MusicBrainz components (database, website, search)</p>
+<li><p>another possibility is to use virtual machines to store the database and create a local copy of the website also (this is <strong>not</strong> required for what I intend to show here). I'm using the <a href="https://github.com/metabrainz/musicbrainz-docker">musicbrainz-docker</a> project that uses Docker to create several machines for the different MusicBrainz components (database, website, search)</p>
 </li>
 </ul>
 <p>In both cases you should expect to download several Gb of data and need several Gb of RAM to have the postgreSQL database running smoothly.</p>
@@ -11833,7 +11833,22 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Accessing-the-database-from-Python">Accessing the database from Python<a class="anchor-link" href="#Accessing-the-database-from-Python">&#182;</a></h2>
+<h2 id="Python-toolbox">Python toolbox<a class="anchor-link" href="#Python-toolbox">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>For data analysis I will use Python3 libraries:</p>
+<ul>
+<li>PanDas for manipulating data as tables</li>
+<li>psycopg2 and sqlalchemy to access the SQL database</li>
+<li>plotly for plots</li>
+</ul>
+
 </div>
 </div>
 </div>
@@ -11843,7 +11858,7 @@ div#notebook {
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> version_information
-<span class="o">%</span><span class="k">version_information</span> psycopg2, pandas, sqlalchemy
+<span class="o">%</span><span class="k">version_information</span> psycopg2, pandas, sqlalchemy, plotly
 </pre></div>
 
 </div>
@@ -11857,7 +11872,7 @@ div#notebook {
 <div class="output_area"><div class="prompt output_prompt">Out[1]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
-<table><tr><th>Software</th><th>Version</th></tr><tr><td>Python</td><td>3.5.3 64bit [GCC 6.3.0 20170118]</td></tr><tr><td>IPython</td><td>5.1.0</td></tr><tr><td>OS</td><td>Linux 4.9.0 2 amd64 x86_64 with debian 9.0</td></tr><tr><td>psycopg2</td><td>2.6.2 (dt dec pq3 ext lo64)</td></tr><tr><td>pandas</td><td>0.19.2</td></tr><tr><td>sqlalchemy</td><td>1.1.6</td></tr><tr><td colspan='2'>Tue Mar 21 01:04:18 2017 CET</td></tr></table>
+<table><tr><th>Software</th><th>Version</th></tr><tr><td>Python</td><td>3.5.3+ 64bit [GCC 6.3.0 20170516]</td></tr><tr><td>IPython</td><td>5.1.0</td></tr><tr><td>OS</td><td>Linux 4.9.0 3 amd64 x86_64 with debian buster sid</td></tr><tr><td>psycopg2</td><td>2.7.1 (dt dec pq3 ext lo64)</td></tr><tr><td>pandas</td><td>0.19.2</td></tr><tr><td>sqlalchemy</td><td>1.1.11</td></tr><tr><td>plotly</td><td>2.0.7</td></tr><tr><td colspan='2'>Fri Jul 07 00:25:24 2017 GMT</td></tr></table>
 </div>
 
 </div>
@@ -11865,6 +11880,15 @@ div#notebook {
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Accessing-the-database-from-Python">Accessing the database from Python<a class="anchor-link" href="#Accessing-the-database-from-Python">&#182;</a></h2>
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -11881,7 +11905,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>With musicbrainz-docker, my database is on a virtual machine. Your IP will probably be different from mine</p>
+<p>With musicbrainz-docker, my database is on a virtual machine. I can access it from my main machine by setting the following parameters:</p>
 
 </div>
 </div>
@@ -11894,7 +11918,7 @@ div#notebook {
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">psycopg2</span>
 <span class="c1"># define global variables to store our DB credentials</span>
 <span class="n">PGHOST</span> <span class="o">=</span> <span class="s2">&quot;192.168.11.3&quot;</span>
-<span class="n">PGDATABASE</span> <span class="o">=</span> <span class="s2">&quot;musicbrainz_db&quot;</span>
+<span class="n">PGDATABASE</span> <span class="o">=</span> <span class="s2">&quot;musicbrainz&quot;</span>
 <span class="n">PGUSER</span> <span class="o">=</span> <span class="s2">&quot;musicbrainz&quot;</span>
 <span class="n">PGPASSWORD</span> <span class="o">=</span> <span class="s2">&quot;musicbrainz&quot;</span>
 </pre></div>
@@ -11903,6 +11927,26 @@ div#notebook {
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Of course your parameters (especially IP) might be different from mine.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In order to simplify this procedure I developed a new <a href="https://github.com/loujine/musicbrainz-docker/tree/master/indexer-dockerfile">branch</a> in the <a href="https://github.com/loujine/musicbrainz-docker">musicbrainz-docker</a> project that creates a Jupyter VM. If you use this branch, you don't need to set the parameters above, they are set when you start your notebook.</p>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -12106,7 +12150,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">&#182;</a></h2>
+<h2 id="Exploring-the-MusicBrainz-database">Exploring the MusicBrainz database<a class="anchor-link" href="#Exploring-the-MusicBrainz-database">&#182;</a></h2>
 </div>
 </div>
 </div>
@@ -12115,7 +12159,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>That's all for this short introduction. The next notebooks will look in detail at more complex queries to fetch data where plotting might be worthwhile.</p>
+<p>The next notebooks will show examples of queries to extract and visualize data. If you want to write your own queries, you should look at the MusicBrainz database schema by reading the <a href="https://musicbrainz.org/doc/MusicBrainz_Database/Schema">documentation</a>.</p>
 
 </div>
 </div>
