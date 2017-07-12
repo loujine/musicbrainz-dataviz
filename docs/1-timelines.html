@@ -11755,7 +11755,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Displaying-MusicBrainz-data-in-a-timeline">Displaying MusicBrainz data in a timeline<a class="anchor-link" href="#Displaying-MusicBrainz-data-in-a-timeline">&#182;</a></h1>
+<h1 id="Displaying-MusicBrainz-data-in-timelines">Displaying MusicBrainz data in timelines<a class="anchor-link" href="#Displaying-MusicBrainz-data-in-timelines">&#182;</a></h1>
 </div>
 </div>
 </div>
@@ -11764,8 +11764,9 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>One thing I thought about adding to the MusicBrainz web interface is a timeline on band pages, in order to show when new members arrived or left the band.</p>
-<p>Before suggesting this change to the MusicBrainz project, we can try to display this kind of timeline in a Jupyter notebook and see how it would look like. I decided to test the <a href="https://github.com/ntucakovic/timesheet-advanced.js">timesheet-advanced.js</a> library for this purpose.</p>
+<p>One feature I would like to be added to the MusicBrainz web interface is the possibility to display timelines, e.g. showing when members arrived or left on a band page, or sorting concerts, albums releases, and so on.</p>
+<p>Before suggesting this feature to the MusicBrainz developers (or programing it myself), I want to try and display this kind of timelines in a Jupyter notebook and see how it would look like.</p>
+<p>Several JavaScript libraries can do the job; I decided to test the <a href="https://github.com/ntucakovic/timesheet-advanced.js">timesheet-advanced.js</a> and <a href="http://visjs.org/timeline_examples.html">visjs</a> libraries.</p>
 
 </div>
 </div>
@@ -11775,7 +11776,16 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>If you can't see the timelines on this page, you can find a "static" copy of them on <a href="https://loujine.github.io/musicbrainz-dataviz/index.html">github.io</a>.</p>
+<h2 id="Setup">Setup<a class="anchor-link" href="#Setup">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The setup required to repeat these operations is explained in the <a href="https://loujine.github.io/musicbrainz-dataviz/0-introduction.html">introduction notebook</a>. In case graphs do not appear in this page you can refer to the <a href="https://loujine.github.io/musicbrainz-dataviz/1-timelines.html">static version</a>.</p>
 
 </div>
 </div>
@@ -11785,7 +11795,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Again I need first to initialize a connection to my local copy of the MusicBrainz database:</p>
+<p>The next commands may be needed or not depending on your setup (<em>i.e.</em> if you use my docker setup):</p>
 
 </div>
 </div>
@@ -11796,22 +11806,24 @@ div#notebook {
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">pprint</span> <span class="k">import</span> <span class="n">pprint</span>
-
 <span class="kn">import</span> <span class="nn">pandas</span>
 <span class="kn">import</span> <span class="nn">sqlalchemy</span>
-<span class="c1"># define DB</span>
-<span class="n">PGHOST</span> <span class="o">=</span> <span class="s2">&quot;192.168.11.2&quot;</span>
-<span class="n">PGDATABASE</span> <span class="o">=</span> <span class="s2">&quot;musicbrainz_db&quot;</span>
-<span class="n">PGUSER</span> <span class="o">=</span> <span class="s2">&quot;musicbrainz&quot;</span>
-<span class="n">PGPASSWORD</span> <span class="o">=</span> <span class="s2">&quot;musicbrainz&quot;</span>
 
-<span class="n">engine</span> <span class="o">=</span> <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">create_engine</span><span class="p">(</span>
-   <span class="s1">&#39;postgresql+psycopg2://</span><span class="si">{PGUSER}</span><span class="s1">:</span><span class="si">{PGPASSWORD}</span><span class="s1">@</span><span class="si">{PGHOST}</span><span class="s1">/</span><span class="si">{PGDATABASE}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="nb">locals</span><span class="p">()),</span>
-    <span class="n">isolation_level</span><span class="o">=</span><span class="s1">&#39;READ UNCOMMITTED&#39;</span><span class="p">)</span>
-
-<span class="c1"># helper function</span>
 <span class="k">def</span> <span class="nf">sql</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">engine</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="nb">globals</span><span class="p">(),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;helper function for SQL queries using the %(...) syntax</span>
+<span class="sd">    Parameters defined globally are replaced implicitely&quot;&quot;&quot;</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="nb">globals</span><span class="p">()</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">params</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="c1"># define DB connection parameters if needed</span>
+    <span class="n">PGHOST</span> <span class="o">=</span> <span class="nb">globals</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;PGHOST&#39;</span><span class="p">,</span> <span class="s1">&#39;192.168.11.3&#39;</span><span class="p">)</span>
+    <span class="n">PGDATABASE</span> <span class="o">=</span> <span class="nb">globals</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;PGDATABASE&#39;</span><span class="p">,</span> <span class="s1">&#39;musicbrainz&#39;</span><span class="p">)</span>
+    <span class="n">PGUSER</span> <span class="o">=</span> <span class="nb">globals</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;PGUSER&#39;</span><span class="p">,</span> <span class="s1">&#39;musicbrainz&#39;</span><span class="p">)</span>
+    <span class="n">PGPASSWORD</span> <span class="o">=</span> <span class="nb">globals</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;PGPASSWORD&#39;</span><span class="p">,</span> <span class="s1">&#39;musicbrainz&#39;</span><span class="p">)</span>
+    <span class="n">engine</span> <span class="o">=</span> <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">create_engine</span><span class="p">(</span>
+       <span class="s1">&#39;postgresql+psycopg2://</span><span class="si">%(PGUSER)s</span><span class="s1">:</span><span class="si">%(PGPASSWORD)s</span><span class="s1">@</span><span class="si">%(PGHOST)s</span><span class="s1">/</span><span class="si">%(PGDATABASE)s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">locals</span><span class="p">(),</span>
+        <span class="n">isolation_level</span><span class="o">=</span><span class="s1">&#39;READ UNCOMMITTED&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">engine</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -11824,7 +11836,16 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Now I can extract the information for the band I want. The SQL query will look for:</p>
+<h2 id="Extraction-of-band-data-from-the-database">Extraction of band data from the database<a class="anchor-link" href="#Extraction-of-band-data-from-the-database">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now we can extract the information for the band I want. The SQL query will look for:</p>
 <ul>
 <li>band name</li>
 <li>artists linked to this band through the "member of" relationship</li>
@@ -11862,7 +11883,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The SQL query is a bit complicated because it uses a lot of different tables</p>
+<p>The SQL query is a bit complicated because it uses a lot of different tables, I won't go into details. We store the result in a data structure called a PanDas DataFrame (df).</p>
 
 </div>
 </div>
@@ -11877,8 +11898,8 @@ div#notebook {
 <span class="s2">       m.name AS member,</span>
 <span class="s2">       m.gid AS mbid,</span>
 <span class="s2">       lat.name AS role,</span>
-<span class="s2">       l.begin_date_year AS start,</span>
-<span class="s2">       l.end_date_year AS end</span>
+<span class="s2">       to_date(to_char(l.begin_date_year, &#39;9999&#39;) || &#39;0101&#39;, &#39;YYYYMMDD&#39;) AS start,</span>
+<span class="s2">       to_date(to_char(l.end_date_year, &#39;9999&#39;) || &#39;0101&#39;, &#39;YYYYMMDD&#39;) AS end</span>
 <span class="s2">FROM artist              AS b</span>
 <span class="s2">JOIN l_artist_artist     AS laa ON laa.entity1 = b.id</span>
 <span class="s2">JOIN artist              AS m   ON laa.entity0 = m.id</span>
@@ -11921,83 +11942,83 @@ div#notebook {
     <tr>
       <th>0</th>
       <td>The Beatles</td>
-      <td>George Harrison</td>
-      <td>42a8f507-8412-4611-854f-926571049fa0</td>
-      <td>lead vocals</td>
-      <td>1958.0</td>
-      <td>1970</td>
+      <td>Pete Best</td>
+      <td>0d4ab0f9-bbda-4ab1-ae2c-f772ffcfbea9</td>
+      <td>drums</td>
+      <td>1960-01-01</td>
+      <td>1962-01-01</td>
     </tr>
     <tr>
       <th>1</th>
       <td>The Beatles</td>
-      <td>George Harrison</td>
-      <td>42a8f507-8412-4611-854f-926571049fa0</td>
-      <td>guitar</td>
-      <td>1958.0</td>
-      <td>1970</td>
+      <td>Paul McCartney</td>
+      <td>ba550d0e-adac-4864-b88b-407cab5e76af</td>
+      <td>lead vocals</td>
+      <td>1957-01-01</td>
+      <td>1970-01-01</td>
     </tr>
     <tr>
       <th>2</th>
       <td>The Beatles</td>
-      <td>Pete Best</td>
-      <td>0d4ab0f9-bbda-4ab1-ae2c-f772ffcfbea9</td>
-      <td>drums</td>
-      <td>1960.0</td>
-      <td>1962</td>
+      <td>Paul McCartney</td>
+      <td>ba550d0e-adac-4864-b88b-407cab5e76af</td>
+      <td>bass guitar</td>
+      <td>1957-01-01</td>
+      <td>1970-01-01</td>
     </tr>
     <tr>
       <th>3</th>
       <td>The Beatles</td>
-      <td>Paul McCartney</td>
-      <td>ba550d0e-adac-4864-b88b-407cab5e76af</td>
-      <td>lead vocals</td>
-      <td>1957.0</td>
-      <td>1970</td>
+      <td>Ringo Starr</td>
+      <td>300c4c73-33ac-4255-9d57-4e32627f5e13</td>
+      <td>drums</td>
+      <td>1962-01-01</td>
+      <td>1970-01-01</td>
     </tr>
     <tr>
       <th>4</th>
       <td>The Beatles</td>
-      <td>Paul McCartney</td>
-      <td>ba550d0e-adac-4864-b88b-407cab5e76af</td>
+      <td>Stuart Sutcliffe</td>
+      <td>49a51491-650e-44b3-8085-2f07ac2986dd</td>
       <td>bass guitar</td>
-      <td>1957.0</td>
-      <td>1970</td>
+      <td>1960-01-01</td>
+      <td>1962-01-01</td>
     </tr>
     <tr>
       <th>5</th>
       <td>The Beatles</td>
-      <td>Ringo Starr</td>
-      <td>300c4c73-33ac-4255-9d57-4e32627f5e13</td>
-      <td>drums</td>
-      <td>1962.0</td>
-      <td>1970</td>
+      <td>John Lennon</td>
+      <td>4d5447d7-c61c-4120-ba1b-d7f471d385b9</td>
+      <td>lead vocals</td>
+      <td>None</td>
+      <td>1970-01-01</td>
     </tr>
     <tr>
       <th>6</th>
       <td>The Beatles</td>
-      <td>Stuart Sutcliffe</td>
-      <td>49a51491-650e-44b3-8085-2f07ac2986dd</td>
-      <td>bass guitar</td>
-      <td>1960.0</td>
-      <td>1962</td>
+      <td>John Lennon</td>
+      <td>4d5447d7-c61c-4120-ba1b-d7f471d385b9</td>
+      <td>guitar</td>
+      <td>None</td>
+      <td>1970-01-01</td>
     </tr>
     <tr>
       <th>7</th>
       <td>The Beatles</td>
-      <td>John Lennon</td>
-      <td>4d5447d7-c61c-4120-ba1b-d7f471d385b9</td>
+      <td>George Harrison</td>
+      <td>42a8f507-8412-4611-854f-926571049fa0</td>
       <td>lead vocals</td>
-      <td>NaN</td>
-      <td>1970</td>
+      <td>1958-01-01</td>
+      <td>1970-01-01</td>
     </tr>
     <tr>
       <th>8</th>
       <td>The Beatles</td>
-      <td>John Lennon</td>
-      <td>4d5447d7-c61c-4120-ba1b-d7f471d385b9</td>
+      <td>George Harrison</td>
+      <td>42a8f507-8412-4611-854f-926571049fa0</td>
       <td>guitar</td>
-      <td>NaN</td>
-      <td>1970</td>
+      <td>1958-01-01</td>
+      <td>1970-01-01</td>
     </tr>
   </tbody>
 </table>
@@ -12015,11 +12036,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Looks good. Apart from some details:</p>
-<ul>
-<li>John Lennon's role has no starting date, we can set it to 1957</li>
-<li>these missing values made PanDas believe year dates are floating point number, we should fix this</li>
-</ul>
+<p>The data is here, we just want to set a start date for Lennon's roles since it is not in the database.</p>
 
 </div>
 </div>
@@ -12029,10 +12046,9 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">1957</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">&#39;end&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;end&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">&#39;mbid&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;mbid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">1957</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;mbid&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;mbid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="c1"># otherwise PanDas uses the UUID data type which will cause problems later.</span>
 <span class="n">df</span>
 </pre></div>
 
@@ -12064,83 +12080,83 @@ div#notebook {
     <tr>
       <th>0</th>
       <td>The Beatles</td>
-      <td>George Harrison</td>
-      <td>42a8f507-8412-4611-854f-926571049fa0</td>
-      <td>lead vocals</td>
-      <td>1958</td>
-      <td>1970</td>
+      <td>Pete Best</td>
+      <td>0d4ab0f9-bbda-4ab1-ae2c-f772ffcfbea9</td>
+      <td>drums</td>
+      <td>1960-01-01</td>
+      <td>1962-01-01</td>
     </tr>
     <tr>
       <th>1</th>
       <td>The Beatles</td>
-      <td>George Harrison</td>
-      <td>42a8f507-8412-4611-854f-926571049fa0</td>
-      <td>guitar</td>
-      <td>1958</td>
-      <td>1970</td>
+      <td>Paul McCartney</td>
+      <td>ba550d0e-adac-4864-b88b-407cab5e76af</td>
+      <td>lead vocals</td>
+      <td>1957-01-01</td>
+      <td>1970-01-01</td>
     </tr>
     <tr>
       <th>2</th>
       <td>The Beatles</td>
-      <td>Pete Best</td>
-      <td>0d4ab0f9-bbda-4ab1-ae2c-f772ffcfbea9</td>
-      <td>drums</td>
-      <td>1960</td>
-      <td>1962</td>
+      <td>Paul McCartney</td>
+      <td>ba550d0e-adac-4864-b88b-407cab5e76af</td>
+      <td>bass guitar</td>
+      <td>1957-01-01</td>
+      <td>1970-01-01</td>
     </tr>
     <tr>
       <th>3</th>
       <td>The Beatles</td>
-      <td>Paul McCartney</td>
-      <td>ba550d0e-adac-4864-b88b-407cab5e76af</td>
-      <td>lead vocals</td>
-      <td>1957</td>
-      <td>1970</td>
+      <td>Ringo Starr</td>
+      <td>300c4c73-33ac-4255-9d57-4e32627f5e13</td>
+      <td>drums</td>
+      <td>1962-01-01</td>
+      <td>1970-01-01</td>
     </tr>
     <tr>
       <th>4</th>
       <td>The Beatles</td>
-      <td>Paul McCartney</td>
-      <td>ba550d0e-adac-4864-b88b-407cab5e76af</td>
+      <td>Stuart Sutcliffe</td>
+      <td>49a51491-650e-44b3-8085-2f07ac2986dd</td>
       <td>bass guitar</td>
-      <td>1957</td>
-      <td>1970</td>
+      <td>1960-01-01</td>
+      <td>1962-01-01</td>
     </tr>
     <tr>
       <th>5</th>
       <td>The Beatles</td>
-      <td>Ringo Starr</td>
-      <td>300c4c73-33ac-4255-9d57-4e32627f5e13</td>
-      <td>drums</td>
-      <td>1962</td>
-      <td>1970</td>
+      <td>John Lennon</td>
+      <td>4d5447d7-c61c-4120-ba1b-d7f471d385b9</td>
+      <td>lead vocals</td>
+      <td>1957-01-01</td>
+      <td>1970-01-01</td>
     </tr>
     <tr>
       <th>6</th>
       <td>The Beatles</td>
-      <td>Stuart Sutcliffe</td>
-      <td>49a51491-650e-44b3-8085-2f07ac2986dd</td>
-      <td>bass guitar</td>
-      <td>1960</td>
-      <td>1962</td>
+      <td>John Lennon</td>
+      <td>4d5447d7-c61c-4120-ba1b-d7f471d385b9</td>
+      <td>guitar</td>
+      <td>1957-01-01</td>
+      <td>1970-01-01</td>
     </tr>
     <tr>
       <th>7</th>
       <td>The Beatles</td>
-      <td>John Lennon</td>
-      <td>4d5447d7-c61c-4120-ba1b-d7f471d385b9</td>
+      <td>George Harrison</td>
+      <td>42a8f507-8412-4611-854f-926571049fa0</td>
       <td>lead vocals</td>
-      <td>1957</td>
-      <td>1970</td>
+      <td>1958-01-01</td>
+      <td>1970-01-01</td>
     </tr>
     <tr>
       <th>8</th>
       <td>The Beatles</td>
-      <td>John Lennon</td>
-      <td>4d5447d7-c61c-4120-ba1b-d7f471d385b9</td>
+      <td>George Harrison</td>
+      <td>42a8f507-8412-4611-854f-926571049fa0</td>
       <td>guitar</td>
-      <td>1957</td>
-      <td>1970</td>
+      <td>1958-01-01</td>
+      <td>1970-01-01</td>
     </tr>
   </tbody>
 </table>
@@ -12158,7 +12174,16 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>To display the timeline inside this notebook we need to lead the JS/CSS source of the timesheet-advanced package:</p>
+<h2 id="Display-a-timeline-with-timesheet-advanced">Display a timeline with timesheet-advanced<a class="anchor-link" href="#Display-a-timeline-with-timesheet-advanced">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The timesheet-advanced package requires the input data for the timeline to be inserted slightly differently from what we have in our dataframe df. Let us first copy our data in a new variable <em>ts</em> and simplify the dates to years.</p>
 
 </div>
 </div>
@@ -12168,32 +12193,12 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">HTML</span>
-<span class="n">HTML</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;./timesheet/timesheet.min.css&quot; /&gt;</span>
-<span class="s2">&lt;script type=&quot;text/javascript&quot; src=&quot;./timesheet/timesheet-advanced.min.js&quot;&gt;&lt;/script&gt;</span>
-<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ts</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">ts</span><span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ts</span><span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">date</span><span class="p">:</span> <span class="n">date</span><span class="o">.</span><span class="n">year</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+<span class="n">ts</span><span class="p">[</span><span class="s1">&#39;end&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ts</span><span class="p">[</span><span class="s1">&#39;end&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">date</span><span class="p">:</span> <span class="n">date</span><span class="o">.</span><span class="n">year</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
 </pre></div>
 
 </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt output_prompt">Out[5]:</div>
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-
-<link rel="stylesheet" type="text/css" href="./timesheet/timesheet.min.css" />
-<script type="text/javascript" src="./timesheet/timesheet-advanced.min.js"></script>
-
-</div>
-
-</div>
-
 </div>
 </div>
 
@@ -12203,7 +12208,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The timesheet-advanced package requires the input data for the timeline to be inserted slightly differently from what we have in our dataframe df. We need a 'label' field (we'll choose the band member name + instrument) and we need a 'type' which is a color. We choose colors to represent all possible roles (vocals, guitar, drums....)</p>
+<p>We need a 'label' field (we'll choose the band member name + instrument) and we need a 'type' which is a color. We choose colors to represent all possible roles (vocals, guitar, drums....)</p>
 
 </div>
 </div>
@@ -12213,8 +12218,8 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;member&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39; (&#39;</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;role&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;)&#39;</span>
-<span class="n">df</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ts</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;member&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39; (&#39;</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;role&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;)&#39;</span>
+<span class="n">ts</span>
 </pre></div>
 
 </div>
@@ -12246,26 +12251,6 @@ div#notebook {
     <tr>
       <th>0</th>
       <td>The Beatles</td>
-      <td>George Harrison</td>
-      <td>42a8f507-8412-4611-854f-926571049fa0</td>
-      <td>lead vocals</td>
-      <td>1958</td>
-      <td>1970</td>
-      <td>George Harrison (lead vocals)</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>The Beatles</td>
-      <td>George Harrison</td>
-      <td>42a8f507-8412-4611-854f-926571049fa0</td>
-      <td>guitar</td>
-      <td>1958</td>
-      <td>1970</td>
-      <td>George Harrison (guitar)</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>The Beatles</td>
       <td>Pete Best</td>
       <td>0d4ab0f9-bbda-4ab1-ae2c-f772ffcfbea9</td>
       <td>drums</td>
@@ -12274,7 +12259,7 @@ div#notebook {
       <td>Pete Best (drums)</td>
     </tr>
     <tr>
-      <th>3</th>
+      <th>1</th>
       <td>The Beatles</td>
       <td>Paul McCartney</td>
       <td>ba550d0e-adac-4864-b88b-407cab5e76af</td>
@@ -12284,7 +12269,7 @@ div#notebook {
       <td>Paul McCartney (lead vocals)</td>
     </tr>
     <tr>
-      <th>4</th>
+      <th>2</th>
       <td>The Beatles</td>
       <td>Paul McCartney</td>
       <td>ba550d0e-adac-4864-b88b-407cab5e76af</td>
@@ -12294,7 +12279,7 @@ div#notebook {
       <td>Paul McCartney (bass guitar)</td>
     </tr>
     <tr>
-      <th>5</th>
+      <th>3</th>
       <td>The Beatles</td>
       <td>Ringo Starr</td>
       <td>300c4c73-33ac-4255-9d57-4e32627f5e13</td>
@@ -12304,7 +12289,7 @@ div#notebook {
       <td>Ringo Starr (drums)</td>
     </tr>
     <tr>
-      <th>6</th>
+      <th>4</th>
       <td>The Beatles</td>
       <td>Stuart Sutcliffe</td>
       <td>49a51491-650e-44b3-8085-2f07ac2986dd</td>
@@ -12314,7 +12299,7 @@ div#notebook {
       <td>Stuart Sutcliffe (bass guitar)</td>
     </tr>
     <tr>
-      <th>7</th>
+      <th>5</th>
       <td>The Beatles</td>
       <td>John Lennon</td>
       <td>4d5447d7-c61c-4120-ba1b-d7f471d385b9</td>
@@ -12324,7 +12309,7 @@ div#notebook {
       <td>John Lennon (lead vocals)</td>
     </tr>
     <tr>
-      <th>8</th>
+      <th>6</th>
       <td>The Beatles</td>
       <td>John Lennon</td>
       <td>4d5447d7-c61c-4120-ba1b-d7f471d385b9</td>
@@ -12332,6 +12317,26 @@ div#notebook {
       <td>1957</td>
       <td>1970</td>
       <td>John Lennon (guitar)</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>The Beatles</td>
+      <td>George Harrison</td>
+      <td>42a8f507-8412-4611-854f-926571049fa0</td>
+      <td>lead vocals</td>
+      <td>1958</td>
+      <td>1970</td>
+      <td>George Harrison (lead vocals)</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>The Beatles</td>
+      <td>George Harrison</td>
+      <td>42a8f507-8412-4611-854f-926571049fa0</td>
+      <td>guitar</td>
+      <td>1958</td>
+      <td>1970</td>
+      <td>George Harrison (guitar)</td>
     </tr>
   </tbody>
 </table>
@@ -12349,10 +12354,10 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">colors</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;role&#39;</span><span class="p">])),</span> <span class="p">[</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">]))</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">colors</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">ts</span><span class="p">[</span><span class="s1">&#39;role&#39;</span><span class="p">])),</span> <span class="p">[</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">]))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Correspondance between colors and roles: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">colors</span><span class="p">))</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;role&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">role</span><span class="p">:</span> <span class="n">colors</span><span class="p">[</span><span class="n">role</span><span class="p">])</span>
-<span class="n">df</span>
+<span class="n">ts</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ts</span><span class="p">[</span><span class="s1">&#39;role&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">role</span><span class="p">:</span> <span class="n">colors</span><span class="p">[</span><span class="n">role</span><span class="p">])</span>
+<span class="n">ts</span>
 </pre></div>
 
 </div>
@@ -12365,7 +12370,7 @@ div#notebook {
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Correspondance between colors and roles: {&#39;guitar&#39;: &#39;blue&#39;, &#39;drums&#39;: &#39;yellow&#39;, &#39;bass guitar&#39;: &#39;red&#39;, &#39;lead vocals&#39;: &#39;green&#39;}
+<pre>Correspondance between colors and roles: {&#39;drums&#39;: &#39;blue&#39;, &#39;bass guitar&#39;: &#39;red&#39;, &#39;lead vocals&#39;: &#39;green&#39;, &#39;guitar&#39;: &#39;yellow&#39;}
 </pre>
 </div>
 </div>
@@ -12392,38 +12397,16 @@ div#notebook {
     <tr>
       <th>0</th>
       <td>The Beatles</td>
-      <td>George Harrison</td>
-      <td>42a8f507-8412-4611-854f-926571049fa0</td>
-      <td>lead vocals</td>
-      <td>1958</td>
-      <td>1970</td>
-      <td>George Harrison (lead vocals)</td>
-      <td>green</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>The Beatles</td>
-      <td>George Harrison</td>
-      <td>42a8f507-8412-4611-854f-926571049fa0</td>
-      <td>guitar</td>
-      <td>1958</td>
-      <td>1970</td>
-      <td>George Harrison (guitar)</td>
-      <td>blue</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>The Beatles</td>
       <td>Pete Best</td>
       <td>0d4ab0f9-bbda-4ab1-ae2c-f772ffcfbea9</td>
       <td>drums</td>
       <td>1960</td>
       <td>1962</td>
       <td>Pete Best (drums)</td>
-      <td>yellow</td>
+      <td>blue</td>
     </tr>
     <tr>
-      <th>3</th>
+      <th>1</th>
       <td>The Beatles</td>
       <td>Paul McCartney</td>
       <td>ba550d0e-adac-4864-b88b-407cab5e76af</td>
@@ -12434,7 +12417,7 @@ div#notebook {
       <td>green</td>
     </tr>
     <tr>
-      <th>4</th>
+      <th>2</th>
       <td>The Beatles</td>
       <td>Paul McCartney</td>
       <td>ba550d0e-adac-4864-b88b-407cab5e76af</td>
@@ -12445,7 +12428,7 @@ div#notebook {
       <td>red</td>
     </tr>
     <tr>
-      <th>5</th>
+      <th>3</th>
       <td>The Beatles</td>
       <td>Ringo Starr</td>
       <td>300c4c73-33ac-4255-9d57-4e32627f5e13</td>
@@ -12453,10 +12436,10 @@ div#notebook {
       <td>1962</td>
       <td>1970</td>
       <td>Ringo Starr (drums)</td>
-      <td>yellow</td>
+      <td>blue</td>
     </tr>
     <tr>
-      <th>6</th>
+      <th>4</th>
       <td>The Beatles</td>
       <td>Stuart Sutcliffe</td>
       <td>49a51491-650e-44b3-8085-2f07ac2986dd</td>
@@ -12467,7 +12450,7 @@ div#notebook {
       <td>red</td>
     </tr>
     <tr>
-      <th>7</th>
+      <th>5</th>
       <td>The Beatles</td>
       <td>John Lennon</td>
       <td>4d5447d7-c61c-4120-ba1b-d7f471d385b9</td>
@@ -12478,7 +12461,7 @@ div#notebook {
       <td>green</td>
     </tr>
     <tr>
-      <th>8</th>
+      <th>6</th>
       <td>The Beatles</td>
       <td>John Lennon</td>
       <td>4d5447d7-c61c-4120-ba1b-d7f471d385b9</td>
@@ -12486,7 +12469,29 @@ div#notebook {
       <td>1957</td>
       <td>1970</td>
       <td>John Lennon (guitar)</td>
-      <td>blue</td>
+      <td>yellow</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>The Beatles</td>
+      <td>George Harrison</td>
+      <td>42a8f507-8412-4611-854f-926571049fa0</td>
+      <td>lead vocals</td>
+      <td>1958</td>
+      <td>1970</td>
+      <td>George Harrison (lead vocals)</td>
+      <td>green</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>The Beatles</td>
+      <td>George Harrison</td>
+      <td>42a8f507-8412-4611-854f-926571049fa0</td>
+      <td>guitar</td>
+      <td>1958</td>
+      <td>1970</td>
+      <td>George Harrison (guitar)</td>
+      <td>yellow</td>
     </tr>
   </tbody>
 </table>
@@ -12514,8 +12519,9 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;link&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;https://musicbrainz.org/artist/&#39;</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;mbid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-<span class="n">df</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ts</span><span class="p">[</span><span class="s1">&#39;link&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;https://musicbrainz.org/artist/&#39;</span> <span class="o">+</span> <span class="n">ts</span><span class="p">[</span><span class="s1">&#39;mbid&#39;</span><span class="p">]</span>
+<span class="n">ts</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;mbid&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ts</span>
 </pre></div>
 
 </div>
@@ -12536,7 +12542,6 @@ div#notebook {
       <th></th>
       <th>band</th>
       <th>member</th>
-      <th>mbid</th>
       <th>role</th>
       <th>start</th>
       <th>end</th>
@@ -12549,44 +12554,18 @@ div#notebook {
     <tr>
       <th>0</th>
       <td>The Beatles</td>
-      <td>George Harrison</td>
-      <td>42a8f507-8412-4611-854f-926571049fa0</td>
-      <td>lead vocals</td>
-      <td>1958</td>
-      <td>1970</td>
-      <td>George Harrison (lead vocals)</td>
-      <td>green</td>
-      <td>https://musicbrainz.org/artist/42a8f507-8412-4...</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>The Beatles</td>
-      <td>George Harrison</td>
-      <td>42a8f507-8412-4611-854f-926571049fa0</td>
-      <td>guitar</td>
-      <td>1958</td>
-      <td>1970</td>
-      <td>George Harrison (guitar)</td>
-      <td>blue</td>
-      <td>https://musicbrainz.org/artist/42a8f507-8412-4...</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>The Beatles</td>
       <td>Pete Best</td>
-      <td>0d4ab0f9-bbda-4ab1-ae2c-f772ffcfbea9</td>
       <td>drums</td>
       <td>1960</td>
       <td>1962</td>
       <td>Pete Best (drums)</td>
-      <td>yellow</td>
+      <td>blue</td>
       <td>https://musicbrainz.org/artist/0d4ab0f9-bbda-4...</td>
     </tr>
     <tr>
-      <th>3</th>
+      <th>1</th>
       <td>The Beatles</td>
       <td>Paul McCartney</td>
-      <td>ba550d0e-adac-4864-b88b-407cab5e76af</td>
       <td>lead vocals</td>
       <td>1957</td>
       <td>1970</td>
@@ -12595,10 +12574,9 @@ div#notebook {
       <td>https://musicbrainz.org/artist/ba550d0e-adac-4...</td>
     </tr>
     <tr>
-      <th>4</th>
+      <th>2</th>
       <td>The Beatles</td>
       <td>Paul McCartney</td>
-      <td>ba550d0e-adac-4864-b88b-407cab5e76af</td>
       <td>bass guitar</td>
       <td>1957</td>
       <td>1970</td>
@@ -12607,22 +12585,20 @@ div#notebook {
       <td>https://musicbrainz.org/artist/ba550d0e-adac-4...</td>
     </tr>
     <tr>
-      <th>5</th>
+      <th>3</th>
       <td>The Beatles</td>
       <td>Ringo Starr</td>
-      <td>300c4c73-33ac-4255-9d57-4e32627f5e13</td>
       <td>drums</td>
       <td>1962</td>
       <td>1970</td>
       <td>Ringo Starr (drums)</td>
-      <td>yellow</td>
+      <td>blue</td>
       <td>https://musicbrainz.org/artist/300c4c73-33ac-4...</td>
     </tr>
     <tr>
-      <th>6</th>
+      <th>4</th>
       <td>The Beatles</td>
       <td>Stuart Sutcliffe</td>
-      <td>49a51491-650e-44b3-8085-2f07ac2986dd</td>
       <td>bass guitar</td>
       <td>1960</td>
       <td>1962</td>
@@ -12631,10 +12607,9 @@ div#notebook {
       <td>https://musicbrainz.org/artist/49a51491-650e-4...</td>
     </tr>
     <tr>
-      <th>7</th>
+      <th>5</th>
       <td>The Beatles</td>
       <td>John Lennon</td>
-      <td>4d5447d7-c61c-4120-ba1b-d7f471d385b9</td>
       <td>lead vocals</td>
       <td>1957</td>
       <td>1970</td>
@@ -12643,16 +12618,37 @@ div#notebook {
       <td>https://musicbrainz.org/artist/4d5447d7-c61c-4...</td>
     </tr>
     <tr>
-      <th>8</th>
+      <th>6</th>
       <td>The Beatles</td>
       <td>John Lennon</td>
-      <td>4d5447d7-c61c-4120-ba1b-d7f471d385b9</td>
       <td>guitar</td>
       <td>1957</td>
       <td>1970</td>
       <td>John Lennon (guitar)</td>
-      <td>blue</td>
+      <td>yellow</td>
       <td>https://musicbrainz.org/artist/4d5447d7-c61c-4...</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>The Beatles</td>
+      <td>George Harrison</td>
+      <td>lead vocals</td>
+      <td>1958</td>
+      <td>1970</td>
+      <td>George Harrison (lead vocals)</td>
+      <td>green</td>
+      <td>https://musicbrainz.org/artist/42a8f507-8412-4...</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>The Beatles</td>
+      <td>George Harrison</td>
+      <td>guitar</td>
+      <td>1958</td>
+      <td>1970</td>
+      <td>George Harrison (guitar)</td>
+      <td>yellow</td>
+      <td>https://musicbrainz.org/artist/42a8f507-8412-4...</td>
     </tr>
   </tbody>
 </table>
@@ -12670,7 +12666,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The last preparation step is to transform this Python data structure into a Javascript one that the timesheet library can read. We're going to use the fact that a Python list and a Javascript array are very close.</p>
+<p>The last preparation step is to transform this Python data structure into a Javascript one that the timesheet library can read. We're going to use the fact that a Python list and a Javascript array are very close (we could also use JSON format to transform our data into smething JavaScript-compatible).</p>
 
 </div>
 </div>
@@ -12680,8 +12676,9 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">bubbles</span> <span class="o">=</span> <span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">ix</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))]</span>
-<span class="n">pprint</span><span class="p">(</span><span class="n">bubbles</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">bubbles</span> <span class="o">=</span> <span class="p">[</span><span class="n">ts</span><span class="o">.</span><span class="n">ix</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ts</span><span class="p">))]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;First bubble:&#39;</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">bubbles</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 </pre></div>
 
 </div>
@@ -12694,87 +12691,15 @@ div#notebook {
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>[{&#39;band&#39;: &#39;The Beatles&#39;,
-  &#39;end&#39;: &#39;1970&#39;,
-  &#39;label&#39;: &#39;George Harrison (lead vocals)&#39;,
-  &#39;link&#39;: &#39;https://musicbrainz.org/artist/42a8f507-8412-4611-854f-926571049fa0&#39;,
-  &#39;mbid&#39;: &#39;42a8f507-8412-4611-854f-926571049fa0&#39;,
-  &#39;member&#39;: &#39;George Harrison&#39;,
-  &#39;role&#39;: &#39;lead vocals&#39;,
-  &#39;start&#39;: &#39;1958&#39;,
-  &#39;type&#39;: &#39;green&#39;},
- {&#39;band&#39;: &#39;The Beatles&#39;,
-  &#39;end&#39;: &#39;1970&#39;,
-  &#39;label&#39;: &#39;George Harrison (guitar)&#39;,
-  &#39;link&#39;: &#39;https://musicbrainz.org/artist/42a8f507-8412-4611-854f-926571049fa0&#39;,
-  &#39;mbid&#39;: &#39;42a8f507-8412-4611-854f-926571049fa0&#39;,
-  &#39;member&#39;: &#39;George Harrison&#39;,
-  &#39;role&#39;: &#39;guitar&#39;,
-  &#39;start&#39;: &#39;1958&#39;,
-  &#39;type&#39;: &#39;blue&#39;},
- {&#39;band&#39;: &#39;The Beatles&#39;,
-  &#39;end&#39;: &#39;1962&#39;,
-  &#39;label&#39;: &#39;Pete Best (drums)&#39;,
-  &#39;link&#39;: &#39;https://musicbrainz.org/artist/0d4ab0f9-bbda-4ab1-ae2c-f772ffcfbea9&#39;,
-  &#39;mbid&#39;: &#39;0d4ab0f9-bbda-4ab1-ae2c-f772ffcfbea9&#39;,
-  &#39;member&#39;: &#39;Pete Best&#39;,
-  &#39;role&#39;: &#39;drums&#39;,
-  &#39;start&#39;: &#39;1960&#39;,
-  &#39;type&#39;: &#39;yellow&#39;},
- {&#39;band&#39;: &#39;The Beatles&#39;,
-  &#39;end&#39;: &#39;1970&#39;,
-  &#39;label&#39;: &#39;Paul McCartney (lead vocals)&#39;,
-  &#39;link&#39;: &#39;https://musicbrainz.org/artist/ba550d0e-adac-4864-b88b-407cab5e76af&#39;,
-  &#39;mbid&#39;: &#39;ba550d0e-adac-4864-b88b-407cab5e76af&#39;,
-  &#39;member&#39;: &#39;Paul McCartney&#39;,
-  &#39;role&#39;: &#39;lead vocals&#39;,
-  &#39;start&#39;: &#39;1957&#39;,
-  &#39;type&#39;: &#39;green&#39;},
- {&#39;band&#39;: &#39;The Beatles&#39;,
-  &#39;end&#39;: &#39;1970&#39;,
-  &#39;label&#39;: &#39;Paul McCartney (bass guitar)&#39;,
-  &#39;link&#39;: &#39;https://musicbrainz.org/artist/ba550d0e-adac-4864-b88b-407cab5e76af&#39;,
-  &#39;mbid&#39;: &#39;ba550d0e-adac-4864-b88b-407cab5e76af&#39;,
-  &#39;member&#39;: &#39;Paul McCartney&#39;,
-  &#39;role&#39;: &#39;bass guitar&#39;,
-  &#39;start&#39;: &#39;1957&#39;,
-  &#39;type&#39;: &#39;red&#39;},
- {&#39;band&#39;: &#39;The Beatles&#39;,
-  &#39;end&#39;: &#39;1970&#39;,
-  &#39;label&#39;: &#39;Ringo Starr (drums)&#39;,
-  &#39;link&#39;: &#39;https://musicbrainz.org/artist/300c4c73-33ac-4255-9d57-4e32627f5e13&#39;,
-  &#39;mbid&#39;: &#39;300c4c73-33ac-4255-9d57-4e32627f5e13&#39;,
-  &#39;member&#39;: &#39;Ringo Starr&#39;,
-  &#39;role&#39;: &#39;drums&#39;,
-  &#39;start&#39;: &#39;1962&#39;,
-  &#39;type&#39;: &#39;yellow&#39;},
- {&#39;band&#39;: &#39;The Beatles&#39;,
-  &#39;end&#39;: &#39;1962&#39;,
-  &#39;label&#39;: &#39;Stuart Sutcliffe (bass guitar)&#39;,
-  &#39;link&#39;: &#39;https://musicbrainz.org/artist/49a51491-650e-44b3-8085-2f07ac2986dd&#39;,
-  &#39;mbid&#39;: &#39;49a51491-650e-44b3-8085-2f07ac2986dd&#39;,
-  &#39;member&#39;: &#39;Stuart Sutcliffe&#39;,
-  &#39;role&#39;: &#39;bass guitar&#39;,
-  &#39;start&#39;: &#39;1960&#39;,
-  &#39;type&#39;: &#39;red&#39;},
- {&#39;band&#39;: &#39;The Beatles&#39;,
-  &#39;end&#39;: &#39;1970&#39;,
-  &#39;label&#39;: &#39;John Lennon (lead vocals)&#39;,
-  &#39;link&#39;: &#39;https://musicbrainz.org/artist/4d5447d7-c61c-4120-ba1b-d7f471d385b9&#39;,
-  &#39;mbid&#39;: &#39;4d5447d7-c61c-4120-ba1b-d7f471d385b9&#39;,
-  &#39;member&#39;: &#39;John Lennon&#39;,
-  &#39;role&#39;: &#39;lead vocals&#39;,
-  &#39;start&#39;: &#39;1957&#39;,
-  &#39;type&#39;: &#39;green&#39;},
- {&#39;band&#39;: &#39;The Beatles&#39;,
-  &#39;end&#39;: &#39;1970&#39;,
-  &#39;label&#39;: &#39;John Lennon (guitar)&#39;,
-  &#39;link&#39;: &#39;https://musicbrainz.org/artist/4d5447d7-c61c-4120-ba1b-d7f471d385b9&#39;,
-  &#39;mbid&#39;: &#39;4d5447d7-c61c-4120-ba1b-d7f471d385b9&#39;,
-  &#39;member&#39;: &#39;John Lennon&#39;,
-  &#39;role&#39;: &#39;guitar&#39;,
-  &#39;start&#39;: &#39;1957&#39;,
-  &#39;type&#39;: &#39;blue&#39;}]
+<pre>First bubble:
+{&#39;band&#39;: &#39;The Beatles&#39;,
+ &#39;end&#39;: &#39;1962&#39;,
+ &#39;label&#39;: &#39;Pete Best (drums)&#39;,
+ &#39;link&#39;: &#39;https://musicbrainz.org/artist/0d4ab0f9-bbda-4ab1-ae2c-f772ffcfbea9&#39;,
+ &#39;member&#39;: &#39;Pete Best&#39;,
+ &#39;role&#39;: &#39;drums&#39;,
+ &#39;start&#39;: &#39;1960&#39;,
+ &#39;type&#39;: &#39;blue&#39;}
 </pre>
 </div>
 </div>
@@ -12788,7 +12713,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Perfect. Time to do some javascript. The Jupyter notebook can display javascript plots in an output cell by using the <em>element.append</em> magic. I'll display this cell (no. 10) later so that we keep the javascript code (no. 11) above its output, but the <em>element.append</em> code must be executed <strong>before</strong> the "new Timesheet" code (so 10 before 11).</p>
+<p>Perfect, <em>bubbles</em> contains our data. Time to do some javascript. The Jupyter notebook can display javascript code in an output cell by using the <em>element.append</em> magic.</p>
 
 </div>
 </div>
@@ -12798,28 +12723,21 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Last step: we call the Timesheet javascript command using the CSS/JS libraries loaded above, our input data (referred below as 'bubbles', the cell where we want our graph, and the timeline limit (min and max date). Executing the next cell will fill the output cell just above this block automatically.</p>
+<p>To display the timeline inside this notebook we need to load the JS/CSS source of the timesheet-advanced package...</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">Javascript</span>
-<span class="n">Javascript</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">var bubbles = </span><span class="si">%s</span><span class="s2">;</span>
-<span class="s2">new Timesheet(bubbles, {</span>
-<span class="s2">    container: &#39;timesheet-container&#39;,</span>
-<span class="s2">    type: &#39;parallel&#39;,</span>
-<span class="s2">    //type: &#39;serial&#39;,</span>
-<span class="s2">    timesheetYearMin: </span><span class="si">%s</span><span class="s2">,</span>
-<span class="s2">    timesheetYearMax: </span><span class="si">%s</span><span class="s2">,</span>
-<span class="s2">    theme: &#39;light&#39;</span>
-<span class="s2">});</span>
-<span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">bubbles</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;end&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()))</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">HTML</span>
+<span class="n">HTML</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;./timesheet/timesheet.min.css&quot; /&gt;</span>
+<span class="s2">&lt;script type=&quot;text/javascript&quot; src=&quot;./timesheet/timesheet-advanced.min.js&quot;&gt;&lt;/script&gt;</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -12830,26 +12748,13 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[11]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[10]:</div>
 
+<div class="output_html rendered_html output_subarea output_execute_result">
 
+<link rel="stylesheet" type="text/css" href="./timesheet/timesheet.min.css" />
+<script type="text/javascript" src="./timesheet/timesheet-advanced.min.js"></script>
 
-<div id="42dffac2-365d-466a-a23a-24280b3bd779"></div>
-<div class="output_subarea output_javascript output_execute_result">
-<script type="text/javascript">
-var element = $('#42dffac2-365d-466a-a23a-24280b3bd779');
-
-var bubbles = [{'end': '1970', 'member': 'George Harrison', 'start': '1958', 'label': 'George Harrison (lead vocals)', 'type': 'green', 'role': 'lead vocals', 'band': 'The Beatles', 'mbid': '42a8f507-8412-4611-854f-926571049fa0', 'link': 'https://musicbrainz.org/artist/42a8f507-8412-4611-854f-926571049fa0'}, {'end': '1970', 'member': 'George Harrison', 'start': '1958', 'label': 'George Harrison (guitar)', 'type': 'blue', 'role': 'guitar', 'band': 'The Beatles', 'mbid': '42a8f507-8412-4611-854f-926571049fa0', 'link': 'https://musicbrainz.org/artist/42a8f507-8412-4611-854f-926571049fa0'}, {'end': '1962', 'member': 'Pete Best', 'start': '1960', 'label': 'Pete Best (drums)', 'type': 'yellow', 'role': 'drums', 'band': 'The Beatles', 'mbid': '0d4ab0f9-bbda-4ab1-ae2c-f772ffcfbea9', 'link': 'https://musicbrainz.org/artist/0d4ab0f9-bbda-4ab1-ae2c-f772ffcfbea9'}, {'end': '1970', 'member': 'Paul McCartney', 'start': '1957', 'label': 'Paul McCartney (lead vocals)', 'type': 'green', 'role': 'lead vocals', 'band': 'The Beatles', 'mbid': 'ba550d0e-adac-4864-b88b-407cab5e76af', 'link': 'https://musicbrainz.org/artist/ba550d0e-adac-4864-b88b-407cab5e76af'}, {'end': '1970', 'member': 'Paul McCartney', 'start': '1957', 'label': 'Paul McCartney (bass guitar)', 'type': 'red', 'role': 'bass guitar', 'band': 'The Beatles', 'mbid': 'ba550d0e-adac-4864-b88b-407cab5e76af', 'link': 'https://musicbrainz.org/artist/ba550d0e-adac-4864-b88b-407cab5e76af'}, {'end': '1970', 'member': 'Ringo Starr', 'start': '1962', 'label': 'Ringo Starr (drums)', 'type': 'yellow', 'role': 'drums', 'band': 'The Beatles', 'mbid': '300c4c73-33ac-4255-9d57-4e32627f5e13', 'link': 'https://musicbrainz.org/artist/300c4c73-33ac-4255-9d57-4e32627f5e13'}, {'end': '1962', 'member': 'Stuart Sutcliffe', 'start': '1960', 'label': 'Stuart Sutcliffe (bass guitar)', 'type': 'red', 'role': 'bass guitar', 'band': 'The Beatles', 'mbid': '49a51491-650e-44b3-8085-2f07ac2986dd', 'link': 'https://musicbrainz.org/artist/49a51491-650e-44b3-8085-2f07ac2986dd'}, {'end': '1970', 'member': 'John Lennon', 'start': '1957', 'label': 'John Lennon (lead vocals)', 'type': 'green', 'role': 'lead vocals', 'band': 'The Beatles', 'mbid': '4d5447d7-c61c-4120-ba1b-d7f471d385b9', 'link': 'https://musicbrainz.org/artist/4d5447d7-c61c-4120-ba1b-d7f471d385b9'}, {'end': '1970', 'member': 'John Lennon', 'start': '1957', 'label': 'John Lennon (guitar)', 'type': 'blue', 'role': 'guitar', 'band': 'The Beatles', 'mbid': '4d5447d7-c61c-4120-ba1b-d7f471d385b9', 'link': 'https://musicbrainz.org/artist/4d5447d7-c61c-4120-ba1b-d7f471d385b9'}];
-new Timesheet(bubbles, {
-    container: 'timesheet-container',
-    type: 'parallel',
-    //type: 'serial',
-    timesheetYearMin: 1957,
-    timesheetYearMax: 1970,
-    theme: 'light'
-});
-
-</script>
 </div>
 
 </div>
@@ -12857,10 +12762,20 @@ new Timesheet(bubbles, {
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>... and to create an output container for our timeline. This cell be filled when the next cell code (<em>new Timesheet(...)</em>) will be executed.</p>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="nx">javascript</span>
@@ -12880,10 +12795,10 @@ new Timesheet(bubbles, {
 
 
 
-<div id="0c0fc9cf-85dd-4f83-81cd-50100ef66cda"></div>
+<div id="a40a393e-f00a-406d-acf1-255f13760366"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#0c0fc9cf-85dd-4f83-81cd-50100ef66cda');
+var element = $('#a40a393e-f00a-406d-acf1-255f13760366');
 // this must be executed before the "from IPython.display import Javascript" block
 element.append('<div id="timesheet-container" style="width: 100%;height: 100%;"></div>');
 </script>
@@ -12900,26 +12815,7 @@ element.append('<div id="timesheet-container" style="width: 100%;height: 100%;">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>We have our timeline now! As you can see the same color is used for the same role consistently. If you can't see the timeline above you can find a copy on <a href="https://loujine.github.io/musicbrainz-dataviz/index.html#beatles-timeline">github.io</a>.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Second-example">Second example<a class="anchor-link" href="#Second-example">&#182;</a></h2>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Let's repeat our code on a second band, this time a classical String Quartet group.</p>
+<p>Last step: we call the Timesheet javascript command using the CSS/JS libraries loaded above, our input data (<em>bubbles</em>), the cell where we want our graph, and the timeline limit (min and max date). Executing the next cell will fill the output cell just above this block automatically.</p>
 
 </div>
 </div>
@@ -12929,60 +12825,253 @@ element.append('<div id="timesheet-container" style="width: 100%;height: 100%;">
 <div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">band_name</span> <span class="o">=</span> <span class="s1">&#39;Beethoven String Quartet&#39;</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">Javascript</span>
+
+<span class="n">Javascript</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">var bubbles = </span><span class="si">%s</span><span class="s2">;</span>
+<span class="s2">new Timesheet(bubbles, {</span>
+<span class="s2">    container: &#39;timesheet-container&#39;,</span>
+<span class="s2">    type: &#39;parallel&#39;,</span>
+<span class="s2">    //type: &#39;serial&#39;,</span>
+<span class="s2">    timesheetYearMin: </span><span class="si">%s</span><span class="s2">,</span>
+<span class="s2">    timesheetYearMax: </span><span class="si">%s</span><span class="s2">,</span>
+<span class="s2">    theme: &#39;light&#39;</span>
+<span class="s2">});</span>
+<span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">bubbles</span><span class="p">,</span> <span class="n">ts</span><span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">ts</span><span class="p">[</span><span class="s1">&#39;end&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()))</span>
 </pre></div>
 
 </div>
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[12]:</div>
+
+
+
+<div id="5a70ca0d-11b2-4911-b440-b24e86623ad6"></div>
+<div class="output_subarea output_javascript output_execute_result">
+<script type="text/javascript">
+var element = $('#5a70ca0d-11b2-4911-b440-b24e86623ad6');
+
+var bubbles = [{'label': 'Pete Best (drums)', 'type': 'blue', 'end': '1962', 'role': 'drums', 'band': 'The Beatles', 'member': 'Pete Best', 'start': '1960', 'link': 'https://musicbrainz.org/artist/0d4ab0f9-bbda-4ab1-ae2c-f772ffcfbea9'}, {'label': 'Paul McCartney (lead vocals)', 'type': 'green', 'end': '1970', 'role': 'lead vocals', 'band': 'The Beatles', 'member': 'Paul McCartney', 'start': '1957', 'link': 'https://musicbrainz.org/artist/ba550d0e-adac-4864-b88b-407cab5e76af'}, {'label': 'Paul McCartney (bass guitar)', 'type': 'red', 'end': '1970', 'role': 'bass guitar', 'band': 'The Beatles', 'member': 'Paul McCartney', 'start': '1957', 'link': 'https://musicbrainz.org/artist/ba550d0e-adac-4864-b88b-407cab5e76af'}, {'label': 'Ringo Starr (drums)', 'type': 'blue', 'end': '1970', 'role': 'drums', 'band': 'The Beatles', 'member': 'Ringo Starr', 'start': '1962', 'link': 'https://musicbrainz.org/artist/300c4c73-33ac-4255-9d57-4e32627f5e13'}, {'label': 'Stuart Sutcliffe (bass guitar)', 'type': 'red', 'end': '1962', 'role': 'bass guitar', 'band': 'The Beatles', 'member': 'Stuart Sutcliffe', 'start': '1960', 'link': 'https://musicbrainz.org/artist/49a51491-650e-44b3-8085-2f07ac2986dd'}, {'label': 'John Lennon (lead vocals)', 'type': 'green', 'end': '1970', 'role': 'lead vocals', 'band': 'The Beatles', 'member': 'John Lennon', 'start': '1957', 'link': 'https://musicbrainz.org/artist/4d5447d7-c61c-4120-ba1b-d7f471d385b9'}, {'label': 'John Lennon (guitar)', 'type': 'yellow', 'end': '1970', 'role': 'guitar', 'band': 'The Beatles', 'member': 'John Lennon', 'start': '1957', 'link': 'https://musicbrainz.org/artist/4d5447d7-c61c-4120-ba1b-d7f471d385b9'}, {'label': 'George Harrison (lead vocals)', 'type': 'green', 'end': '1970', 'role': 'lead vocals', 'band': 'The Beatles', 'member': 'George Harrison', 'start': '1958', 'link': 'https://musicbrainz.org/artist/42a8f507-8412-4611-854f-926571049fa0'}, {'label': 'George Harrison (guitar)', 'type': 'yellow', 'end': '1970', 'role': 'guitar', 'band': 'The Beatles', 'member': 'George Harrison', 'start': '1958', 'link': 'https://musicbrainz.org/artist/42a8f507-8412-4611-854f-926571049fa0'}];
+new Timesheet(bubbles, {
+    container: 'timesheet-container',
+    type: 'parallel',
+    //type: 'serial',
+    timesheetYearMin: 1957,
+    timesheetYearMax: 1970,
+    theme: 'light'
+});
+
+</script>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We have our timeline now! As you can see, the same color is used for the same role consistently. The items on the timeline are clickable links bringing you to the artist page on MusicBrainz. If you can't see the timeline above you can find a <a href="https://loujine.github.io/musicbrainz-dataviz/1-timelines.html">static version on github.io</a></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Display-a-timeline-with-vis.js">Display a timeline with vis.js<a class="anchor-link" href="#Display-a-timeline-with-vis.js">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We can try to display the same data with another JavaScript library, vis.js. Again we will need to prepare the data.</p>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">prepare_data</span><span class="p">(</span><span class="n">band_name</span><span class="p">):</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">sql</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">SELECT b.name AS band,</span>
-<span class="s2">       m.name AS member,</span>
-<span class="s2">       m.gid  AS mbid,</span>
-<span class="s2">       lat.name AS role,</span>
-<span class="s2">       l.begin_date_year AS start,</span>
-<span class="s2">       l.end_date_year AS end</span>
-<span class="s2">FROM artist              AS b</span>
-<span class="s2">JOIN l_artist_artist     AS laa ON laa.entity1 = b.id</span>
-<span class="s2">JOIN artist              AS m   ON laa.entity0 = m.id</span>
-<span class="s2">JOIN link                AS l   ON l.id = laa.link</span>
-<span class="s2">JOIN link_attribute      AS la  ON la.link = l.id</span>
-<span class="s2">JOIN link_attribute_type AS lat ON la.attribute_type = lat.id</span>
-<span class="s2">JOIN link_type           AS lt  ON l.link_type = lt.id</span>
-<span class="s2">WHERE lt.name = &#39;member of band&#39;</span>
-<span class="s2">  AND b.name = </span><span class="si">%(band_name)s</span><span class="s2"></span>
-<span class="s2">  AND lat.name != &#39;original&#39;;</span>
-<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
-    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">1957</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;end&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;end&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;link&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;https://musicbrainz.org/artist/&#39;</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;mbid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;member&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39; (&#39;</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;role&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;)&#39;</span>
-    <span class="n">colors</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;role&#39;</span><span class="p">])),</span> <span class="p">[</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">]))</span>
-    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;role&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">role</span><span class="p">:</span> <span class="n">colors</span><span class="p">[</span><span class="n">role</span><span class="p">])</span>
-    <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;band&#39;</span><span class="p">,</span> <span class="s1">&#39;member&#39;</span><span class="p">,</span> <span class="s1">&#39;mbid&#39;</span><span class="p">,</span> <span class="s1">&#39;role&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">ix</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;end&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">v</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">v</span><span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">date</span><span class="p">:</span> <span class="n">date</span><span class="o">.</span><span class="n">isoformat</span><span class="p">())</span>
+<span class="n">v</span><span class="p">[</span><span class="s1">&#39;end&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="s1">&#39;end&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">date</span><span class="p">:</span> <span class="n">date</span><span class="o">.</span><span class="n">isoformat</span><span class="p">())</span>
+<span class="n">v</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;mbid&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">v</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="s1">&#39;role&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">role</span><span class="p">:</span> <span class="n">colors</span><span class="p">[</span><span class="n">role</span><span class="p">])</span>
+<span class="n">v</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="s1">&#39;member&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39; (&#39;</span> <span class="o">+</span> <span class="n">v</span><span class="p">[</span><span class="s1">&#39;role&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;)&#39;</span>
+<span class="n">v</span>
 </pre></div>
 
 </div>
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[13]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>band</th>
+      <th>member</th>
+      <th>role</th>
+      <th>start</th>
+      <th>end</th>
+      <th>type</th>
+      <th>label</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>The Beatles</td>
+      <td>Pete Best</td>
+      <td>drums</td>
+      <td>1960-01-01</td>
+      <td>1962-01-01</td>
+      <td>blue</td>
+      <td>Pete Best (drums)</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>The Beatles</td>
+      <td>Paul McCartney</td>
+      <td>lead vocals</td>
+      <td>1957-01-01</td>
+      <td>1970-01-01</td>
+      <td>green</td>
+      <td>Paul McCartney (lead vocals)</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>The Beatles</td>
+      <td>Paul McCartney</td>
+      <td>bass guitar</td>
+      <td>1957-01-01</td>
+      <td>1970-01-01</td>
+      <td>red</td>
+      <td>Paul McCartney (bass guitar)</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>The Beatles</td>
+      <td>Ringo Starr</td>
+      <td>drums</td>
+      <td>1962-01-01</td>
+      <td>1970-01-01</td>
+      <td>blue</td>
+      <td>Ringo Starr (drums)</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>The Beatles</td>
+      <td>Stuart Sutcliffe</td>
+      <td>bass guitar</td>
+      <td>1960-01-01</td>
+      <td>1962-01-01</td>
+      <td>red</td>
+      <td>Stuart Sutcliffe (bass guitar)</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>The Beatles</td>
+      <td>John Lennon</td>
+      <td>lead vocals</td>
+      <td>1957-01-01</td>
+      <td>1970-01-01</td>
+      <td>green</td>
+      <td>John Lennon (lead vocals)</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>The Beatles</td>
+      <td>John Lennon</td>
+      <td>guitar</td>
+      <td>1957-01-01</td>
+      <td>1970-01-01</td>
+      <td>yellow</td>
+      <td>John Lennon (guitar)</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>The Beatles</td>
+      <td>George Harrison</td>
+      <td>lead vocals</td>
+      <td>1958-01-01</td>
+      <td>1970-01-01</td>
+      <td>green</td>
+      <td>George Harrison (lead vocals)</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>The Beatles</td>
+      <td>George Harrison</td>
+      <td>guitar</td>
+      <td>1958-01-01</td>
+      <td>1970-01-01</td>
+      <td>yellow</td>
+      <td>George Harrison (guitar)</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This time we are not going to inject the data inside a javascript string executed by the notebook, we are going to attach the data as JSON to the webpage itself (<em>window</em>) so that vis.js can find it.</p>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">prepare_data</span><span class="p">(</span><span class="n">band_name</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Transform into JSON</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;start&#39;</span><span class="p">:</span> <span class="n">line</span><span class="o">.</span><span class="n">start</span><span class="p">,</span>
+         <span class="s1">&#39;end&#39;</span><span class="p">:</span> <span class="n">line</span><span class="o">.</span><span class="n">end</span><span class="p">,</span>
+         <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="n">line</span><span class="o">.</span><span class="n">label</span><span class="p">,</span>
+         <span class="s1">&#39;className&#39;</span><span class="p">:</span> <span class="n">line</span><span class="o">.</span><span class="n">type</span>
+        <span class="p">}</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">ts</span><span class="o">.</span><span class="n">iterrows</span><span class="p">()]</span>
+
+<span class="c1"># Send to Javascript</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">Javascript</span>
+<span class="n">Javascript</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;window.bandData=</span><span class="si">{}</span><span class="s2">;&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)))</span>
 </pre></div>
 
 </div>
@@ -12996,39 +13085,107 @@ element.append('<div id="timesheet-container" style="width: 100%;height: 100%;">
 <div class="output_area"><div class="prompt output_prompt">Out[14]:</div>
 
 
-<div class="output_text output_subarea output_execute_result">
-<pre>([{&#39;end&#39;: &#39;1965&#39;,
-   &#39;label&#39;: &#39;Василий Ширинский (violin)&#39;,
-   &#39;link&#39;: &#39;https://musicbrainz.org/artist/5d71f6b5-eb33-45b6-807a-fb17545bfb3e&#39;,
-   &#39;start&#39;: &#39;1923&#39;,
-   &#39;type&#39;: &#39;blue&#39;},
-  {&#39;end&#39;: &#39;1977&#39;,
-   &#39;label&#39;: &#39;Дмитрий Цыганов (violin)&#39;,
-   &#39;link&#39;: &#39;https://musicbrainz.org/artist/d0aeb2ad-308e-41ce-b767-8e7227284a91&#39;,
-   &#39;start&#39;: &#39;1923&#39;,
-   &#39;type&#39;: &#39;blue&#39;},
-  {&#39;end&#39;: &#39;1990&#39;,
-   &#39;label&#39;: &#39;Nikolai Zabavnikov (violin)&#39;,
-   &#39;link&#39;: &#39;https://musicbrainz.org/artist/19c80b9e-5b90-4dde-80e6-9e906862aa22&#39;,
-   &#39;start&#39;: &#39;1965&#39;,
-   &#39;type&#39;: &#39;blue&#39;},
-  {&#39;end&#39;: &#39;1990&#39;,
-   &#39;label&#39;: &#39;Олег Крыса (violin)&#39;,
-   &#39;link&#39;: &#39;https://musicbrainz.org/artist/bfe32af2-0725-4d2e-97a8-36894b1404a1&#39;,
-   &#39;start&#39;: &#39;1977&#39;,
-   &#39;type&#39;: &#39;blue&#39;},
-  {&#39;end&#39;: &#39;1974&#39;,
-   &#39;label&#39;: &#39;Сергей Петрович Ширинский (cello)&#39;,
-   &#39;link&#39;: &#39;https://musicbrainz.org/artist/de91fd01-2067-436f-9dcb-4ee07a89b0df&#39;,
-   &#39;start&#39;: &#39;1923&#39;,
-   &#39;type&#39;: &#39;red&#39;},
-  {&#39;end&#39;: &#39;1964&#39;,
-   &#39;label&#39;: &#39;Вадим Васильевич Борисовский (viola)&#39;,
-   &#39;link&#39;: &#39;https://musicbrainz.org/artist/351367af-9ff5-4a67-9484-7ab9fe4b884d&#39;,
-   &#39;start&#39;: &#39;1923&#39;,
-   &#39;type&#39;: &#39;yellow&#39;}],
- &#39;1923&#39;,
- &#39;1990&#39;)</pre>
+
+<div id="632c9b88-efb3-402d-ba19-4768adf1344b"></div>
+<div class="output_subarea output_javascript output_execute_result">
+<script type="text/javascript">
+var element = $('#632c9b88-efb3-402d-ba19-4768adf1344b');
+window.bandData=[
+    {
+        "content": "Pete Best (drums)",
+        "className": "blue",
+        "end": "1962",
+        "start": "1960"
+    },
+    {
+        "content": "Paul McCartney (lead vocals)",
+        "className": "green",
+        "end": "1970",
+        "start": "1957"
+    },
+    {
+        "content": "Paul McCartney (bass guitar)",
+        "className": "red",
+        "end": "1970",
+        "start": "1957"
+    },
+    {
+        "content": "Ringo Starr (drums)",
+        "className": "blue",
+        "end": "1970",
+        "start": "1962"
+    },
+    {
+        "content": "Stuart Sutcliffe (bass guitar)",
+        "className": "red",
+        "end": "1962",
+        "start": "1960"
+    },
+    {
+        "content": "John Lennon (lead vocals)",
+        "className": "green",
+        "end": "1970",
+        "start": "1957"
+    },
+    {
+        "content": "John Lennon (guitar)",
+        "className": "yellow",
+        "end": "1970",
+        "start": "1957"
+    },
+    {
+        "content": "George Harrison (lead vocals)",
+        "className": "green",
+        "end": "1970",
+        "start": "1958"
+    },
+    {
+        "content": "George Harrison (guitar)",
+        "className": "yellow",
+        "end": "1970",
+        "start": "1958"
+    }
+];
+</script>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We need to load the default CSS (from cdnjs.cloudflare.com) and add our custom CSS on top:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">html</span>
+&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/vis/4.18.1/vis-timeline-graph2d.min.css&quot; /&gt;
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+
+<div class="output_html rendered_html output_subarea ">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.18.1/vis-timeline-graph2d.min.css" />
 </div>
 
 </div>
@@ -13042,17 +13199,28 @@ element.append('<div id="timesheet-container" style="width: 100%;height: 100%;">
 <div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">Javascript</span>
-<span class="n">Javascript</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">var bubbles = </span><span class="si">%s</span><span class="s2">;</span>
-<span class="s2">new Timesheet(bubbles, {</span>
-<span class="s2">    container: &#39;timesheet-container2&#39;,</span>
-<span class="s2">    type: &#39;parallel&#39;,</span>
-<span class="s2">    timesheetYearMin: </span><span class="si">%s</span><span class="s2">,</span>
-<span class="s2">    timesheetYearMax: </span><span class="si">%s</span><span class="s2">,</span>
-<span class="s2">    theme: &#39;light&#39;</span>
-<span class="s2">});</span>
-<span class="s2">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="n">prepare_data</span><span class="p">(</span><span class="n">band_name</span><span class="p">))</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">html</span>
+&lt;style type=&quot;text/css&quot;&gt;
+    /* custom styles for individual items, load this after vis.css/vis-timeline-graph2d.min.css */
+    .vis-item.red {
+      background-color: red;
+    }
+    .vis-item.blue {
+      background-color: blue;
+    }
+    .vis-item.yellow {
+      background-color: yellow;
+    }
+    .vis-item.green {
+      background-color: greenyellow;
+    }
+    .vis-item.vis-selected {
+      background-color: white;
+      border-color: black;
+      color: black;
+      box-shadow: 0 0 10px gray;
+    }
+&lt;/style&gt;
 </pre></div>
 
 </div>
@@ -13063,25 +13231,30 @@ element.append('<div id="timesheet-container" style="width: 100%;height: 100%;">
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[16]:</div>
+<div class="output_area"><div class="prompt"></div>
 
-
-
-<div id="27087814-7671-4206-a8d3-6052caecbf42"></div>
-<div class="output_subarea output_javascript output_execute_result">
-<script type="text/javascript">
-var element = $('#27087814-7671-4206-a8d3-6052caecbf42');
-
-var bubbles = [{'end': '1965', 'link': 'https://musicbrainz.org/artist/5d71f6b5-eb33-45b6-807a-fb17545bfb3e', 'label': 'Василий Ширинский (violin)', 'start': '1923', 'type': 'blue'}, {'end': '1977', 'link': 'https://musicbrainz.org/artist/d0aeb2ad-308e-41ce-b767-8e7227284a91', 'label': 'Дмитрий Цыганов (violin)', 'start': '1923', 'type': 'blue'}, {'end': '1990', 'link': 'https://musicbrainz.org/artist/19c80b9e-5b90-4dde-80e6-9e906862aa22', 'label': 'Nikolai Zabavnikov (violin)', 'start': '1965', 'type': 'blue'}, {'end': '1990', 'link': 'https://musicbrainz.org/artist/bfe32af2-0725-4d2e-97a8-36894b1404a1', 'label': 'Олег Крыса (violin)', 'start': '1977', 'type': 'blue'}, {'end': '1974', 'link': 'https://musicbrainz.org/artist/de91fd01-2067-436f-9dcb-4ee07a89b0df', 'label': 'Сергей Петрович Ширинский (cello)', 'start': '1923', 'type': 'red'}, {'end': '1964', 'link': 'https://musicbrainz.org/artist/351367af-9ff5-4a67-9484-7ab9fe4b884d', 'label': 'Вадим Васильевич Борисовский (viola)', 'start': '1923', 'type': 'yellow'}];
-new Timesheet(bubbles, {
-    container: 'timesheet-container2',
-    type: 'parallel',
-    timesheetYearMin: 1923,
-    timesheetYearMax: 1990,
-    theme: 'light'
-});
-
-</script>
+<div class="output_html rendered_html output_subarea ">
+<style type="text/css">
+    /* custom styles for individual items, load this after vis.css/vis-timeline-graph2d.min.css */
+    .vis-item.red {
+      background-color: red;
+    }
+    .vis-item.blue {
+      background-color: blue;
+    }
+    .vis-item.yellow {
+      background-color: yellow;
+    }
+    .vis-item.green {
+      background-color: greenyellow;
+    }
+    .vis-item.vis-selected {
+      background-color: white;
+      border-color: black;
+      color: black;
+      box-shadow: 0 0 10px gray;
+    }
+</style>
 </div>
 
 </div>
@@ -13089,15 +13262,40 @@ new Timesheet(bubbles, {
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In order to load the JS library itself, we can use the <em>require</em> mechanism inside the notebook:</p>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="nx">javascript</span>
-<span class="c1">// this must be executed before the &quot;from IPython.display import Javascript&quot; block</span>
-<span class="nx">element</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s1">&#39;&lt;div id=&quot;timesheet-container2&quot; style=&quot;width: 100%;height: 100%;&quot;&gt;&lt;/div&gt;&#39;</span><span class="p">);</span>
+<span class="nx">element</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s1">&#39;&lt;div id=&quot;vis-container&quot; style=&quot;width: 100%;height: 100%;&quot;&gt;&lt;/div&gt;&#39;</span><span class="p">);</span>
+
+<span class="nx">requirejs</span><span class="p">.</span><span class="nx">config</span><span class="p">({</span>
+    <span class="nx">paths</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">vis</span><span class="o">:</span> <span class="s1">&#39;//cdnjs.cloudflare.com/ajax/libs/vis/4.18.1/vis&#39;</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="nx">require</span><span class="p">([</span><span class="s1">&#39;vis&#39;</span><span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">vis</span><span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">vis</span><span class="p">.</span><span class="nx">DataSet</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">bandData</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">editable</span><span class="o">:</span> <span class="kc">false</span>
+  <span class="p">};</span>
+  <span class="c1">// create the timeline</span>
+  <span class="kd">var</span> <span class="nx">container</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;vis-container&#39;</span><span class="p">);</span>
+  <span class="nx">timeline</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">vis</span><span class="p">.</span><span class="nx">Timeline</span><span class="p">(</span><span class="nx">container</span><span class="p">,</span> <span class="nx">data</span><span class="p">,</span> <span class="nx">options</span><span class="p">);</span>
+<span class="p">})</span>
 </pre></div>
 
 </div>
@@ -13112,12 +13310,27 @@ new Timesheet(bubbles, {
 
 
 
-<div id="1134d7e4-95c1-4e05-9961-4393145e7151"></div>
+<div id="e9281e91-4c7d-4662-83ce-23ce75eb1066"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#1134d7e4-95c1-4e05-9961-4393145e7151');
-// this must be executed before the "from IPython.display import Javascript" block
-element.append('<div id="timesheet-container2" style="width: 100%;height: 100%;"></div>');
+var element = $('#e9281e91-4c7d-4662-83ce-23ce75eb1066');
+element.append('<div id="vis-container" style="width: 100%;height: 100%;"></div>');
+
+requirejs.config({
+    paths: {
+        vis: '//cdnjs.cloudflare.com/ajax/libs/vis/4.18.1/vis'
+    }
+});
+
+require(['vis'], function(vis){
+  var data = new vis.DataSet(window.bandData);
+  var options = {
+    editable: false
+  };
+  // create the timeline
+  var container = document.getElementById('vis-container');
+  timeline = new vis.Timeline(container, data, options);
+})
 </script>
 </div>
 
@@ -13132,17 +13345,7 @@ element.append('<div id="timesheet-container2" style="width: 100%;height: 100%;"
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The timeline is probably larger than your window, use the slider to see when members changed in the String Quartet group.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>One possible improvement would be to fetch the instrument credit ('1st violin', '2nd violin'...)  to have more precise roles.</p>
+<p>And we have our timeline. Note that this time we can zoom/unzoom (with the mouse wheel) thanks to the vis.js library. You can also change the custom CSS above and see the timeline updated automatically.</p>
 
 </div>
 </div>
@@ -13161,7 +13364,7 @@ element.append('<div id="timesheet-container2" style="width: 100%;height: 100%;"
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>With this notebook I hoped I showed that testing a new plotting library to display data from MusicBrainz is not very complicated</p>
+<p>In this notebook we used two different JS libraries to display the same data, extracted from the MusicBrainz DB. I hope I did not make things look too complicated and I convinced some of you to try and play with the MusicBrainz database :)</p>
 
 </div>
 </div>
