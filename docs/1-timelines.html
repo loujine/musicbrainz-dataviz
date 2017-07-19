@@ -11809,6 +11809,9 @@ div#notebook {
 <span class="kn">import</span> <span class="nn">pandas</span>
 <span class="kn">import</span> <span class="nn">sqlalchemy</span>
 
+<span class="c1"># your postgres server IP</span>
+<span class="n">IP</span> <span class="o">=</span> <span class="s1">&#39;127.0.0.1&#39;</span>
+
 <span class="k">def</span> <span class="nf">sql</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;helper function for SQL queries using the %(...) syntax</span>
 <span class="sd">    Parameters defined globally are replaced implicitely&quot;&quot;&quot;</span>
@@ -11816,7 +11819,7 @@ div#notebook {
     <span class="n">params</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="c1"># define DB connection parameters if needed</span>
-    <span class="n">PGHOST</span> <span class="o">=</span> <span class="nb">globals</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;PGHOST&#39;</span><span class="p">,</span> <span class="s1">&#39;192.168.11.3&#39;</span><span class="p">)</span>
+    <span class="n">PGHOST</span> <span class="o">=</span> <span class="nb">globals</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;PGHOST&#39;</span><span class="p">,</span> <span class="n">IP</span><span class="p">)</span>
     <span class="n">PGDATABASE</span> <span class="o">=</span> <span class="nb">globals</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;PGDATABASE&#39;</span><span class="p">,</span> <span class="s1">&#39;musicbrainz&#39;</span><span class="p">)</span>
     <span class="n">PGUSER</span> <span class="o">=</span> <span class="nb">globals</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;PGUSER&#39;</span><span class="p">,</span> <span class="s1">&#39;musicbrainz&#39;</span><span class="p">)</span>
     <span class="n">PGPASSWORD</span> <span class="o">=</span> <span class="nb">globals</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;PGPASSWORD&#39;</span><span class="p">,</span> <span class="s1">&#39;musicbrainz&#39;</span><span class="p">)</span>
@@ -11824,6 +11827,12 @@ div#notebook {
        <span class="s1">&#39;postgresql+psycopg2://</span><span class="si">%(PGUSER)s</span><span class="s1">:</span><span class="si">%(PGPASSWORD)s</span><span class="s1">@</span><span class="si">%(PGHOST)s</span><span class="s1">/</span><span class="si">%(PGDATABASE)s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">locals</span><span class="p">(),</span>
         <span class="n">isolation_level</span><span class="o">=</span><span class="s1">&#39;READ UNCOMMITTED&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">engine</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+
+<span class="c1"># helper functions to generate an HTML link to an entity MusicBrainz URL</span>
+<span class="k">def</span> <span class="nf">_mb_link</span><span class="p">(</span><span class="nb">type</span><span class="p">,</span> <span class="n">mbid</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s1">&#39;&lt;a href=&quot;https://musicbrainz.org/</span><span class="si">%(type)s</span><span class="s1">/</span><span class="si">%(mbid)s</span><span class="s1">&quot;&gt;</span><span class="si">%(mbid)s</span><span class="s1">&lt;/a&gt;&#39;</span> <span class="o">%</span> <span class="nb">locals</span><span class="p">()</span>
+
+<span class="n">mb_artist_link</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">mbid</span><span class="p">:</span> <span class="n">_mb_link</span><span class="p">(</span><span class="s1">&#39;artist&#39;</span><span class="p">,</span> <span class="n">mbid</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -12832,7 +12841,6 @@ element.append('<div id="timesheet-container" style="width: 100%;height: 100%;">
 <span class="s2">new Timesheet(bubbles, {</span>
 <span class="s2">    container: &#39;timesheet-container&#39;,</span>
 <span class="s2">    type: &#39;parallel&#39;,</span>
-<span class="s2">    //type: &#39;serial&#39;,</span>
 <span class="s2">    timesheetYearMin: </span><span class="si">%s</span><span class="s2">,</span>
 <span class="s2">    timesheetYearMax: </span><span class="si">%s</span><span class="s2">,</span>
 <span class="s2">    theme: &#39;light&#39;</span>
@@ -12861,7 +12869,6 @@ var bubbles = [{'label': 'Pete Best (drums)', 'type': 'blue', 'end': '1962', 'ro
 new Timesheet(bubbles, {
     container: 'timesheet-container',
     type: 'parallel',
-    //type: 'serial',
     timesheetYearMin: 1957,
     timesheetYearMax: 1970,
     theme: 'light'
@@ -13171,7 +13178,7 @@ window.bandData=[
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">html</span>
-&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/vis/4.18.1/vis-timeline-graph2d.min.css&quot; /&gt;
+&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/vis/4.20.1/vis-timeline-graph2d.min.css&quot; /&gt;
 </pre></div>
 
 </div>
@@ -13185,7 +13192,7 @@ window.bandData=[
 <div class="output_area"><div class="prompt"></div>
 
 <div class="output_html rendered_html output_subarea ">
-<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.18.1/vis-timeline-graph2d.min.css" />
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.20.1/vis-timeline-graph2d.min.css" />
 </div>
 
 </div>
@@ -13283,7 +13290,7 @@ window.bandData=[
 
 <span class="nx">requirejs</span><span class="p">.</span><span class="nx">config</span><span class="p">({</span>
     <span class="nx">paths</span><span class="o">:</span> <span class="p">{</span>
-        <span class="nx">vis</span><span class="o">:</span> <span class="s1">&#39;//cdnjs.cloudflare.com/ajax/libs/vis/4.18.1/vis&#39;</span>
+        <span class="nx">vis</span><span class="o">:</span> <span class="s1">&#39;//cdnjs.cloudflare.com/ajax/libs/vis/4.20.1/vis&#39;</span>
     <span class="p">}</span>
 <span class="p">});</span>
 
@@ -13294,7 +13301,7 @@ window.bandData=[
   <span class="p">};</span>
   <span class="c1">// create the timeline</span>
   <span class="kd">var</span> <span class="nx">container</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;vis-container&#39;</span><span class="p">);</span>
-  <span class="nx">timeline</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">vis</span><span class="p">.</span><span class="nx">Timeline</span><span class="p">(</span><span class="nx">container</span><span class="p">,</span> <span class="nx">data</span><span class="p">,</span> <span class="nx">options</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">timeline</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">vis</span><span class="p">.</span><span class="nx">Timeline</span><span class="p">(</span><span class="nx">container</span><span class="p">,</span> <span class="nx">data</span><span class="p">,</span> <span class="nx">options</span><span class="p">);</span>
 <span class="p">})</span>
 </pre></div>
 
@@ -13318,7 +13325,7 @@ element.append('<div id="vis-container" style="width: 100%;height: 100%;"></div>
 
 requirejs.config({
     paths: {
-        vis: '//cdnjs.cloudflare.com/ajax/libs/vis/4.18.1/vis'
+        vis: '//cdnjs.cloudflare.com/ajax/libs/vis/4.20.1/vis'
     }
 });
 
@@ -13329,7 +13336,7 @@ require(['vis'], function(vis){
   };
   // create the timeline
   var container = document.getElementById('vis-container');
-  timeline = new vis.Timeline(container, data, options);
+  var timeline = new vis.Timeline(container, data, options);
 })
 </script>
 </div>

@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+<meta charset="utf-8">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+<script type="text/javascript" src="./timesheet/timesheet-advanced.min.js"></script>
+<link rel="stylesheet" type="text/css" href="./timesheet/timesheet.min.css" />
+
+<h2>Band timelines with timesheet</h2>
+
+<p>&nbsp;</p>
+
+<h3 id="beatles-timeline">Beatles</h3>
+
+<div id="timesheet-container" style="width:100%"></div>
+
+<script type="text/javascript">
+
+var bubbles = [
+  {'end': '1970',
+   'label': 'George Harrison (lead vocals)',
+   'link': 'https://musicbrainz.org/artist/42a8f507-8412-4611-854f-926571049fa0',
+   'start': '1958',
+   'type': 'yellow'},
+  {'end': '1970',
+   'label': 'George Harrison (guitar)',
+   'link': 'https://musicbrainz.org/artist/42a8f507-8412-4611-854f-926571049fa0',
+   'start': '1958',
+   'type': 'green'},
+  {'end': '1962',
+   'label': 'Pete Best (drums)',
+   'link': 'https://musicbrainz.org/artist/0d4ab0f9-bbda-4ab1-ae2c-f772ffcfbea9',
+   'start': '1960',
+   'type': 'red'},
+  {'end': '1970',
+   'label': 'Paul McCartney (lead vocals)',
+   'link': 'https://musicbrainz.org/artist/ba550d0e-adac-4864-b88b-407cab5e76af',
+   'start': '1957',
+   'type': 'yellow'},
+  {'end': '1970',
+   'label': 'Paul McCartney (bass guitar)',
+   'link': 'https://musicbrainz.org/artist/ba550d0e-adac-4864-b88b-407cab5e76af',
+   'start': '1957',
+   'type': 'blue'},
+  {'end': '1970',
+   'label': 'Ringo Starr (drums)',
+   'link': 'https://musicbrainz.org/artist/300c4c73-33ac-4255-9d57-4e32627f5e13',
+   'start': '1962',
+   'type': 'red'},
+  {'end': '1962',
+   'label': 'Stuart Sutcliffe (bass guitar)',
+   'link': 'https://musicbrainz.org/artist/49a51491-650e-44b3-8085-2f07ac2986dd',
+   'start': '1960',
+   'type': 'blue'},
+  {'end': '1970',
+   'label': 'John Lennon (lead vocals)',
+   'link': 'https://musicbrainz.org/artist/4d5447d7-c61c-4120-ba1b-d7f471d385b9',
+   'start': '1957',
+   'type': 'yellow'},
+  {'end': '1970',
+   'label': 'John Lennon (guitar)',
+   'link': 'https://musicbrainz.org/artist/4d5447d7-c61c-4120-ba1b-d7f471d385b9',
+   'start': '1957',
+   'type': 'green'}
+];
+
+new Timesheet(bubbles, {
+    container: 'timesheet-container',
+    type: 'parallel',
+    timesheetYearMin: 1957,
+    timesheetYearMax: 1970,
+    theme: 'light'
+});
+</script>
+
+<p>&nbsp;</p>
+
+<h3 id="beethoven-timeline">Beethoven String Quartet</h3>
+
+<div id="timesheet-container2" style="width:100%"></div>
+
+<script type="text/javascript">
+
+var bubbles = [
+  {'end': '1965',
+   'label': 'Василий Ширинский (violin)',
+   'link': 'https://musicbrainz.org/artist/5d71f6b5-eb33-45b6-807a-fb17545bfb3e',
+   'start': '1923',
+   'type': 'blue'},
+  {'end': '1977',
+   'label': 'Дмитрий Цыганов (violin)',
+   'link': 'https://musicbrainz.org/artist/d0aeb2ad-308e-41ce-b767-8e7227284a91',
+   'start': '1923',
+   'type': 'blue'},
+  {'end': '1990',
+   'label': 'Nikolai Zabavnikov (violin)',
+   'link': 'https://musicbrainz.org/artist/19c80b9e-5b90-4dde-80e6-9e906862aa22',
+   'start': '1965',
+   'type': 'blue'},
+  {'end': '1990',
+   'label': 'Олег Крыса (violin)',
+   'link': 'https://musicbrainz.org/artist/bfe32af2-0725-4d2e-97a8-36894b1404a1',
+   'start': '1977',
+   'type': 'blue'},
+  {'end': '1974',
+   'label': 'Сергей Петрович Ширинский (cello)',
+   'link': 'https://musicbrainz.org/artist/de91fd01-2067-436f-9dcb-4ee07a89b0df',
+   'start': '1923',
+   'type': 'yellow'},
+  {'end': '1964',
+   'label': 'Вадим Васильевич Борисовский (viola)',
+   'link': 'https://musicbrainz.org/artist/351367af-9ff5-4a67-9484-7ab9fe4b884d',
+   'start': '1923',
+   'type': 'red'}
+];
+
+new Timesheet(bubbles, {
+    container: 'timesheet-container2',
+    type: 'parallel',
+    timesheetYearMin: 1923,
+    timesheetYearMax: 1990,
+    theme: 'light'
+});
+</script>
+
+</body></html>

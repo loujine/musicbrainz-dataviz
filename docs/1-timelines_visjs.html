@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+<meta charset="utf-8">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.20.1/vis.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.20.1/vis-timeline-graph2d.min.css" />
+
+<style type="text/css">
+    /* custom styles for individual items, load this after vis.css/vis-timeline-graph2d.min.css */
+    .vis-item.red {
+      background-color: red;
+    }
+    .vis-item.blue {
+      background-color: blue;
+    }
+    .vis-item.yellow {
+      background-color: yellow;
+    }
+    .vis-item.green {
+      background-color: greenyellow;
+    }
+    .vis-item.vis-selected {
+      background-color: white;
+      border-color: black;
+      color: black;
+      box-shadow: 0 0 10px gray;
+    }
+</style>
+
+<h2>Band timelines with vis.js</h2>
+
+<p>&nbsp;</p>
+
+<h3 id="beatles-timeline">Beatles</h3>
+
+<div id="vis-container" style="width:100%"></div>
+
+<script type="text/javascript">
+  var data = new vis.DataSet(
+          [{'className': 'blue',
+            'content': 'Pete Best (drums)',
+            'end': '1962',
+            'start': '1960'},
+           {'className': 'green',
+            'content': 'Paul McCartney (lead vocals)',
+            'end': '1970',
+            'start': '1957'},
+           {'className': 'red',
+            'content': 'Paul McCartney (bass guitar)',
+            'end': '1970',
+            'start': '1957'},
+           {'className': 'blue',
+            'content': 'Ringo Starr (drums)',
+            'end': '1970',
+            'start': '1962'},
+           {'className': 'red',
+            'content': 'Stuart Sutcliffe (bass guitar)',
+            'end': '1962',
+            'start': '1960'},
+           {'className': 'green',
+            'content': 'John Lennon (lead vocals)',
+            'end': '1970',
+            'start': '1957'},
+           {'className': 'yellow',
+            'content': 'John Lennon (guitar)',
+            'end': '1970',
+            'start': '1957'},
+           {'className': 'green',
+            'content': 'George Harrison (lead vocals)',
+            'end': '1970',
+            'start': '1958'},
+           {'className': 'yellow',
+            'content': 'George Harrison (guitar)',
+            'end': '1970',
+            'start': '1958'}]);
+  var options = {
+    editable: false
+  };
+  // create the timeline
+  var container = document.getElementById('vis-container');
+  var timeline = new vis.Timeline(container, data, options);
+</script>
+
+</body></html>
