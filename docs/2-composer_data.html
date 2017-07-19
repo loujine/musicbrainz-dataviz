@@ -11828,7 +11828,7 @@ div#notebook {
 
 <span class="c1"># helper functions to generate an HTML link to an entity MusicBrainz URL</span>
 <span class="k">def</span> <span class="nf">_mb_link</span><span class="p">(</span><span class="nb">type</span><span class="p">,</span> <span class="n">mbid</span><span class="p">):</span>
-    <span class="k">return</span> <span class="s1">&#39;&lt;a href=&quot;https://musicbrainz.org/</span><span class="si">{type}</span><span class="s1">/</span><span class="si">{mbid}</span><span class="s1">&quot;&gt;</span><span class="si">{mbid}</span><span class="s1">&lt;/a&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="nb">locals</span><span class="p">())</span>
+    <span class="k">return</span> <span class="s1">&#39;&lt;a href=&quot;https://musicbrainz.org/</span><span class="si">%(type)s</span><span class="s1">/</span><span class="si">%(mbid)s</span><span class="s1">&quot;&gt;</span><span class="si">%(mbid)s</span><span class="s1">&lt;/a&gt;&#39;</span> <span class="o">%</span> <span class="nb">locals</span><span class="p">()</span>
 
 <span class="n">mb_artist_link</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">mbid</span><span class="p">:</span> <span class="n">_mb_link</span><span class="p">(</span><span class="s1">&#39;artist&#39;</span><span class="p">,</span> <span class="n">mbid</span><span class="p">)</span>
 <span class="n">mb_work_link</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">mbid</span><span class="p">:</span> <span class="n">_mb_link</span><span class="p">(</span><span class="s1">&#39;work&#39;</span><span class="p">,</span> <span class="n">mbid</span><span class="p">)</span>
