@@ -1,0 +1,290 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+<meta charset="utf-8">
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.20.1/vis.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.20.1/vis-timeline-graph2d.min.css" />
+
+<style type="text/css">
+    /* custom styles for individual items, load this after vis.css/vis-timeline-graph2d.min.css */
+    .vis-item.red {
+      background-color: red;
+    }
+    .vis-item.blue {
+      background-color: blue;
+    }
+    .vis-item.yellow {
+      background-color: yellow;
+    }
+    .vis-item.green {
+      background-color: greenyellow;
+    }
+    .vis-item.vis-selected {
+      background-color: white;
+      border-color: black;
+      color: black;
+      box-shadow: 0 0 10px gray;
+    }
+</style>
+
+<h2>Work recordings timeline with vis.js</h2>
+
+<p>&nbsp;</p>
+
+<h3>first movement of the "Moonlight" sonata</h3>
+
+<div id="vis-container" style="width:100%"></div>
+
+<script type="text/javascript">
+  var data = new vis.DataSet([
+    {
+        "content": "Artur Schnabel",
+        "id": "e7f26f67-ffdc-4dba-8011-f66ba6e1b916",
+        "start": "1933-04-10"
+    },
+    {
+        "content": "Solomon",
+        "id": "8f12d449-37b2-4b20-ba1b-612546a0dffc",
+        "start": "1945-06-21"
+    },
+    {
+        "content": "\u0412\u043b\u0430\u0434\u0438\u043c\u0438\u0440 \u0421\u0430\u043c\u043e\u0439\u043b\u043e\u0432\u0438\u0447 \u0413\u043e\u0440\u043e\u0432\u0438\u0446",
+        "id": "a266348d-4abd-4881-a6fd-a80c7c8aece4",
+        "start": "1946-11-21"
+    },
+    {
+        "content": "\u0412\u043b\u0430\u0434\u0438\u043c\u0438\u0440 \u0421\u0430\u043c\u043e\u0439\u043b\u043e\u0432\u0438\u0447 \u0413\u043e\u0440\u043e\u0432\u0438\u0446",
+        "id": "264cf91d-99e5-4488-9a8c-c52271274661",
+        "start": "1947-04-28"
+    },
+    {
+        "content": "Walter Gieseking",
+        "id": "640730fc-0023-4191-bc84-ac20f8dff960",
+        "start": "1949-05-25"
+    },
+    {
+        "content": "Claudio Arrau",
+        "id": "40f3ef03-909e-4999-a010-1e4a46fb6200",
+        "start": "1950-11-01"
+    },
+    {
+        "content": "Solomon",
+        "id": "b058346d-4cf7-44e5-b263-8e71de0b3874",
+        "start": "1952-08-21"
+    },
+    {
+        "content": "Yves Nat",
+        "id": "d0f5c405-2330-42e5-8e84-03f458f73202",
+        "start": "1955-06-24"
+    },
+    {
+        "content": "Yves Nat",
+        "id": "a7d764cb-6eb3-4aba-816f-3aff24cd7b47",
+        "start": "1955-06-24"
+    },
+    {
+        "content": "Walter Gieseking",
+        "id": "f740838b-10e7-4b17-bd80-b511213bdb68",
+        "start": "1956-10-17"
+    },
+    {
+        "content": "Wilhelm Backhaus",
+        "id": "6cbd89f0-15eb-4087-8033-16fe3642c74d",
+        "start": "1958-10-22"
+    },
+    {
+        "content": "Annie Fischer",
+        "id": "f0f8536e-8a34-472e-85e6-f0938e5608a3",
+        "start": "1958-11-02"
+    },
+    {
+        "content": "Arthur Rubinstein",
+        "id": "0cc8ba7a-8efe-4126-95c7-54aa18a26891",
+        "start": "1962-04-06"
+    },
+    {
+        "content": "Arthur Rubinstein",
+        "id": "26c55eab-600e-4740-9087-a7677b91595d",
+        "start": "1962-04-06"
+    },
+    {
+        "content": "Rudolf Serkin",
+        "id": "a304844d-94c6-46b0-8c52-6202ff2428e5",
+        "start": "1962-12-14"
+    },
+    {
+        "content": "Anthony Salvatore",
+        "id": "1a59bb7e-5b05-4540-aeea-8092766db3a2",
+        "start": "1963-01-25"
+    },
+    {
+        "content": "Arthur Rubinstein",
+        "id": "ec6cf8aa-a23b-450a-ae44-ab0c593c21a8",
+        "start": "1963-01-25"
+    },
+    {
+        "content": "Anthony Salvatore",
+        "id": "aa9f414d-0d92-4378-a12e-59ae731b2afe",
+        "start": "1963-01-25"
+    },
+    {
+        "content": "Arthur Rubinstein",
+        "id": "3a9a2a66-cbca-4b2b-82c7-f276d23aa6be",
+        "start": "1963-01-25"
+    },
+    {
+        "content": "Samson Fran\u00e7ois",
+        "id": "cf65ab31-06d3-435f-8ef0-5a0b72cae2f5",
+        "start": "1963-04-29"
+    },
+    {
+        "content": "Christopher Parker",
+        "id": "ba1323f0-b32a-4570-a17c-8348402f9a21",
+        "start": "1966-09-19"
+    },
+    {
+        "content": "Suvi Raj Grubb",
+        "id": "3fcb1979-7528-4281-ae14-ff95db148851",
+        "start": "1966-09-19"
+    },
+    {
+        "content": "Daniel Barenboim",
+        "id": "44c8340e-f709-4379-98fd-5e6f7d4ccab7",
+        "start": "1966-09-19"
+    },
+    {
+        "content": "Glenn Gould",
+        "id": "873f5021-ffff-4b92-8e16-0a94c723d272",
+        "start": "1967-05-15"
+    },
+    {
+        "content": "\u0412\u043b\u0430\u0434\u0438\u043c\u0438\u0440 \u0421\u0430\u043c\u043e\u0439\u043b\u043e\u0432\u0438\u0447 \u0413\u043e\u0440\u043e\u0432\u0438\u0446",
+        "id": "cc2b1210-ab1f-4103-b559-c4c5cccbffe5",
+        "start": "1972-04-20"
+    },
+    {
+        "content": "Radu Lupu",
+        "id": "f19c8a0e-0f32-4d6a-be0a-71b7da6d99c0",
+        "start": "1972-06-13"
+    },
+    {
+        "content": "Lazar Berman",
+        "id": "61486e62-88d0-407e-a466-b560ca55bf69",
+        "start": "1980-02-24"
+    },
+    {
+        "content": "\u042d\u043c\u0438\u043b\u044c \u0413\u0440\u0438\u0433\u043e\u0440\u044c\u0435\u0432\u0438\u0447 \u0413\u0438\u043b\u0435\u043b\u044c\u0441",
+        "id": "5f88448b-2332-4c7a-91df-066300859f2f",
+        "start": "1980-09-09"
+    },
+    {
+        "content": "Bernard Roberts",
+        "id": "8f400c4c-bb26-4593-9438-c9a5c5db5467",
+        "start": "1982-04-25"
+    },
+    {
+        "content": "\u0422\u0430\u0442\u044c\u044f\u043d\u0430 \u041fe\u0442\u0440o\u0432\u043da \u041d\u0438\u043a\u043e\u043b\u0430\u0435\u0432\u0430",
+        "id": "91f0a719-51a2-4394-ac92-19dfcc40ff4a",
+        "start": "1984-01-25"
+    },
+    {
+        "content": "John O'Conor",
+        "id": "e7b8b206-7766-4eb5-86ed-89a860ab64c8",
+        "start": "1985-05-15"
+    },
+    {
+        "content": "Jen\u0151 Jand\u00f3",
+        "id": "9aad0782-3221-4010-bcff-c5da0b956c1c",
+        "start": "1987-04-21"
+    },
+    {
+        "content": "P\u00e9ter Nagy",
+        "id": "37746bb2-dd7b-4413-bd9b-c346e27014db",
+        "start": "1987-09-17"
+    },
+    {
+        "content": "Bruno Leonardo Gelber",
+        "id": "301c62cc-580f-4b5f-afbc-21329b763d24",
+        "start": "1987-10-26"
+    },
+    {
+        "content": "Garrick Ohlsson",
+        "id": "73260a6d-fb40-4de0-8a19-9f378c623b59",
+        "start": "1995-06-27"
+    },
+    {
+        "content": "Louis Lortie",
+        "id": "698191e3-6de1-43b9-afda-4e1724af6a32",
+        "start": "1998-11-30"
+    },
+    {
+        "content": "Artur Pizarro",
+        "id": "4c99ae39-6b93-4bcc-b573-88ab8baa7ea8",
+        "start": "2002-10-16"
+    },
+    {
+        "content": "Mari Kodama",
+        "id": "b12ad157-c25e-42de-ae10-e5df0b9a3706",
+        "start": "2003-01-20"
+    },
+    {
+        "content": "\u041d\u0438\u043a\u043e\u043b\u0430\u0439 \u041b\u0443\u0433\u0430\u043d\u0441\u043a\u0438\u0439",
+        "id": "c5f0f25d-ccf0-4117-bf78-63d4800126cf",
+        "start": "2005-02-08"
+    },
+    {
+        "content": "Andr\u00e1s Schiff",
+        "id": "245ab2bd-1083-4947-9702-a3c749cff606",
+        "start": "2005-04-24"
+    },
+    {
+        "content": "Steven Osborne",
+        "id": "e3d85412-91e6-4842-8f64-add62b9e7ce4",
+        "start": "2008-09-13"
+    },
+    {
+        "content": "Angela Hewitt",
+        "id": "45846322-ea78-4c40-94f6-b411698543f4",
+        "start": "2009-08-30"
+    },
+    {
+        "content": "Jonathan Biss",
+        "id": "b486423f-2e78-4c9d-bf1f-a620e9295e9c",
+        "start": "2012-05-23"
+    },
+    {
+        "content": "Brett Cox",
+        "id": "32776eac-f336-48d4-b3a0-b6089b8f3c4e",
+        "start": "2012-06-19"
+    },
+    {
+        "content": "Craig Jenkins",
+        "id": "ddcd0fb1-9e49-4361-b9b4-2a6cb794c8b7",
+        "start": "2012-06-19"
+    },
+    {
+        "content": "Mike Hatch",
+        "id": "033847ff-d149-4e2c-8024-b0693d37df6e",
+        "start": "2012-06-19"
+    },
+    {
+        "content": "Valentina Lisitsa",
+        "id": "e3eb15c5-887b-4b0d-9b81-4b6be7845b79",
+        "start": "2012-06-19"
+    },
+    {
+        "content": "Jean-Efflam Bavouzet",
+        "id": "aa3723d3-0e6e-4a21-a3b2-4d36b1a51ee6",
+        "start": "2013-01-16"
+    }
+]);
+  var options = {
+    editable: false
+  };
+  // create the timeline
+  var container = document.getElementById('vis-container');
+  var timeline = new vis.Timeline(container, data, options);
+</script>
+
+</body></html>
