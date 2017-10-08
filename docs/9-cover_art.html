@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head><meta charset="utf-8" />
-<title>10-cover_art</title>
+<title>9-cover_art</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -11764,46 +11764,6 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">pprint</span> <span class="k">import</span> <span class="n">pprint</span>
-<span class="kn">import</span> <span class="nn">pandas</span>
-<span class="kn">import</span> <span class="nn">sqlalchemy</span>
-
-<span class="c1"># your postgres server IP</span>
-<span class="n">IP</span> <span class="o">=</span> <span class="s1">&#39;127.0.0.1&#39;</span>
-
-<span class="k">def</span> <span class="nf">sql</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;helper function for SQL queries using the %(...) syntax</span>
-<span class="sd">    Parameters defined globally are replaced implicitely&quot;&quot;&quot;</span>
-
-    <span class="c1"># define DB connection parameters if needed</span>
-    <span class="n">PGHOST</span> <span class="o">=</span> <span class="nb">globals</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;PGHOST&#39;</span><span class="p">,</span> <span class="n">IP</span><span class="p">)</span>
-    <span class="n">PGDATABASE</span> <span class="o">=</span> <span class="nb">globals</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;PGDATABASE&#39;</span><span class="p">,</span> <span class="s1">&#39;musicbrainz&#39;</span><span class="p">)</span>
-    <span class="n">PGUSER</span> <span class="o">=</span> <span class="nb">globals</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;PGUSER&#39;</span><span class="p">,</span> <span class="s1">&#39;musicbrainz&#39;</span><span class="p">)</span>
-    <span class="n">PGPASSWORD</span> <span class="o">=</span> <span class="nb">globals</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;PGPASSWORD&#39;</span><span class="p">,</span> <span class="s1">&#39;musicbrainz&#39;</span><span class="p">)</span>
-    <span class="n">engine</span> <span class="o">=</span> <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">create_engine</span><span class="p">(</span>
-       <span class="s1">&#39;postgresql+psycopg2://</span><span class="si">%(PGUSER)s</span><span class="s1">:</span><span class="si">%(PGPASSWORD)s</span><span class="s1">@</span><span class="si">%(PGHOST)s</span><span class="s1">/</span><span class="si">%(PGDATABASE)s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">locals</span><span class="p">(),</span>
-        <span class="n">isolation_level</span><span class="o">=</span><span class="s1">&#39;READ UNCOMMITTED&#39;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">engine</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
-
-<span class="c1"># helper functions to generate an HTML link to an entity MusicBrainz URL</span>
-<span class="k">def</span> <span class="nf">_mb_link</span><span class="p">(</span><span class="nb">type</span><span class="p">,</span> <span class="n">mbid</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="n">mbid</span>
-    <span class="k">return</span> <span class="s1">&#39;&lt;a href=&quot;https://musicbrainz.org/</span><span class="si">%(type)s</span><span class="s1">/</span><span class="si">%(mbid)s</span><span class="s1">&quot;&gt;</span><span class="si">%(name)s</span><span class="s1">&lt;/a&gt;&#39;</span> <span class="o">%</span> <span class="nb">locals</span><span class="p">()</span>
-
-<span class="n">mb_release_link</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">mbid</span><span class="p">:</span> <span class="n">_mb_link</span><span class="p">(</span><span class="s1">&#39;release&#39;</span><span class="p">,</span> <span class="n">mbid</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
-<div class="inner_cell">
-    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">performer_name</span> <span class="o">=</span> <span class="s1">&#39;Dino Ciani&#39;</span>
 </pre></div>
 
@@ -11814,7 +11774,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="n">performer_name</span><span class="p">):</span>
@@ -11847,7 +11807,7 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[3]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[2]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
@@ -11889,16 +11849,18 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">url_template</span> <span class="o">=</span> <span class="s1">&#39;https://coverartarchive.org/release-group/</span><span class="si">%s</span><span class="s1">/front-250.jpg&#39;</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cover_url_template</span> <span class="o">=</span> <span class="s1">&#39;https://coverartarchive.org/release-group/</span><span class="si">%s</span><span class="s1">/front-250.jpg&#39;</span>
+<span class="n">rg_url_template</span> <span class="o">=</span> <span class="s1">&#39;https://musicbrainz.org/release-group/</span><span class="si">%s</span><span class="s1">&#39;</span>
 
 <span class="c1"># Transform into JSON</span>
 <span class="n">data</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;start&#39;</span><span class="p">:</span> <span class="n">line</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(),</span>
          <span class="s1">&#39;album&#39;</span><span class="p">:</span> <span class="n">line</span><span class="o">.</span><span class="n">album</span><span class="p">,</span>
          <span class="s1">&#39;artists&#39;</span><span class="p">:</span> <span class="n">line</span><span class="o">.</span><span class="n">artists</span><span class="p">,</span>
-         <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="n">url_template</span> <span class="o">%</span> <span class="n">line</span><span class="o">.</span><span class="n">mbid</span><span class="p">,</span>
+         <span class="s1">&#39;cover_url&#39;</span><span class="p">:</span> <span class="n">cover_url_template</span> <span class="o">%</span> <span class="n">line</span><span class="o">.</span><span class="n">mbid</span><span class="p">,</span>
+         <span class="s1">&#39;rg_url&#39;</span><span class="p">:</span> <span class="n">rg_url_template</span> <span class="o">%</span> <span class="n">line</span><span class="o">.</span><span class="n">mbid</span><span class="p">,</span>         
         <span class="p">}</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">covers</span><span class="o">.</span><span class="n">iterrows</span><span class="p">()]</span>
 
 <span class="c1"># Send to Javascript</span>
@@ -11915,15 +11877,104 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[4]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[3]:</div>
 
 
 
-<div id="25b3d90a-0a40-4ad0-8a55-af4830c25569"></div>
+<div id="210336ba-e517-4663-99b1-a492413e1f80"></div>
 <div class="output_subarea output_javascript output_execute_result">
 <script type="text/javascript">
-var element = $('#25b3d90a-0a40-4ad0-8a55-af4830c25569');
-window.albumData=[{"album": "Pr\u00e9ludes / Suite bergamasque / Pour le piano", "start": "1997-01-01", "artists": "Debussy; Dino Ciani, Tam\u00e1s V\u00e1s\u00e1ry", "url": "https://coverartarchive.org/release-group/b02fc3e7-aee9-4b90-bbb3-00f0109742d4/front-250.jpg"}, {"album": "Suite bergamasque / 12 Pr\u00e9ludes", "start": "1994-07-05", "artists": "Claude Debussy; Tam\u00e1s V\u00e1s\u00e1ry, Dino Ciani", "url": "https://coverartarchive.org/release-group/039ff6a3-88dc-4c7f-ae68-54374b032121/front-250.jpg"}];
+var element = $('#210336ba-e517-4663-99b1-a492413e1f80');
+window.albumData=[{"rg_url": "https://musicbrainz.org/release-group/b02fc3e7-aee9-4b90-bbb3-00f0109742d4", "cover_url": "https://coverartarchive.org/release-group/b02fc3e7-aee9-4b90-bbb3-00f0109742d4/front-250.jpg", "start": "1997-01-01", "artists": "Debussy; Dino Ciani, Tam\u00e1s V\u00e1s\u00e1ry", "album": "Pr\u00e9ludes / Suite bergamasque / Pour le piano"}, {"rg_url": "https://musicbrainz.org/release-group/039ff6a3-88dc-4c7f-ae68-54374b032121", "cover_url": "https://coverartarchive.org/release-group/039ff6a3-88dc-4c7f-ae68-54374b032121/front-250.jpg", "start": "1994-07-05", "artists": "Claude Debussy; Tam\u00e1s V\u00e1s\u00e1ry, Dino Ciani", "album": "Suite bergamasque / 12 Pr\u00e9ludes"}];
+</script>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="nx">javascript</span>
+<span class="nx">element</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s1">&#39;&lt;div id=&quot;timeline&quot; style=&quot;width: 100%; height: 100%;&quot;&gt;&lt;/div&gt;&#39;</span><span class="p">);</span>
+
+<span class="nx">requirejs</span><span class="p">.</span><span class="nx">config</span><span class="p">({</span>
+    <span class="nx">paths</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">vis</span><span class="o">:</span> <span class="s1">&#39;//cdnjs.cloudflare.com/ajax/libs/vis/4.20.1/vis&#39;</span><span class="p">,</span>
+        <span class="nx">handlebar</span><span class="o">:</span> <span class="s1">&#39;//cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars&#39;</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="nx">require</span><span class="p">([</span><span class="s1">&#39;handlebar&#39;</span><span class="p">,</span> <span class="s1">&#39;vis&#39;</span><span class="p">],</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">handlebar</span><span class="p">,</span> <span class="nx">vis</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">template</span> <span class="o">=</span> <span class="nx">handlebar</span><span class="p">.</span><span class="nx">compile</span><span class="p">(</span><span class="sb">`</span>
+<span class="sb">      &lt;div&gt;</span>
+<span class="sb">      &lt;a href=&quot;{{rg_url}}&quot;&gt;{{album}}&lt;/a&gt;</span>
+<span class="sb">      &lt;br /&gt;</span>
+<span class="sb">      {{artists}}</span>
+<span class="sb">      &lt;img src=&quot;{{cover_url}}&quot; width=&quot;150&quot; height=&quot;150&quot;&gt;    </span>
+<span class="sb">      &lt;/div&gt;</span>
+<span class="sb">    `</span><span class="p">);</span>
+
+    <span class="kd">var</span> <span class="nx">timeline</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">vis</span><span class="p">.</span><span class="nx">Timeline</span><span class="p">(</span>
+        <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;timeline&#39;</span><span class="p">),</span> <span class="c1">// container, </span>
+        <span class="k">new</span> <span class="nx">vis</span><span class="p">.</span><span class="nx">DataSet</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">albumData</span><span class="p">),</span> <span class="c1">// data</span>
+        <span class="p">{</span>
+            <span class="nx">template</span><span class="o">:</span> <span class="nx">template</span><span class="p">,</span>
+            <span class="nx">editable</span><span class="o">:</span> <span class="kc">false</span>
+        <span class="p">}</span> <span class="c1">// options</span>
+    <span class="p">);</span>
+<span class="p">})</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+
+
+
+<div id="add19ade-976f-49ee-98b6-8a1e9fc2346d"></div>
+<div class="output_subarea output_javascript ">
+<script type="text/javascript">
+var element = $('#add19ade-976f-49ee-98b6-8a1e9fc2346d');
+element.append('<div id="timeline" style="width: 100%; height: 100%;"></div>');
+
+requirejs.config({
+    paths: {
+        vis: '//cdnjs.cloudflare.com/ajax/libs/vis/4.20.1/vis',
+        handlebar: '//cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars'
+    }
+});
+
+require(['handlebar', 'vis'], function (handlebar, vis) {
+    var template = handlebar.compile(`
+      <div>
+      <a href="{{rg_url}}">{{album}}</a>
+      <br />
+      {{artists}}
+      <img src="{{cover_url}}" width="150" height="150">    
+      </div>
+    `);
+
+    var timeline = new vis.Timeline(
+        document.getElementById('timeline'), // container, 
+        new vis.DataSet(window.albumData), // data
+        {
+            template: template,
+            editable: false
+        } // options
+    );
+})
 </script>
 </div>
 
@@ -11956,95 +12007,6 @@ window.albumData=[{"album": "Pr\u00e9ludes / Suite bergamasque / Pour le piano",
 <div class="output_html rendered_html output_subarea ">
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.20.1/vis-timeline-graph2d.min.css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="nx">javascript</span>
-<span class="nx">element</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s1">&#39;&lt;div id=&quot;timeline&quot; style=&quot;width: 100%; height: 100%;&quot;&gt;&lt;/div&gt;&#39;</span><span class="p">);</span>
-
-<span class="nx">requirejs</span><span class="p">.</span><span class="nx">config</span><span class="p">({</span>
-    <span class="nx">paths</span><span class="o">:</span> <span class="p">{</span>
-        <span class="nx">vis</span><span class="o">:</span> <span class="s1">&#39;//cdnjs.cloudflare.com/ajax/libs/vis/4.20.1/vis&#39;</span><span class="p">,</span>
-        <span class="nx">handlebar</span><span class="o">:</span> <span class="s1">&#39;//cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars&#39;</span>
-    <span class="p">}</span>
-<span class="p">});</span>
-
-<span class="nx">require</span><span class="p">([</span><span class="s1">&#39;handlebar&#39;</span><span class="p">,</span> <span class="s1">&#39;vis&#39;</span><span class="p">],</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">handlebar</span><span class="p">,</span> <span class="nx">vis</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">template</span> <span class="o">=</span> <span class="nx">handlebar</span><span class="p">.</span><span class="nx">compile</span><span class="p">(</span><span class="sb">`</span>
-<span class="sb">      &lt;div&gt;</span>
-<span class="sb">      {{album}}</span>
-<span class="sb">      &lt;br /&gt;</span>
-<span class="sb">      {{artists}}</span>
-<span class="sb">      &lt;img src=&quot;{{url}}&quot; width=&quot;150&quot; height=&quot;150&quot;&gt;    </span>
-<span class="sb">      &lt;/div&gt;</span>
-<span class="sb">    `</span><span class="p">);</span>
-
-    <span class="kd">var</span> <span class="nx">timeline</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">vis</span><span class="p">.</span><span class="nx">Timeline</span><span class="p">(</span>
-        <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;timeline&#39;</span><span class="p">),</span> <span class="c1">// container, </span>
-        <span class="k">new</span> <span class="nx">vis</span><span class="p">.</span><span class="nx">DataSet</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">albumData</span><span class="p">),</span> <span class="c1">// data</span>
-        <span class="p">{</span>
-            <span class="nx">template</span><span class="o">:</span> <span class="nx">template</span><span class="p">,</span>
-            <span class="nx">editable</span><span class="o">:</span> <span class="kc">false</span>
-        <span class="p">}</span> <span class="c1">// options</span>
-    <span class="p">);</span>
-<span class="p">})</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-
-
-
-<div id="6cc70e37-c31e-43ad-8d12-d3ed26c00b8c"></div>
-<div class="output_subarea output_javascript ">
-<script type="text/javascript">
-var element = $('#6cc70e37-c31e-43ad-8d12-d3ed26c00b8c');
-element.append('<div id="timeline" style="width: 100%; height: 100%;"></div>');
-
-requirejs.config({
-    paths: {
-        vis: '//cdnjs.cloudflare.com/ajax/libs/vis/4.20.1/vis',
-        handlebar: '//cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars'
-    }
-});
-
-require(['handlebar', 'vis'], function (handlebar, vis) {
-    var template = handlebar.compile(`
-      <div>
-      {{album}}
-      <br />
-      {{artists}}
-      <img src="{{url}}" width="150" height="150">    
-      </div>
-    `);
-
-    var timeline = new vis.Timeline(
-        document.getElementById('timeline'), // container, 
-        new vis.DataSet(window.albumData), // data
-        {
-            template: template,
-            editable: false
-        } // options
-    );
-})
-</script>
 </div>
 
 </div>
