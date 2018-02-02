@@ -12810,14 +12810,14 @@ div#notebook {
       <td>388</td>
       <td>hyperion</td>
       <td>08e6c3c8-81ab-405f-9cff-10f6b8db064c</td>
-      <td>889</td>
+      <td>893</td>
     </tr>
     <tr>
       <th>1</th>
       <td>22708</td>
       <td>helios</td>
       <td>0a94e96a-9219-4dd7-a529-18d34e77f50f</td>
-      <td>134</td>
+      <td>135</td>
     </tr>
     <tr>
       <th>2</th>
@@ -12835,27 +12835,20 @@ div#notebook {
     </tr>
     <tr>
       <th>4</th>
-      <td>15918</td>
-      <td>Hyperion Records</td>
-      <td>0a3ba296-f572-49df-b570-ca00062773d3</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>5</th>
       <td>53283</td>
       <td>Mariinsky</td>
       <td>6b060b9a-da6f-4a11-923e-8b88944c4503</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>6</th>
+      <th>5</th>
       <td>59800</td>
       <td>Appian Publications and Recordings</td>
       <td>f51e7981-6399-467c-af06-b4e9a29dbd8d</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>7</th>
+      <th>6</th>
       <td>95583</td>
       <td>The Choir of King's College Cambridge</td>
       <td>d5827354-3b3f-421e-a1fe-6e25e2f7b8ea</td>
@@ -12872,27 +12865,11 @@ div#notebook {
 </div>
 
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;docs/hyperion_releases.html&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;&lt;h1&gt;Pre-Classical Clean Up #4&lt;/h1&gt;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;&lt;h2&gt;Labels corresponding to Hyperion in MusicBrainz&lt;/h2&gt;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">mb_labels</span><span class="o">.</span><span class="n">to_html</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&amp;lt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&amp;gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">))</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>"Hyperion Records" is a completely different label that shouldn't be here, I fixed the releases already</p>
+<p>We keep only the first three for the moment, the other ones seem to only be distributed by hyperion.</p>
 
 </div>
 </div>
@@ -12907,7 +12884,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sql</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
@@ -12932,7 +12909,7 @@ div#notebook {
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[6]:</div>
+<div class="prompt output_prompt">Out[5]:</div>
 
 
 
@@ -12984,27 +12961,17 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[41]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mb_releases</span> <span class="o">=</span> <span class="n">sql</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sql</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">SELECT </span>
-<span class="s2">    rl.catalog_number,</span>
-<span class="s2">    r.barcode,</span>
-<span class="s2">    r.name  AS title,</span>
-<span class="s2">    ac.name AS ac,</span>
-<span class="s2">    label.name AS label,</span>
-<span class="s2">    r.quality,</span>
-<span class="s2">    r.gid   AS mb_url</span>
+<span class="s2">    COUNT(r.name)</span>
 <span class="s2">  FROM release_label AS rl</span>
 <span class="s2">  JOIN release       AS r  ON rl.release = r.id</span>
 <span class="s2">  JOIN label               ON rl.label = label.id</span>
-<span class="s2">  JOIN artist_credit AS ac ON r.artist_credit = ac.id</span>
-<span class="s2"> WHERE label.id IN (388, 22708, 16197, 2900, 53283, 59800, 95583)</span>
-<span class="s2">ORDER BY rl.catalog_number, r.barcode;</span>
+<span class="s2"> WHERE label.id IN (388, 22708, 16197);</span>
 <span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
-<span class="n">mb_releases</span><span class="p">[</span><span class="s1">&#39;mb_url&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mb_releases</span><span class="o">.</span><span class="n">mb_url</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">mb_release_link</span><span class="p">)</span>
-<span class="n">mb_releases</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
 </div>
@@ -13017,7 +12984,7 @@ div#notebook {
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[7]:</div>
+<div class="prompt output_prompt">Out[41]:</div>
 
 
 
@@ -13040,65 +13007,13 @@ div#notebook {
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>catalog_number</th>
-      <th>barcode</th>
-      <th>title</th>
-      <th>ac</th>
-      <th>label</th>
-      <th>quality</th>
-      <th>mb_url</th>
+      <th>count</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
-      <td>203</td>
-      <td>None</td>
-      <td>The Tallis Scholars Sing Thomas Tallis</td>
-      <td>Thomas Tallis; The Tallis Scholars</td>
-      <td>Gimell</td>
-      <td>-1</td>
-      <td>&lt;a href="https://musicbrainz.org/release/ef9be3c2-3cd0-4d61-bdd9-05dda38b488c"&gt;ef9be3c2-3cd0-4d61-bdd9-05dda38b488c&lt;/a&gt;</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>205</td>
-      <td>755138120525</td>
-      <td>Requiem</td>
-      <td>The Tallis Scholars, Peter Phillips</td>
-      <td>Gimell</td>
-      <td>-1</td>
-      <td>&lt;a href="https://musicbrainz.org/release/8406624d-f46f-45d9-b0db-4790a892869a"&gt;8406624d-f46f-45d9-b0db-4790a892869a&lt;/a&gt;</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>22</td>
-      <td>755138102224</td>
-      <td>Tenebrae Responsories</td>
-      <td>Victoria; Tallis Scholars, Peter Phillips</td>
-      <td>Gimell</td>
-      <td>-1</td>
-      <td>&lt;a href="https://musicbrainz.org/release/0e88f294-269d-444d-b790-7f81ccd6ccab"&gt;0e88f294-269d-444d-b790-7f81ccd6ccab&lt;/a&gt;</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>454 890-2</td>
-      <td>028945489025</td>
-      <td>The Palestrina 400 Collection</td>
-      <td>The Tallis Scholars</td>
-      <td>Gimell</td>
-      <td>-1</td>
-      <td>&lt;a href="https://musicbrainz.org/release/f70844a3-642c-4a02-a37e-c5caa3c42aa2"&gt;f70844a3-642c-4a02-a37e-c5caa3c42aa2&lt;/a&gt;</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>454 901-2</td>
-      <td>None</td>
-      <td>Palestrina Masses: Missa Benedicta es</td>
-      <td>Giovanni Pierluigi da Palestrina; The Tallis Scholars, Peter Phillips</td>
-      <td>Gimell</td>
-      <td>-1</td>
-      <td>&lt;a href="https://musicbrainz.org/release/1e173bae-9453-4f8a-8092-962e41cff59c"&gt;1e173bae-9453-4f8a-8092-962e41cff59c&lt;/a&gt;</td>
+      <td>1677</td>
     </tr>
   </tbody>
 </table>
@@ -13113,64 +13028,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mb_releases</span><span class="o">.</span><span class="n">shape</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[8]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>(1804, 7)</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;docs/hyperion_releases.html&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;&lt;h2&gt;Hyperion releases in MusicBrainz (with duplicates)&lt;/h2&gt;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">mb_releases</span><span class="o">.</span><span class="n">to_html</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&amp;lt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&amp;gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">))</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>1804 releases already in MB, some might be duplicates</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[84]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">mb_releases</span> <span class="o">=</span> <span class="n">sql</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
@@ -13180,17 +13038,28 @@ div#notebook {
 <span class="s2">    r.name  AS title,</span>
 <span class="s2">    ac.name AS ac,</span>
 <span class="s2">    label.name AS label,</span>
-<span class="s2">    r.quality,</span>
-<span class="s2">    u.url   AS hyperion_url,</span>
+<span class="s2">    CASE WHEN r.quality=-1 THEN &#39;unset&#39;</span>
+<span class="s2">         WHEN r.quality=0  THEN &#39;low&#39;</span>
+<span class="s2">         WHEN r.quality=1  THEN &#39;normal&#39;</span>
+<span class="s2">         WHEN r.quality=2  THEN &#39;high&#39;</span>
+<span class="s2">    END     AS quality,</span>
+<span class="s2">    STRING_AGG(at.name, &#39;, &#39;) AS covers,</span>
+<span class="s2">    STRING_AGG(</span>
+<span class="s2">        CASE WHEN u.url ILIKE &#39;</span><span class="si">%%</span><span class="s2">hyperion-records</span><span class="si">%%</span><span class="s2">&#39; THEN u.url</span>
+<span class="s2">             ELSE NULL</span>
+<span class="s2">        END, &#39;, &#39;) AS hyperion_url,</span>
 <span class="s2">    r.gid   AS mb_url</span>
 <span class="s2">  FROM release_label AS rl</span>
 <span class="s2">  JOIN release       AS r  ON rl.release = r.id</span>
 <span class="s2">  JOIN label               ON rl.label = label.id</span>
 <span class="s2">  JOIN artist_credit AS ac ON r.artist_credit = ac.id</span>
+<span class="s2">  LEFT OUTER JOIN cover_art_archive.cover_art      AS cova  ON cova.release = r.id</span>
+<span class="s2">  LEFT OUTER JOIN cover_art_archive.cover_art_type AS covat ON covat.id = cova.id</span>
+<span class="s2">  LEFT OUTER JOIN cover_art_archive.art_type       AS at    ON covat.type_id = at.id</span>
 <span class="s2">  LEFT OUTER JOIN l_release_url AS lu ON r.id = lu.entity0</span>
 <span class="s2">  LEFT OUTER JOIN url           AS u  ON u.id = lu.entity1</span>
-<span class="s2"> WHERE label.id IN (388, 22708, 16197, 2900, 53283, 59800, 95583)</span>
-<span class="s2">   AND (u.url IS NULL OR u.url ILIKE &#39;</span><span class="si">%%</span><span class="s2">hyperion-records</span><span class="si">%%</span><span class="s2">&#39;)</span>
+<span class="s2"> WHERE label.id IN (388, 22708, 16197)</span>
+<span class="s2">GROUP BY rl.catalog_number, r.barcode, r.name, ac.name, label.name, r.quality, r.gid</span>
 <span class="s2">ORDER BY rl.catalog_number, r.barcode;</span>
 <span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
 <span class="n">mb_releases</span><span class="p">[</span><span class="s1">&#39;mb_url&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mb_releases</span><span class="o">.</span><span class="n">mb_url</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">mb_release_link</span><span class="p">)</span>
@@ -13208,7 +13077,7 @@ div#notebook {
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[10]:</div>
+<div class="prompt output_prompt">Out[84]:</div>
 
 
 
@@ -13237,6 +13106,7 @@ div#notebook {
       <th>ac</th>
       <th>label</th>
       <th>quality</th>
+      <th>covers</th>
       <th>hyperion_url</th>
       <th>mb_url</th>
     </tr>
@@ -13244,58 +13114,63 @@ div#notebook {
   <tbody>
     <tr>
       <th>0</th>
-      <td>454 901-2</td>
+      <td>67250</td>
       <td>None</td>
-      <td>Palestrina Masses: Missa Benedicta es</td>
-      <td>Giovanni Pierluigi da Palestrina; The Tallis Scholars, Peter Phillips</td>
-      <td>Gimell</td>
-      <td>-1</td>
+      <td>Thalaba the Destroyer, etc. (Royal Philharmonic Orchestra feat. conductor: Vernon Handley)</td>
+      <td>Sir Granville Bantock</td>
+      <td>hyperion</td>
+      <td>unset</td>
       <td>None</td>
-      <td>&lt;a href="https://musicbrainz.org/release/1e173bae-9453-4f8a-8092-962e41cff59c"&gt;1e173bae-9453-4f8a-8092-962e41cff59c&lt;/a&gt;</td>
+      <td>None</td>
+      <td>&lt;a href="https://musicbrainz.org/release/d128f056-12e4-4817-9fb1-e4107f48b72a"&gt;d128f056-12e4-4817-9fb1-e4107f48b72a&lt;/a&gt;</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>454 909-2</td>
-      <td>028945490922</td>
-      <td>Missa Pange lingua / Missa La sol fa re mi / Plainchant: Pange lingua</td>
-      <td>Josquin; The Tallis Scholars, Peter Phillips</td>
-      <td>Gimell</td>
-      <td>-1</td>
+      <td>67428</td>
+      <td>034571574288</td>
+      <td>The Sacred Music, Vol. 1</td>
+      <td>Monteverdi; The King's Consort, Robert King</td>
+      <td>hyperion</td>
+      <td>unset</td>
       <td>None</td>
-      <td>&lt;a href="https://musicbrainz.org/release/d9a9a334-aa0f-4007-8a9d-674eda037ca0"&gt;d9a9a334-aa0f-4007-8a9d-674eda037ca0&lt;/a&gt;</td>
+      <td>None</td>
+      <td>&lt;a href="https://musicbrainz.org/release/07436f6d-e19d-4948-98db-92fb18326592"&gt;07436f6d-e19d-4948-98db-92fb18326592&lt;/a&gt;</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>A66210</td>
-      <td></td>
-      <td>Two Romantic Violin Concertos</td>
-      <td>Federigo Fiorillo, Giovanni Battista Viotti; European Community Chamber Orchestra, Jörg Faerber, Adelina Oprean</td>
-      <td>hyperion</td>
-      <td>-1</td>
+      <td>67568</td>
       <td>None</td>
-      <td>&lt;a href="https://musicbrainz.org/release/28dbbf85-4ec1-4242-8469-6dbc800a8f5c"&gt;28dbbf85-4ec1-4242-8469-6dbc800a8f5c&lt;/a&gt;</td>
+      <td>The Byrd Edition, Volume 10: Laudibus in sanctis (The Cardinall's Musick feat. conductor: Andrew Carwood)</td>
+      <td>William Byrd</td>
+      <td>hyperion</td>
+      <td>unset</td>
+      <td>None</td>
+      <td>None</td>
+      <td>&lt;a href="https://musicbrainz.org/release/dc2a9e87-4035-4d14-a312-6eabf60cd058"&gt;dc2a9e87-4035-4d14-a312-6eabf60cd058&lt;/a&gt;</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>APR 5519</td>
-      <td>5024709155194</td>
-      <td>Tchaikovsky: Piano Concerto no. 1 / Rachmaninov: Piano Concerto no. 3</td>
-      <td>Pyotr Tchaikovsky, Sergei Rachmaninov; Vladimir Horowitz, New York Philharmonic Symphony Orchestra, John Barbirolli</td>
-      <td>Appian Publications and Recordings</td>
-      <td>-1</td>
-      <td>&lt;a href="http://www.hyperion-records.co.uk/dc.asp?dc=D_APR5519"&gt;http://www.hyperion-records.co.uk/dc.asp?dc=D_APR5519&lt;/a&gt;</td>
-      <td>&lt;a href="https://musicbrainz.org/release/31192ec6-6ea1-4f6e-b665-9b2a78e5f3fa"&gt;31192ec6-6ea1-4f6e-b665-9b2a78e5f3fa&lt;/a&gt;</td>
+      <td>67653</td>
+      <td>None</td>
+      <td>The Byrd Edition, Volume 11: Hodie Simon Petrus (The Cardinall's Musick feat. conductor: Andrew Carwood)</td>
+      <td>William Byrd</td>
+      <td>hyperion</td>
+      <td>unset</td>
+      <td>None</td>
+      <td>None</td>
+      <td>&lt;a href="https://musicbrainz.org/release/25360292-fcc6-45ae-9117-6d6f76106b2b"&gt;25360292-fcc6-45ae-9117-6d6f76106b2b&lt;/a&gt;</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>APR 6003</td>
-      <td>5024709160037</td>
-      <td>The Complete Solo Recordings, 1929-1936 / Lalo: Symphonie espagnole</td>
-      <td>Jacques Thibaud</td>
-      <td>Appian Publications and Recordings</td>
-      <td>-1</td>
+      <td>67675</td>
       <td>None</td>
-      <td>&lt;a href="https://musicbrainz.org/release/04bb6a06-6839-4e11-8b46-b7e5f2709180"&gt;04bb6a06-6839-4e11-8b46-b7e5f2709180&lt;/a&gt;</td>
+      <td>The Byrd Edition, Volume 12: Assumpta est Maria (The Cardinall's Musick feat. conductor: Andrew Carwood)</td>
+      <td>William Byrd</td>
+      <td>hyperion</td>
+      <td>unset</td>
+      <td>None</td>
+      <td>None</td>
+      <td>&lt;a href="https://musicbrainz.org/release/ac0f0a14-d39b-4a10-bca0-cb6a81d2e9db"&gt;ac0f0a14-d39b-4a10-bca0-cb6a81d2e9db&lt;/a&gt;</td>
     </tr>
   </tbody>
 </table>
@@ -13310,7 +13185,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[85]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">mb_releases</span><span class="o">.</span><span class="n">shape</span>
@@ -13326,13 +13201,141 @@ div#notebook {
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[11]:</div>
+<div class="prompt output_prompt">Out[85]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>(1154, 8)</pre>
+<pre>(1677, 9)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>1677 releases already in MB, some might be duplicates</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Hyperion-releases-with-booklet-in-MB">Hyperion releases with booklet in MB<a class="anchor-link" href="#Hyperion-releases-with-booklet-in-MB">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[49]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mb_releases_with_booklet</span> <span class="o">=</span> <span class="n">sql</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">SELECT </span>
+<span class="s2">    rl.catalog_number,</span>
+<span class="s2">    r.name AS title,</span>
+<span class="s2">    STRING_AGG(caaat.name, &#39;, &#39;) AS covers,</span>
+<span class="s2">    r.gid AS mb_url</span>
+<span class="s2">  FROM release_label AS rl</span>
+<span class="s2">  JOIN release       AS r  ON rl.release = r.id</span>
+<span class="s2">  JOIN label               ON rl.label = label.id</span>
+<span class="s2">  JOIN cover_art_archive.cover_art AS caaca ON caaca.release = r.id</span>
+<span class="s2">  JOIN cover_art_archive.cover_art_type AS caacat ON caacat.id = caaca.id</span>
+<span class="s2">  JOIN cover_art_archive.art_type AS caaat ON caacat.type_id = caaat.id</span>
+<span class="s2"> WHERE label.id IN (388, 22708, 16197) AND caaat.name = &#39;Booklet&#39;</span>
+<span class="s2"> GROUP BY rl.catalog_number, r.name, r.gid</span>
+<span class="s2">ORDER BY rl.catalog_number;</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+<span class="n">mb_releases_with_booklet</span><span class="p">[</span><span class="s1">&#39;mb_url&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mb_releases_with_booklet</span><span class="o">.</span><span class="n">mb_url</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">mb_release_link</span><span class="p">)</span>
+<span class="n">mb_releases_with_booklet</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[49]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>catalog_number</th>
+      <th>title</th>
+      <th>covers</th>
+      <th>mb_url</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>CDA30030</td>
+      <td>New World Symphonies: Baroque Music from Latin America</td>
+      <td>Booklet</td>
+      <td>&lt;a href="https://musicbrainz.org/release/a2deaad6-20a4-493f-961c-a40e4d6663bb"&gt;a2deaad6-20a4-493f-961c-a40e4d6663bb&lt;/a&gt;</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>CDA66021</td>
+      <td>Sacred Vocal Music</td>
+      <td>Booklet</td>
+      <td>&lt;a href="https://musicbrainz.org/release/80186961-3720-37f8-b273-18bc77c73cae"&gt;80186961-3720-37f8-b273-18bc77c73cae&lt;/a&gt;</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>CDA66039</td>
+      <td>A Feather on the Breath of God</td>
+      <td>Booklet</td>
+      <td>&lt;a href="https://musicbrainz.org/release/8cb1f24a-c209-45a6-afbf-ed280ab16d07"&gt;8cb1f24a-c209-45a6-afbf-ed280ab16d07&lt;/a&gt;</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>CDA66062</td>
+      <td>Bruckner Motets</td>
+      <td>Booklet</td>
+      <td>&lt;a href="https://musicbrainz.org/release/0873033b-6b94-448f-bcc5-c267194df1c4"&gt;0873033b-6b94-448f-bcc5-c267194df1c4&lt;/a&gt;</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>CDA 66065</td>
+      <td>String Quartets: op. 71 no. 1 in B flat / op. 71 no. 2 in D</td>
+      <td>Booklet</td>
+      <td>&lt;a href="https://musicbrainz.org/release/c2eca669-50da-4c74-b33f-23c80566543f"&gt;c2eca669-50da-4c74-b33f-23c80566543f&lt;/a&gt;</td>
+    </tr>
+  </tbody>
+</table>
+</div>
 </div>
 
 </div>
@@ -13343,15 +13346,33 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[50]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;docs/hyperion_releases.html&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;&lt;h2&gt;Hyperion releases in MusicBrainz (with links)&lt;/h2&gt;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">mb_releases</span><span class="o">.</span><span class="n">to_html</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&amp;lt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&amp;gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">))</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mb_releases_with_booklet</span><span class="o">.</span><span class="n">shape</span>
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[50]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(114, 4)</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -13366,7 +13387,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[34]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">mb_releases_wo_catno</span> <span class="o">=</span> <span class="n">sql</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
@@ -13377,7 +13398,7 @@ div#notebook {
 <span class="s2">  FROM release_label AS rl</span>
 <span class="s2">  JOIN release       ON rl.release = release.id</span>
 <span class="s2">  JOIN label         ON rl.label = label.id</span>
-<span class="s2"> WHERE label.id IN (388, 22708, 16197, 2900, 53283, 59800, 95583)</span>
+<span class="s2"> WHERE label.id IN (388, 22708, 16197)</span>
 <span class="s2">   AND rl.catalog_number IS NULL</span>
 <span class="s2">ORDER BY rl.catalog_number;</span>
 <span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
@@ -13395,7 +13416,7 @@ div#notebook {
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[13]:</div>
+<div class="prompt output_prompt">Out[34]:</div>
 
 
 
@@ -13428,37 +13449,37 @@ div#notebook {
     <tr>
       <th>0</th>
       <td>None</td>
+      <td>Piano Quintet &amp; String Quartet no. 2</td>
+      <td>hyperion</td>
+      <td>&lt;a href="https://musicbrainz.org/release/4f66cd30-fdf0-46d7-afa7-a803c385759b"&gt;4f66cd30-fdf0-46d7-afa7-a803c385759b&lt;/a&gt;</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>None</td>
       <td>Missa Ecce ego Joannes</td>
       <td>hyperion</td>
       <td>&lt;a href="https://musicbrainz.org/release/2cbbdf24-d9d1-44cb-a07e-83ccdf36be6c"&gt;2cbbdf24-d9d1-44cb-a07e-83ccdf36be6c&lt;/a&gt;</td>
     </tr>
     <tr>
-      <th>1</th>
+      <th>2</th>
       <td>034571163291</td>
       <td>The Evening Watch and Other Choral Music</td>
       <td>hyperion</td>
       <td>&lt;a href="https://musicbrainz.org/release/d358abfe-4a98-4115-9ba5-ed072befcf43"&gt;d358abfe-4a98-4115-9ba5-ed072befcf43&lt;/a&gt;</td>
     </tr>
     <tr>
-      <th>2</th>
+      <th>3</th>
       <td>None</td>
       <td>Variations on a Theme of Chopin, Op. 22 / Variations on a Theme of Corelli, Op. 42 (piano: Howard Shelley)</td>
       <td>hyperion</td>
       <td>&lt;a href="https://musicbrainz.org/release/0ae980b3-2c97-3a6f-9e61-1699a099b878"&gt;0ae980b3-2c97-3a6f-9e61-1699a099b878&lt;/a&gt;</td>
     </tr>
     <tr>
-      <th>3</th>
+      <th>4</th>
       <td>None</td>
       <td>The Complete Anthems and Services, Vol. I (King's Consort &amp; The New Oxford College Choir feat. conductor: Robert King)</td>
       <td>hyperion</td>
       <td>&lt;a href="https://musicbrainz.org/release/692eb556-50f5-4479-ab4e-634972f8c987"&gt;692eb556-50f5-4479-ab4e-634972f8c987&lt;/a&gt;</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>None</td>
-      <td>Music for St. James the Greater (Binchois Consort)</td>
-      <td>hyperion</td>
-      <td>&lt;a href="https://musicbrainz.org/release/fbc0f0bd-c854-4c82-9ce6-0b4c8862fc70"&gt;fbc0f0bd-c854-4c82-9ce6-0b4c8862fc70&lt;/a&gt;</td>
     </tr>
   </tbody>
 </table>
@@ -13473,7 +13494,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[35]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">mb_releases_wo_catno</span><span class="o">.</span><span class="n">shape</span>
@@ -13489,13 +13510,138 @@ div#notebook {
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[14]:</div>
+<div class="prompt output_prompt">Out[35]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>(32, 4)</pre>
+<pre>(23, 4)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Hyperion-Releases-with-no-link">Hyperion Releases with no link<a class="anchor-link" href="#Hyperion-Releases-with-no-link">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[57]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mb_releases_wo_link</span> <span class="o">=</span> <span class="n">sql</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">SELECT </span>
+<span class="s2">    rl.catalog_number,</span>
+<span class="s2">    r.barcode,</span>
+<span class="s2">    r.name  AS title,</span>
+<span class="s2">    label.name AS label,</span>
+<span class="s2">    r.gid   AS mb_url</span>
+<span class="s2">  FROM release_label AS rl</span>
+<span class="s2">  JOIN release       AS r  ON rl.release = r.id</span>
+<span class="s2">  JOIN label               ON rl.label = label.id</span>
+<span class="s2">  LEFT OUTER JOIN l_release_url AS lu ON r.id = lu.entity0</span>
+<span class="s2">  LEFT OUTER JOIN url           AS u  ON u.id = lu.entity1</span>
+<span class="s2"> WHERE label.id IN (388, 22708, 16197)</span>
+<span class="s2">   AND u.url IS NULL</span>
+<span class="s2">ORDER BY rl.catalog_number, r.barcode;</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+<span class="n">mb_releases_wo_link</span><span class="p">[</span><span class="s1">&#39;mb_url&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mb_releases_wo_link</span><span class="o">.</span><span class="n">mb_url</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">mb_release_link</span><span class="p">)</span>
+<span class="n">mb_releases_wo_link</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[57]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>catalog_number</th>
+      <th>barcode</th>
+      <th>title</th>
+      <th>label</th>
+      <th>mb_url</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>A66210</td>
+      <td></td>
+      <td>Two Romantic Violin Concertos</td>
+      <td>hyperion</td>
+      <td>&lt;a href="https://musicbrainz.org/release/28dbbf85-4ec1-4242-8469-6dbc800a8f5c"&gt;28dbbf85-4ec1-4242-8469-6dbc800a8f5c&lt;/a&gt;</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>CDA20199</td>
+      <td>034571101996</td>
+      <td>Clarinet Concerto in A Major, K622 / Clarinet Quintet in A Major, K581</td>
+      <td>hyperion</td>
+      <td>&lt;a href="https://musicbrainz.org/release/0549aa69-e9bb-48ac-900d-7ee4844a616d"&gt;0549aa69-e9bb-48ac-900d-7ee4844a616d&lt;/a&gt;</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>CDA20790</td>
+      <td>034571107905</td>
+      <td>The Romantic Piano Concerto, Volume 11: Scharwenka: Piano Concerto no. 4 in F minor / Sauer: Piano Concerto no. 1 in E minor</td>
+      <td>hyperion</td>
+      <td>&lt;a href="https://musicbrainz.org/release/b83965a9-caa1-39e7-a9c3-c83d8fffea28"&gt;b83965a9-caa1-39e7-a9c3-c83d8fffea28&lt;/a&gt;</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>CDA66008</td>
+      <td>034571160085</td>
+      <td>How the World Wags</td>
+      <td>hyperion</td>
+      <td>&lt;a href="https://musicbrainz.org/release/2aabc622-546a-42e9-8e17-ad7f8af38416"&gt;2aabc622-546a-42e9-8e17-ad7f8af38416&lt;/a&gt;</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>CDA66056</td>
+      <td>034571160566</td>
+      <td>Songs and Dialogues</td>
+      <td>hyperion</td>
+      <td>&lt;a href="https://musicbrainz.org/release/25d85cc4-27bb-3e73-b7f9-a166e9d5dbcb"&gt;25d85cc4-27bb-3e73-b7f9-a166e9d5dbcb&lt;/a&gt;</td>
+    </tr>
+  </tbody>
+</table>
+</div>
 </div>
 
 </div>
@@ -13506,15 +13652,33 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In&nbsp;[56]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;docs/hyperion_releases.html&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;&lt;h2&gt;Hyperion releases with no catalog number in MB&lt;/h2&gt;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">mb_releases_wo_catno</span><span class="o">.</span><span class="n">to_html</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&amp;lt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&amp;gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">))</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mb_releases_wo_link</span><span class="o">.</span><span class="n">shape</span>
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[56]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(93, 5)</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -13537,7 +13701,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In&nbsp;[79]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">hyperion_releases</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_html</span><span class="p">(</span><span class="s1">&#39;https://www.hyperion-records.co.uk/n.asp?n=1&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">][:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
@@ -13556,7 +13720,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In&nbsp;[80]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">hyperion_releases</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
@@ -13572,7 +13736,7 @@ div#notebook {
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[17]:</div>
+<div class="prompt output_prompt">Out[80]:</div>
 
 
 
@@ -13648,21 +13812,6 @@ div#notebook {
 </div>
 
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;docs/hyperion_releases.html&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;&lt;h2&gt;Hyperion releases in Hyperion catalogue&lt;/h2&gt;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">hyperion_releases</span><span class="o">.</span><span class="n">to_html</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&amp;lt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&amp;gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">))</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
@@ -13673,7 +13822,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="prompt input_prompt">In&nbsp;[95]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">barcodes_not_in_hyperion</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">mb_releases</span><span class="o">.</span><span class="n">barcode</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">hyperion_releases</span><span class="o">.</span><span class="n">barcode</span><span class="p">)</span> <span class="o">-</span> <span class="p">{</span><span class="s1">&#39;&#39;</span><span class="p">}</span> <span class="o">-</span> <span class="p">{</span><span class="kc">None</span><span class="p">}</span>
@@ -13691,7 +13840,7 @@ div#notebook {
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[19]:</div>
+<div class="prompt output_prompt">Out[95]:</div>
 
 
 
@@ -13720,65 +13869,71 @@ div#notebook {
       <th>ac</th>
       <th>label</th>
       <th>quality</th>
+      <th>covers</th>
       <th>hyperion_url</th>
       <th>mb_url</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>1</th>
-      <td>454 909-2</td>
-      <td>028945490922</td>
-      <td>Missa Pange lingua / Missa La sol fa re mi / Plainchant: Pange lingua</td>
-      <td>Josquin; The Tallis Scholars, Peter Phillips</td>
-      <td>Gimell</td>
-      <td>-1</td>
+      <th>14</th>
+      <td>CDA20021</td>
+      <td>034571101217</td>
+      <td>Sacred Vocal Music (The Parley of Instruments)</td>
+      <td>Claudio Monteverdi</td>
+      <td>hyperion</td>
+      <td>unset</td>
       <td>None</td>
-      <td>&lt;a href="https://musicbrainz.org/release/d9a9a334-aa0f-4007-8a9d-674eda037ca0"&gt;d9a9a334-aa0f-4007-8a9d-674eda037ca0&lt;/a&gt;</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>APR 5519</td>
-      <td>5024709155194</td>
-      <td>Tchaikovsky: Piano Concerto no. 1 / Rachmaninov: Piano Concerto no. 3</td>
-      <td>Pyotr Tchaikovsky, Sergei Rachmaninov; Vladimir Horowitz, New York Philharmonic Symphony Orchestra, John Barbirolli</td>
-      <td>Appian Publications and Recordings</td>
-      <td>-1</td>
-      <td>&lt;a href="http://www.hyperion-records.co.uk/dc.asp?dc=D_APR5519"&gt;http://www.hyperion-records.co.uk/dc.asp?dc=D_APR5519&lt;/a&gt;</td>
-      <td>&lt;a href="https://musicbrainz.org/release/31192ec6-6ea1-4f6e-b665-9b2a78e5f3fa"&gt;31192ec6-6ea1-4f6e-b665-9b2a78e5f3fa&lt;/a&gt;</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>APR 6003</td>
-      <td>5024709160037</td>
-      <td>The Complete Solo Recordings, 1929-1936 / Lalo: Symphonie espagnole</td>
-      <td>Jacques Thibaud</td>
-      <td>Appian Publications and Recordings</td>
-      <td>-1</td>
       <td>None</td>
-      <td>&lt;a href="https://musicbrainz.org/release/04bb6a06-6839-4e11-8b46-b7e5f2709180"&gt;04bb6a06-6839-4e11-8b46-b7e5f2709180&lt;/a&gt;</td>
+      <td>&lt;a href="https://musicbrainz.org/release/19d5fb58-d0cb-44ce-b73e-6a02a0768404"&gt;19d5fb58-d0cb-44ce-b73e-6a02a0768404&lt;/a&gt;</td>
     </tr>
     <tr>
-      <th>5</th>
-      <td>APR 7304</td>
-      <td>5024709173044</td>
-      <td>The Complete Solo Studio Recordings</td>
-      <td>Harriet Cohen</td>
-      <td>Appian Publications and Recordings</td>
-      <td>-1</td>
-      <td>None</td>
-      <td>&lt;a href="https://musicbrainz.org/release/e95bfeb1-6769-4134-bcda-728a32df16d9"&gt;e95bfeb1-6769-4134-bcda-728a32df16d9&lt;/a&gt;</td>
-    </tr>
-    <tr>
-      <th>6</th>
+      <th>15</th>
       <td>CDA20199</td>
       <td>034571101996</td>
       <td>Clarinet Concerto in A Major, K622 / Clarinet Quintet in A Major, K581</td>
       <td>Wolfgang Amadeus Mozart; Thea King, English Chamber Orchestra, Jeffrey Tate, Gabrieli String Quartet</td>
       <td>hyperion</td>
-      <td>-1</td>
+      <td>unset</td>
+      <td>None</td>
       <td>None</td>
       <td>&lt;a href="https://musicbrainz.org/release/0549aa69-e9bb-48ac-900d-7ee4844a616d"&gt;0549aa69-e9bb-48ac-900d-7ee4844a616d&lt;/a&gt;</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>CDA20276</td>
+      <td>034571102764</td>
+      <td>String Sextets</td>
+      <td>Johannes Brahms; The Raphael Ensemble</td>
+      <td>hyperion</td>
+      <td>unset</td>
+      <td>None</td>
+      <td>None</td>
+      <td>&lt;a href="https://musicbrainz.org/release/48b482a5-c7cc-4b6a-814d-b290f01d4579"&gt;48b482a5-c7cc-4b6a-814d-b290f01d4579&lt;/a&gt;</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>CDA20294</td>
+      <td>034571102948</td>
+      <td>Stabat Mater / Salve Regina / In Caelestibus Regnis</td>
+      <td>Giovanni Battista Pergolesi; The King's Consort, Robert King, Gillian Fisher, Michael Chance</td>
+      <td>hyperion</td>
+      <td>unset</td>
+      <td>None</td>
+      <td>&lt;a href="http://www.hyperion-records.co.uk/dc.asp?dc=D_CDA66294&amp;vw=dc"&gt;http://www.hyperion-records.co.uk/dc.asp?dc=D_CDA66294&amp;vw=dc&lt;/a&gt;</td>
+      <td>&lt;a href="https://musicbrainz.org/release/fa3e18b5-adf1-48a9-ac3f-0a834b3136a3"&gt;fa3e18b5-adf1-48a9-ac3f-0a834b3136a3&lt;/a&gt;</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>CDA20450</td>
+      <td>034571104508</td>
+      <td>Celtic Symphony / Hebridean Symphony / The Witch of Atlas / The Sea Reivers</td>
+      <td>Bantock; Royal Philharmonic Orchestra, Vernon Handley</td>
+      <td>hyperion</td>
+      <td>unset</td>
+      <td>None</td>
+      <td>None</td>
+      <td>&lt;a href="https://musicbrainz.org/release/002a59f0-b93d-3343-9985-5108f6f45f99"&gt;002a59f0-b93d-3343-9985-5108f6f45f99&lt;/a&gt;</td>
     </tr>
   </tbody>
 </table>
@@ -13787,21 +13942,6 @@ div#notebook {
 
 </div>
 
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[20]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;docs/hyperion_releases.html&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;&lt;h2&gt;Releases in MusicBrainz not found in Hyperion catalogue by barcode&lt;/h2&gt;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">releases_not_in_hyperion</span><span class="o">.</span><span class="n">to_html</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&amp;lt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&amp;gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">))</span>
-</pre></div>
-
-</div>
 </div>
 </div>
 
@@ -13816,7 +13956,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="prompt input_prompt">In&nbsp;[82]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">barcodes_not_in_musicbrainz</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">hyperion_releases</span><span class="o">.</span><span class="n">barcode</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">mb_releases</span><span class="o">.</span><span class="n">barcode</span><span class="p">)</span>
@@ -13828,14 +13968,72 @@ div#notebook {
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Template">Template<a class="anchor-link" href="#Template">&#182;</a></h2>
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="prompt input_prompt">In&nbsp;[100]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;docs/hyperion_releases.html&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;&lt;h2&gt;Releases in Hyperion catalogue not found in MusicBrainz by barcode&lt;/h2&gt;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">releases_not_in_mb</span><span class="o">.</span><span class="n">to_html</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&amp;lt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&amp;gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">))</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">jinja2</span> <span class="k">import</span> <span class="n">Template</span>
+<span class="n">template</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">&lt;!doctype html&gt;</span>
+
+<span class="s2">&lt;html lang=&quot;en&quot;&gt;</span>
+<span class="s2">  &lt;head&gt;</span>
+<span class="s2">    &lt;meta charset=&quot;utf-8&quot;&gt;</span>
+<span class="s2">    &lt;title&gt;Community Cleanup #4: Hyperion&lt;/title&gt;</span>
+<span class="s2">    &lt;link href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot; integrity=&quot;sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm&quot; crossorigin=&quot;anonymous&quot;&gt;</span>
+<span class="s2">  &lt;/head&gt;</span>
+
+<span class="s2">  &lt;body&gt;</span>
+<span class="s2">    &lt;h1&gt;Pre-Classical Clean Up #4&lt;/h1&gt;</span>
+
+<span class="s2">    &lt;h2&gt;Labels corresponding to Hyperion in MusicBrainz&lt;/h2&gt;</span>
+<span class="s2">    {{ mb_labels.to_html(index=False) }}</span>
+<span class="s2">    &lt;p&gt;We keep only the first three for the moment, the other ones seem to only be distributed by hyperion.&lt;/p&gt;</span>
+<span class="s2">    </span>
+<span class="s2">    &lt;h2&gt;Hyperion releases with booklet in MB&lt;/h2&gt;</span>
+<span class="s2">    &lt;p&gt; {{ mb_releases_with_booklet.shape[0] }} releases &lt;/p&gt;</span>
+<span class="s2">    &lt;p&gt;These should be checked and the booklets removed if coming from hyperion&lt;/p&gt;</span>
+<span class="s2">    {{ mb_releases_with_booklet.to_html(index=False) }}</span>
+<span class="s2">    </span>
+<span class="s2">    &lt;h2&gt;Hyperion releases with no catalog number in MB&lt;/h2&gt;</span>
+<span class="s2">    &lt;p&gt; {{ mb_releases_wo_catno.shape[0] }} releases &lt;/p&gt;</span>
+<span class="s2">    &lt;p&gt;These should be checked and catalog number added if possible&lt;/p&gt;</span>
+<span class="s2">    {{ mb_releases_wo_catno.to_html(index=False) }}</span>
+<span class="s2">    </span>
+<span class="s2">    &lt;h2&gt;Releases in MusicBrainz not found in Hyperion catalogue&lt;/h2&gt;</span>
+<span class="s2">    &lt;p&gt; {{ releases_not_in_hyperion.shape[0] }} releases found by naive barcode comparison&lt;/p&gt;</span>
+<span class="s2">    &lt;p&gt;These should be checked and barcode fixed if that is the explanation&lt;/p&gt;</span>
+<span class="s2">    {{ releases_not_in_hyperion.to_html(index=False) }}</span>
+
+<span class="s2">    &lt;h2&gt;All Hyperion releases in MusicBrainz&lt;/h2&gt;</span>
+<span class="s2">    &lt;p&gt; {{ mb_releases.shape[0] }} releases &lt;/p&gt;</span>
+<span class="s2">    {{ mb_releases.to_html(index=True) }}</span>
+<span class="s2">    </span>
+<span class="s2">    &lt;h2&gt;Releases in Hyperion catalogue missing in MusicBrainz&lt;/h2&gt;</span>
+<span class="s2">    &lt;p&gt; {{ releases_not_in_mb.shape[0] }} releases found by naive barcode comparison&lt;/p&gt;</span>
+<span class="s2">    {{ releases_not_in_mb.to_html(index=True) }}</span>
+<span class="s2">    </span>
+<span class="s2">    &lt;h2&gt;Official Hyperion catalogue&lt;/h2&gt;</span>
+<span class="s2">    &lt;p&gt; {{ hyperion_releases.shape[0] }} releases &lt;/p&gt;</span>
+<span class="s2">    {{ hyperion_releases.to_html(index=True) }}</span>
+<span class="s2">  &lt;/body&gt;</span>
+<span class="s2">&lt;/html&gt;</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;docs/hyperion_releases.html&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="o">**</span><span class="nb">globals</span><span class="p">())</span>
+            <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&amp;lt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&amp;gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;class=&quot;dataframe&quot;&#39;</span><span class="p">,</span> <span class="s1">&#39;class=&quot;table table-striped table-hover table-sm&quot;&#39;</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;thead&#39;</span><span class="p">,</span> <span class="s1">&#39;thead class=&quot;thead-light&quot;&#39;</span><span class="p">))</span>
 </pre></div>
 
 </div>
