@@ -12810,14 +12810,14 @@ div#notebook {
       <td>388</td>
       <td>hyperion</td>
       <td>08e6c3c8-81ab-405f-9cff-10f6b8db064c</td>
-      <td>893</td>
+      <td>901</td>
     </tr>
     <tr>
       <th>1</th>
       <td>22708</td>
       <td>helios</td>
       <td>0a94e96a-9219-4dd7-a529-18d34e77f50f</td>
-      <td>135</td>
+      <td>139</td>
     </tr>
     <tr>
       <th>2</th>
@@ -12961,7 +12961,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[41]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sql</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
@@ -12984,7 +12984,7 @@ div#notebook {
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[41]:</div>
+<div class="prompt output_prompt">Out[6]:</div>
 
 
 
@@ -13013,7 +13013,7 @@ div#notebook {
   <tbody>
     <tr>
       <th>0</th>
-      <td>1677</td>
+      <td>1692</td>
     </tr>
   </tbody>
 </table>
@@ -13028,7 +13028,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[84]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">mb_releases</span> <span class="o">=</span> <span class="n">sql</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
@@ -13077,7 +13077,7 @@ div#notebook {
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[84]:</div>
+<div class="prompt output_prompt">Out[7]:</div>
 
 
 
@@ -13106,6 +13106,7 @@ div#notebook {
       <th>ac</th>
       <th>label</th>
       <th>quality</th>
+      <th>mime</th>
       <th>covers</th>
       <th>hyperion_url</th>
       <th>mb_url</th>
@@ -13122,6 +13123,7 @@ div#notebook {
       <td>unset</td>
       <td>None</td>
       <td>None</td>
+      <td>None</td>
       <td>&lt;a href="https://musicbrainz.org/release/d128f056-12e4-4817-9fb1-e4107f48b72a"&gt;d128f056-12e4-4817-9fb1-e4107f48b72a&lt;/a&gt;</td>
     </tr>
     <tr>
@@ -13132,6 +13134,7 @@ div#notebook {
       <td>Monteverdi; The King's Consort, Robert King</td>
       <td>hyperion</td>
       <td>unset</td>
+      <td>None</td>
       <td>None</td>
       <td>None</td>
       <td>&lt;a href="https://musicbrainz.org/release/07436f6d-e19d-4948-98db-92fb18326592"&gt;07436f6d-e19d-4948-98db-92fb18326592&lt;/a&gt;</td>
@@ -13146,6 +13149,7 @@ div#notebook {
       <td>unset</td>
       <td>None</td>
       <td>None</td>
+      <td>None</td>
       <td>&lt;a href="https://musicbrainz.org/release/dc2a9e87-4035-4d14-a312-6eabf60cd058"&gt;dc2a9e87-4035-4d14-a312-6eabf60cd058&lt;/a&gt;</td>
     </tr>
     <tr>
@@ -13158,6 +13162,7 @@ div#notebook {
       <td>unset</td>
       <td>None</td>
       <td>None</td>
+      <td>None</td>
       <td>&lt;a href="https://musicbrainz.org/release/25360292-fcc6-45ae-9117-6d6f76106b2b"&gt;25360292-fcc6-45ae-9117-6d6f76106b2b&lt;/a&gt;</td>
     </tr>
     <tr>
@@ -13168,6 +13173,7 @@ div#notebook {
       <td>William Byrd</td>
       <td>hyperion</td>
       <td>unset</td>
+      <td>None</td>
       <td>None</td>
       <td>None</td>
       <td>&lt;a href="https://musicbrainz.org/release/ac0f0a14-d39b-4a10-bca0-cb6a81d2e9db"&gt;ac0f0a14-d39b-4a10-bca0-cb6a81d2e9db&lt;/a&gt;</td>
@@ -13185,7 +13191,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[85]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">mb_releases</span><span class="o">.</span><span class="n">shape</span>
@@ -13201,13 +13207,13 @@ div#notebook {
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[85]:</div>
+<div class="prompt output_prompt">Out[8]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>(1677, 9)</pre>
+<pre>(1692, 10)</pre>
 </div>
 
 </div>
@@ -13229,28 +13235,30 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Hyperion-releases-with-booklet-in-MB">Hyperion releases with booklet in MB<a class="anchor-link" href="#Hyperion-releases-with-booklet-in-MB">&#182;</a></h2>
+<h2 id="Hyperion-releases-with-PDF-booklet-in-MB">Hyperion releases with PDF booklet in MB<a class="anchor-link" href="#Hyperion-releases-with-PDF-booklet-in-MB">&#182;</a></h2>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[49]:</div>
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">mb_releases_with_booklet</span> <span class="o">=</span> <span class="n">sql</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">SELECT </span>
 <span class="s2">    rl.catalog_number,</span>
 <span class="s2">    r.name AS title,</span>
-<span class="s2">    STRING_AGG(caaat.name, &#39;, &#39;) AS covers,</span>
+<span class="s2">    STRING_AGG(at.name, &#39;, &#39;) AS covers,</span>
 <span class="s2">    r.gid AS mb_url</span>
 <span class="s2">  FROM release_label AS rl</span>
 <span class="s2">  JOIN release       AS r  ON rl.release = r.id</span>
 <span class="s2">  JOIN label               ON rl.label = label.id</span>
-<span class="s2">  JOIN cover_art_archive.cover_art AS caaca ON caaca.release = r.id</span>
-<span class="s2">  JOIN cover_art_archive.cover_art_type AS caacat ON caacat.id = caaca.id</span>
-<span class="s2">  JOIN cover_art_archive.art_type AS caaat ON caacat.type_id = caaat.id</span>
-<span class="s2"> WHERE label.id IN (388, 22708, 16197) AND caaat.name = &#39;Booklet&#39;</span>
+<span class="s2">  JOIN cover_art_archive.cover_art      AS cova  ON cova.release = r.id</span>
+<span class="s2">  JOIN cover_art_archive.cover_art_type AS covat ON covat.id = cova.id</span>
+<span class="s2">  JOIN cover_art_archive.art_type       AS at    ON covat.type_id = at.id</span>
+<span class="s2"> WHERE label.id IN (388, 22708, 16197) </span>
+<span class="s2">   AND at.name = &#39;Booklet&#39;</span>
+<span class="s2">   AND cova.mime_type = &#39;application/pdf&#39;</span>
 <span class="s2"> GROUP BY rl.catalog_number, r.name, r.gid</span>
 <span class="s2">ORDER BY rl.catalog_number;</span>
 <span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
@@ -13268,7 +13276,7 @@ div#notebook {
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[49]:</div>
+<div class="prompt output_prompt">Out[23]:</div>
 
 
 
@@ -13300,38 +13308,38 @@ div#notebook {
   <tbody>
     <tr>
       <th>0</th>
-      <td>CDA30030</td>
-      <td>New World Symphonies: Baroque Music from Latin America</td>
-      <td>Booklet</td>
-      <td>&lt;a href="https://musicbrainz.org/release/a2deaad6-20a4-493f-961c-a40e4d6663bb"&gt;a2deaad6-20a4-493f-961c-a40e4d6663bb&lt;/a&gt;</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>CDA66021</td>
-      <td>Sacred Vocal Music</td>
-      <td>Booklet</td>
-      <td>&lt;a href="https://musicbrainz.org/release/80186961-3720-37f8-b273-18bc77c73cae"&gt;80186961-3720-37f8-b273-18bc77c73cae&lt;/a&gt;</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>CDA66039</td>
-      <td>A Feather on the Breath of God</td>
-      <td>Booklet</td>
-      <td>&lt;a href="https://musicbrainz.org/release/8cb1f24a-c209-45a6-afbf-ed280ab16d07"&gt;8cb1f24a-c209-45a6-afbf-ed280ab16d07&lt;/a&gt;</td>
-    </tr>
-    <tr>
-      <th>3</th>
       <td>CDA66062</td>
       <td>Bruckner Motets</td>
       <td>Booklet</td>
       <td>&lt;a href="https://musicbrainz.org/release/0873033b-6b94-448f-bcc5-c267194df1c4"&gt;0873033b-6b94-448f-bcc5-c267194df1c4&lt;/a&gt;</td>
     </tr>
     <tr>
-      <th>4</th>
-      <td>CDA 66065</td>
-      <td>String Quartets: op. 71 no. 1 in B flat / op. 71 no. 2 in D</td>
+      <th>1</th>
+      <td>CDA66245</td>
+      <td>Requiem</td>
       <td>Booklet</td>
-      <td>&lt;a href="https://musicbrainz.org/release/c2eca669-50da-4c74-b33f-23c80566543f"&gt;c2eca669-50da-4c74-b33f-23c80566543f&lt;/a&gt;</td>
+      <td>&lt;a href="https://musicbrainz.org/release/c32fac32-2325-4f63-ac38-31d7daab4afc"&gt;c32fac32-2325-4f63-ac38-31d7daab4afc&lt;/a&gt;</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>CDA66389</td>
+      <td>Motets</td>
+      <td>Booklet</td>
+      <td>&lt;a href="https://musicbrainz.org/release/412e5b4e-6414-4e81-9f73-d27192307fab"&gt;412e5b4e-6414-4e81-9f73-d27192307fab&lt;/a&gt;</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>CDA66426</td>
+      <td>Lamentations</td>
+      <td>Booklet</td>
+      <td>&lt;a href="https://musicbrainz.org/release/b0357701-8d59-3fc8-aa72-3d5d655fdd7e"&gt;b0357701-8d59-3fc8-aa72-3d5d655fdd7e&lt;/a&gt;</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>CDA67103</td>
+      <td>Cantiones Sacrae, Volume 1</td>
+      <td>Booklet</td>
+      <td>&lt;a href="https://musicbrainz.org/release/3976b461-dc61-4a25-be47-c2939661d083"&gt;3976b461-dc61-4a25-be47-c2939661d083&lt;/a&gt;</td>
     </tr>
   </tbody>
 </table>
@@ -13346,7 +13354,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[50]:</div>
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">mb_releases_with_booklet</span><span class="o">.</span><span class="n">shape</span>
@@ -13362,13 +13370,13 @@ div#notebook {
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[50]:</div>
+<div class="prompt output_prompt">Out[24]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>(114, 4)</pre>
+<pre>(51, 4)</pre>
 </div>
 
 </div>
@@ -13387,7 +13395,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[34]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">mb_releases_wo_catno</span> <span class="o">=</span> <span class="n">sql</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
@@ -13416,7 +13424,7 @@ div#notebook {
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[34]:</div>
+<div class="prompt output_prompt">Out[11]:</div>
 
 
 
@@ -13494,7 +13502,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[35]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">mb_releases_wo_catno</span><span class="o">.</span><span class="n">shape</span>
@@ -13510,13 +13518,13 @@ div#notebook {
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[35]:</div>
+<div class="prompt output_prompt">Out[12]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>(23, 4)</pre>
+<pre>(22, 4)</pre>
 </div>
 
 </div>
@@ -13535,7 +13543,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[57]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">mb_releases_wo_link</span> <span class="o">=</span> <span class="n">sql</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
@@ -13568,7 +13576,7 @@ div#notebook {
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[57]:</div>
+<div class="prompt output_prompt">Out[13]:</div>
 
 
 
@@ -13652,7 +13660,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[56]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">mb_releases_wo_link</span><span class="o">.</span><span class="n">shape</span>
@@ -13668,13 +13676,13 @@ div#notebook {
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[56]:</div>
+<div class="prompt output_prompt">Out[14]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>(93, 5)</pre>
+<pre>(90, 5)</pre>
 </div>
 
 </div>
@@ -13701,7 +13709,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[79]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">hyperion_releases</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_html</span><span class="p">(</span><span class="s1">&#39;https://www.hyperion-records.co.uk/n.asp?n=1&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">][:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
@@ -13720,7 +13728,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[80]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">hyperion_releases</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
@@ -13736,7 +13744,7 @@ div#notebook {
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[80]:</div>
+<div class="prompt output_prompt">Out[16]:</div>
 
 
 
@@ -13822,7 +13830,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[95]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">barcodes_not_in_hyperion</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">mb_releases</span><span class="o">.</span><span class="n">barcode</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">hyperion_releases</span><span class="o">.</span><span class="n">barcode</span><span class="p">)</span> <span class="o">-</span> <span class="p">{</span><span class="s1">&#39;&#39;</span><span class="p">}</span> <span class="o">-</span> <span class="p">{</span><span class="kc">None</span><span class="p">}</span>
@@ -13840,7 +13848,7 @@ div#notebook {
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[95]:</div>
+<div class="prompt output_prompt">Out[17]:</div>
 
 
 
@@ -13869,6 +13877,7 @@ div#notebook {
       <th>ac</th>
       <th>label</th>
       <th>quality</th>
+      <th>mime</th>
       <th>covers</th>
       <th>hyperion_url</th>
       <th>mb_url</th>
@@ -13876,7 +13885,7 @@ div#notebook {
   </thead>
   <tbody>
     <tr>
-      <th>14</th>
+      <th>16</th>
       <td>CDA20021</td>
       <td>034571101217</td>
       <td>Sacred Vocal Music (The Parley of Instruments)</td>
@@ -13885,10 +13894,11 @@ div#notebook {
       <td>unset</td>
       <td>None</td>
       <td>None</td>
+      <td>None</td>
       <td>&lt;a href="https://musicbrainz.org/release/19d5fb58-d0cb-44ce-b73e-6a02a0768404"&gt;19d5fb58-d0cb-44ce-b73e-6a02a0768404&lt;/a&gt;</td>
     </tr>
     <tr>
-      <th>15</th>
+      <th>17</th>
       <td>CDA20199</td>
       <td>034571101996</td>
       <td>Clarinet Concerto in A Major, K622 / Clarinet Quintet in A Major, K581</td>
@@ -13897,10 +13907,11 @@ div#notebook {
       <td>unset</td>
       <td>None</td>
       <td>None</td>
+      <td>None</td>
       <td>&lt;a href="https://musicbrainz.org/release/0549aa69-e9bb-48ac-900d-7ee4844a616d"&gt;0549aa69-e9bb-48ac-900d-7ee4844a616d&lt;/a&gt;</td>
     </tr>
     <tr>
-      <th>16</th>
+      <th>18</th>
       <td>CDA20276</td>
       <td>034571102764</td>
       <td>String Sextets</td>
@@ -13909,10 +13920,11 @@ div#notebook {
       <td>unset</td>
       <td>None</td>
       <td>None</td>
+      <td>None</td>
       <td>&lt;a href="https://musicbrainz.org/release/48b482a5-c7cc-4b6a-814d-b290f01d4579"&gt;48b482a5-c7cc-4b6a-814d-b290f01d4579&lt;/a&gt;</td>
     </tr>
     <tr>
-      <th>17</th>
+      <th>19</th>
       <td>CDA20294</td>
       <td>034571102948</td>
       <td>Stabat Mater / Salve Regina / In Caelestibus Regnis</td>
@@ -13920,17 +13932,19 @@ div#notebook {
       <td>hyperion</td>
       <td>unset</td>
       <td>None</td>
-      <td>&lt;a href="http://www.hyperion-records.co.uk/dc.asp?dc=D_CDA66294&amp;vw=dc"&gt;http://www.hyperion-records.co.uk/dc.asp?dc=D_CDA66294&amp;vw=dc&lt;/a&gt;</td>
+      <td>None</td>
+      <td>&lt;a href="http://www.hyperion-records.co.uk/dc.asp?dc=D_CDA66294"&gt;http://www.hyperion-records.co.uk/dc.asp?dc=D_CDA66294&lt;/a&gt;</td>
       <td>&lt;a href="https://musicbrainz.org/release/fa3e18b5-adf1-48a9-ac3f-0a834b3136a3"&gt;fa3e18b5-adf1-48a9-ac3f-0a834b3136a3&lt;/a&gt;</td>
     </tr>
     <tr>
-      <th>18</th>
+      <th>20</th>
       <td>CDA20450</td>
       <td>034571104508</td>
       <td>Celtic Symphony / Hebridean Symphony / The Witch of Atlas / The Sea Reivers</td>
       <td>Bantock; Royal Philharmonic Orchestra, Vernon Handley</td>
       <td>hyperion</td>
       <td>unset</td>
+      <td>None</td>
       <td>None</td>
       <td>None</td>
       <td>&lt;a href="https://musicbrainz.org/release/002a59f0-b93d-3343-9985-5108f6f45f99"&gt;002a59f0-b93d-3343-9985-5108f6f45f99&lt;/a&gt;</td>
@@ -13956,7 +13970,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[82]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">barcodes_not_in_musicbrainz</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">hyperion_releases</span><span class="o">.</span><span class="n">barcode</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">mb_releases</span><span class="o">.</span><span class="n">barcode</span><span class="p">)</span>
@@ -13978,7 +13992,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[100]:</div>
+<div class="prompt input_prompt">In&nbsp;[32]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">jinja2</span> <span class="k">import</span> <span class="n">Template</span>
@@ -13992,38 +14006,52 @@ div#notebook {
 <span class="s2">    &lt;link href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot; integrity=&quot;sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm&quot; crossorigin=&quot;anonymous&quot;&gt;</span>
 <span class="s2">  &lt;/head&gt;</span>
 
-<span class="s2">  &lt;body&gt;</span>
+<span class="s2">  &lt;body style=&quot;margin: 20px;&quot;&gt;</span>
 <span class="s2">    &lt;h1&gt;Pre-Classical Clean Up #4&lt;/h1&gt;</span>
-
-<span class="s2">    &lt;h2&gt;Labels corresponding to Hyperion in MusicBrainz&lt;/h2&gt;</span>
+<span class="s2">    &lt;a href=&quot;https://community.metabrainz.org/t/community-cleanup-4-hyperion/356213&quot;&gt;</span>
+<span class="s2">      &lt;img src=&quot;https://i.imgur.com/qtAyjmj.png&quot; width=&quot;668&quot; height=&quot;187&quot;&gt;</span>
+<span class="s2">    &lt;/a&gt;</span>
+<span class="s2">    </span>
+<span class="s2">    &lt;ol&gt;</span>
+<span class="s2">      &lt;li&gt;&lt;a href=&quot;#labels&quot;&gt;Labels corresponding to Hyperion in MusicBrainz&lt;/a&gt;&lt;/li&gt;</span>
+<span class="s2">      &lt;li&gt;&lt;a href=&quot;#booklets&quot;&gt;Hyperion releases with PDF booklet in MB&lt;/a&gt;&lt;/li&gt;</span>
+<span class="s2">      &lt;li&gt;&lt;a href=&quot;#wo_catno&quot;&gt;Hyperion releases with no catalog number in MB&lt;/a&gt;&lt;/li&gt;</span>
+<span class="s2">      &lt;li&gt;&lt;a href=&quot;#not_in_hyp&quot;&gt;Releases in MusicBrainz not found in Hyperion catalogue&lt;/a&gt;&lt;/li&gt;</span>
+<span class="s2">      &lt;li&gt;&lt;a href=&quot;#all_mb&quot;&gt;All Hyperion releases in MusicBrainz&lt;/a&gt;&lt;/li&gt;</span>
+<span class="s2">      &lt;li&gt;&lt;a href=&quot;#not_in_mb&quot;&gt;Releases in Hyperion catalogue missing in MusicBrainz&lt;/a&gt;&lt;/li&gt;</span>
+<span class="s2">      &lt;li&gt;&lt;a href=&quot;#official&quot;&gt;Official Hyperion catalogue&lt;/a&gt;&lt;/li&gt;</span>
+<span class="s2">    &lt;/ol&gt;</span>
+<span class="s2">    </span>
+<span class="s2">    &lt;h2 id=&quot;labels&quot;&gt;Labels corresponding to Hyperion in MusicBrainz&lt;/h2&gt;</span>
 <span class="s2">    {{ mb_labels.to_html(index=False) }}</span>
 <span class="s2">    &lt;p&gt;We keep only the first three for the moment, the other ones seem to only be distributed by hyperion.&lt;/p&gt;</span>
+<span class="s2">    &lt;p&gt;Feb 1st: 893, 135, 9&lt;/p&gt;</span>
 <span class="s2">    </span>
-<span class="s2">    &lt;h2&gt;Hyperion releases with booklet in MB&lt;/h2&gt;</span>
-<span class="s2">    &lt;p&gt; {{ mb_releases_with_booklet.shape[0] }} releases &lt;/p&gt;</span>
+<span class="s2">    &lt;h2 id=&quot;booklets&quot;&gt;Hyperion releases with PDF booklet in MB&lt;/h2&gt;</span>
+<span class="s2">    &lt;p&gt;{{ mb_releases_with_booklet.shape[0] }} releases (Feb. 2nd: 51)&lt;/p&gt;</span>
 <span class="s2">    &lt;p&gt;These should be checked and the booklets removed if coming from hyperion&lt;/p&gt;</span>
 <span class="s2">    {{ mb_releases_with_booklet.to_html(index=False) }}</span>
 <span class="s2">    </span>
-<span class="s2">    &lt;h2&gt;Hyperion releases with no catalog number in MB&lt;/h2&gt;</span>
-<span class="s2">    &lt;p&gt; {{ mb_releases_wo_catno.shape[0] }} releases &lt;/p&gt;</span>
+<span class="s2">    &lt;h2 id=&quot;wo_catno&quot;&gt;Hyperion releases with no catalog number in MB&lt;/h2&gt;</span>
+<span class="s2">    &lt;p&gt;{{ mb_releases_wo_catno.shape[0] }} releases (Feb. 1st: 23)&lt;/p&gt;</span>
 <span class="s2">    &lt;p&gt;These should be checked and catalog number added if possible&lt;/p&gt;</span>
 <span class="s2">    {{ mb_releases_wo_catno.to_html(index=False) }}</span>
 <span class="s2">    </span>
-<span class="s2">    &lt;h2&gt;Releases in MusicBrainz not found in Hyperion catalogue&lt;/h2&gt;</span>
-<span class="s2">    &lt;p&gt; {{ releases_not_in_hyperion.shape[0] }} releases found by naive barcode comparison&lt;/p&gt;</span>
+<span class="s2">    &lt;h2 id=&quot;not_in_hyp&quot;&gt;Releases in MusicBrainz not found in Hyperion catalogue&lt;/h2&gt;</span>
+<span class="s2">    &lt;p&gt;{{ releases_not_in_hyperion.shape[0] }} releases found by naive barcode comparison (Feb. 1st: 45)&lt;/p&gt;</span>
 <span class="s2">    &lt;p&gt;These should be checked and barcode fixed if that is the explanation&lt;/p&gt;</span>
 <span class="s2">    {{ releases_not_in_hyperion.to_html(index=False) }}</span>
 
-<span class="s2">    &lt;h2&gt;All Hyperion releases in MusicBrainz&lt;/h2&gt;</span>
-<span class="s2">    &lt;p&gt; {{ mb_releases.shape[0] }} releases &lt;/p&gt;</span>
+<span class="s2">    &lt;h2 id=&quot;all_mb&quot;&gt;All Hyperion releases in MusicBrainz&lt;/h2&gt;</span>
+<span class="s2">    &lt;p&gt;{{ mb_releases.shape[0] }} releases (Feb. 1st: 1677)&lt;/p&gt;</span>
 <span class="s2">    {{ mb_releases.to_html(index=True) }}</span>
 <span class="s2">    </span>
-<span class="s2">    &lt;h2&gt;Releases in Hyperion catalogue missing in MusicBrainz&lt;/h2&gt;</span>
-<span class="s2">    &lt;p&gt; {{ releases_not_in_mb.shape[0] }} releases found by naive barcode comparison&lt;/p&gt;</span>
+<span class="s2">    &lt;h2 id=&quot;not_in_mb&quot;&gt;Releases in Hyperion catalogue missing in MusicBrainz&lt;/h2&gt;</span>
+<span class="s2">    &lt;p&gt;{{ releases_not_in_mb.shape[0] }} releases found by naive barcode comparison (Feb. 1st: 2179)&lt;/p&gt;</span>
 <span class="s2">    {{ releases_not_in_mb.to_html(index=True) }}</span>
 <span class="s2">    </span>
-<span class="s2">    &lt;h2&gt;Official Hyperion catalogue&lt;/h2&gt;</span>
-<span class="s2">    &lt;p&gt; {{ hyperion_releases.shape[0] }} releases &lt;/p&gt;</span>
+<span class="s2">    &lt;h2 id=&quot;official&quot;&gt;Official Hyperion catalogue&lt;/h2&gt;</span>
+<span class="s2">    &lt;p&gt;{{ hyperion_releases.shape[0] }} releases&lt;/p&gt;</span>
 <span class="s2">    {{ hyperion_releases.to_html(index=True) }}</span>
 <span class="s2">  &lt;/body&gt;</span>
 <span class="s2">&lt;/html&gt;</span>
