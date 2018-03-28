@@ -12597,7 +12597,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;hyperion&#39;</span>
@@ -12610,7 +12610,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
@@ -12654,7 +12654,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -12668,7 +12668,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">sql</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;SELECT id, gid, name, comment FROM label WHERE name IN (&#39;hyperion&#39;, &#39;helios&#39;);&quot;&quot;&quot;</span><span class="p">)</span>
@@ -12686,7 +12686,7 @@ div#notebook {
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[19]:</div>
+<div class="prompt output_prompt">Out[4]:</div>
 
 
 
@@ -12741,40 +12741,6 @@ div#notebook {
 </div>
 
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[42]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">label_mbid</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[42]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>[UUID(&#39;08e6c3c8-81ab-405f-9cff-10f6b8db064c&#39;),
- UUID(&#39;0a94e96a-9219-4dd7-a529-18d34e77f50f&#39;)]</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
@@ -12794,22 +12760,22 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[43]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">sql</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">new_releases</span> <span class="o">=</span> <span class="n">sql</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">SELECT editor.name AS editor,</span>
 <span class="s2">       COUNT(*) AS edit_count</span>
 <span class="s2">  FROM label</span>
 <span class="s2">  JOIN edit_label  ON label.id = edit_label.label</span>
 <span class="s2">  JOIN edit        ON edit.id = edit_label.edit</span>
 <span class="s2">  JOIN editor      ON editor.id = edit.editor</span>
-<span class="s2"> WHERE label.gid IN (&#39;08e6c3c8-81ab-405f-9cff-10f6b8db064c&#39;, &#39;0a94e96a-9219-4dd7-a529-18d34e77f50f&#39;)</span>
+<span class="s2"> WHERE label.name IN (&#39;hyperion&#39;, &#39;helios&#39;)</span>
 <span class="s2">   AND edit.open_time &gt;= &#39;2018-02-01&#39;</span>
 <span class="s2">GROUP BY editor.name</span>
 <span class="s2">ORDER BY edit_count DESC</span>
 <span class="s2">   ;&quot;&quot;&quot;</span><span class="p">)</span>
-<span class="n">df</span>
+<span class="n">new_releases</span>
 </pre></div>
 
 </div>
@@ -12822,7 +12788,7 @@ div#notebook {
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[43]:</div>
+<div class="prompt output_prompt">Out[5]:</div>
 
 
 
@@ -12948,10 +12914,10 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[44]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">edit_count</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">new_releases</span><span class="o">.</span><span class="n">edit_count</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 </pre></div>
 
 </div>
@@ -12964,7 +12930,7 @@ div#notebook {
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[44]:</div>
+<div class="prompt output_prompt">Out[6]:</div>
 
 
 
@@ -12998,10 +12964,10 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[45]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">sql</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">recording_edits</span> <span class="o">=</span> <span class="n">sql</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">SELECT editor.name AS editor,</span>
 <span class="s2">       COUNT(*) AS edit_count</span>
 <span class="s2">  FROM recording     AS rec</span>
@@ -13013,12 +12979,12 @@ div#notebook {
 <span class="s2">  JOIN release       AS r  ON m.release = r.id</span>
 <span class="s2">  JOIN release_label AS rl ON rl.release = r.id</span>
 <span class="s2">  JOIN label               ON rl.label = label.id</span>
-<span class="s2"> WHERE label.gid IN (&#39;08e6c3c8-81ab-405f-9cff-10f6b8db064c&#39;, &#39;0a94e96a-9219-4dd7-a529-18d34e77f50f&#39;)</span>
+<span class="s2"> WHERE label.name IN (&#39;hyperion&#39;, &#39;helios&#39;)</span>
 <span class="s2">   AND edit.open_time &gt;= &#39;2018-02-01&#39;</span>
 <span class="s2">GROUP BY editor.name</span>
 <span class="s2">ORDER BY edit_count DESC</span>
 <span class="s2">   ;&quot;&quot;&quot;</span><span class="p">)</span>
-<span class="n">df</span>
+<span class="n">recording_edits</span>
 </pre></div>
 
 </div>
@@ -13031,7 +12997,7 @@ div#notebook {
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[45]:</div>
+<div class="prompt output_prompt">Out[7]:</div>
 
 
 
@@ -13185,32 +13151,12 @@ div#notebook {
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="&#160;Release-covers-added">&#160;Release covers added<a class="anchor-link" href="#&#160;Release-covers-added">&#182;</a></h2>
-</div>
-</div>
-</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[41]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">sql</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">SELECT COUNT(*) AS edit_count</span>
-<span class="s2">  FROM release        AS r</span>
-<span class="s2">  JOIN edit_release        ON r.id = edit_release.release</span>
-<span class="s2">  JOIN edit                ON edit.id = edit_release.edit</span>
-<span class="s2">  JOIN release_label AS rl ON rl.release = r.id</span>
-<span class="s2">  JOIN label               ON rl.label = label.id</span>
-<span class="s2"> WHERE label.gid IN (&#39;08e6c3c8-81ab-405f-9cff-10f6b8db064c&#39;, &#39;0a94e96a-9219-4dd7-a529-18d34e77f50f&#39;)</span>
-<span class="s2">   AND edit.open_time &gt;= &#39;2018-02-01&#39;</span>
-<span class="s2">   AND edit.type = 314</span>
-<span class="s2">   ;&quot;&quot;&quot;</span><span class="p">)</span>
-
-<span class="n">df</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">recording_edits</span><span class="o">.</span><span class="n">edit_count</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 </pre></div>
 
 </div>
@@ -13223,7 +13169,58 @@ div#notebook {
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[41]:</div>
+<div class="prompt output_prompt">Out[8]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>65784</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="&#160;Release-covers-added">&#160;Release covers added<a class="anchor-link" href="#&#160;Release-covers-added">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sql</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">SELECT COUNT(*) AS edit_count</span>
+<span class="s2">  FROM release        AS r</span>
+<span class="s2">  JOIN edit_release        ON r.id = edit_release.release</span>
+<span class="s2">  JOIN edit                ON edit.id = edit_release.edit</span>
+<span class="s2">  JOIN release_label AS rl ON rl.release = r.id</span>
+<span class="s2">  JOIN label               ON rl.label = label.id</span>
+<span class="s2"> WHERE label.name IN (&#39;hyperion&#39;, &#39;helios&#39;)</span>
+<span class="s2">   AND edit.open_time &gt;= &#39;2018-02-01&#39;</span>
+<span class="s2">   AND edit.type = 314</span>
+<span class="s2">   ;&quot;&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[9]:</div>
 
 
 
@@ -13273,9 +13270,18 @@ div#notebook {
 </div>
 </div>
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>NB: Phonographic copyright ℗ should use 'Hyperion Records Ltd', not Hyperion or Helios</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[51]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sql</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
@@ -13286,7 +13292,7 @@ div#notebook {
 <span class="s2">  JOIN l_label_recording AS lar ON r.id = lar.entity1</span>
 <span class="s2">  JOIN label                    ON label.id = lar.entity0</span>
 <span class="s2">  JOIN link                     ON link.id = lar.link</span>
-<span class="s2"> WHERE label.gid IN (&#39;08e6c3c8-81ab-405f-9cff-10f6b8db064c&#39;, &#39;0a94e96a-9219-4dd7-a529-18d34e77f50f&#39;)</span>
+<span class="s2"> WHERE label.name = &#39;Hyperion Records Ltd, London&#39;</span>
 <span class="s2">   AND edit.open_time &gt;= &#39;2018-02-01&#39;</span>
 <span class="s2">   AND link.link_type = 867</span>
 <span class="s2">;&quot;&quot;&quot;</span><span class="p">)</span>
@@ -13302,7 +13308,7 @@ div#notebook {
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[51]:</div>
+<div class="prompt output_prompt">Out[10]:</div>
 
 
 
@@ -13331,7 +13337,7 @@ div#notebook {
   <tbody>
     <tr>
       <th>0</th>
-      <td>315</td>
+      <td>25148</td>
     </tr>
   </tbody>
 </table>
