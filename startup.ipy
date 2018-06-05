@@ -1,0 +1,83 @@
+#!/usr/bin/env python
+import os
+from pprint import pprint # noqa
+from datetime import date
+
+%load_ext watermark
+# %watermark --date --updated
+print('Last notebook update: {}'.format(date.today().isoformat()))
+%watermark -r
+
+print('Importing libs')
+import pandas
+
+import plotly.graph_objs as go
+import plotly.figure_factory as ff
+
+# offline mode for plot.ly, no need to store the graphs in their cloud
+from plotly.offline import iplot
+
+# special mode to display plotly graphs inside Jupyter notebooks
+from plotly.offline import init_notebook_mode
+init_notebook_mode()
+
+print('Defining database parameters')
+import sqlalchemy
+# import psycopg2
+SITE_URL = 'https://musicbrainz.org'
+
+print()
+PGHOST = 'localhost'
+PGDATABASE = os.environ.get('PGDATABASE', 'musicbrainz')
+PGUSER = os.environ.get('PGUSER', 'musicbrainz')
+PGPASSWORD = os.environ.get('PGPASSWORD', 'musicbrainz')
+
+print('Defining *sql* helper function')
+def sql(query, **kwargs):
+    """helper function for SQL queries using the %(...) syntax
+    Parameters for the query must be passed as keyword arguments
+    e.g. sql('SELECT * FROM artist WHERE name=%(singer)s', singer='Bob Dylan')
+    """
+    engine = sqlalchemy.create_engine(
+        'postgresql+psycopg2://'
+        '{PGUSER}:{PGPASSWORD}@{PGHOST}/{PGDATABASE}'.format(**globals()),
+        isolation_level='READ UNCOMMITTED')
+    return pandas.read_sql(query, engine, params=kwargs)
+
+def mb_database_version():
+    return sql("""
+    SELECT open_time
+      FROM edit
+     ORDER BY id DESC
+     LIMIT 1;
+    """).open_time[0].date().isoformat()
+print('Last database update: {}'.format(mb_database_version()))
+
+print()
+# helper function to build canonical URLs
+def _mb_link(entity_type, mbid):
+    return '<a href="{url}/{entity_type}/{mbid}">{mbid}</a>'.format(
+        url=SITE_URL, **locals())
+
+mb_artist_link = lambda mbid: _mb_link('artist', mbid) # noqa
+mb_work_link = lambda mbid: _mb_link('work', mbid) # noqa
+mb_series_link = lambda mbid: _mb_link('series', mbid) # noqa
+mb_release_link = lambda mbid: _mb_link('release', mbid) # noqa
+mb_recording_link = lambda mbid: _mb_link('recording', mbid) # noqa
+
+print('Python packages versions:')
+%watermark --python --iversions
+
+#from time import strftime, gmtime
+#def format_duration(s):
+#    """format an integer number of milliseconds as 'HH:MM:SS'"""
+#    if pandas.notnull(s):
+#        return strftime('%H:%M:%S', gmtime(s/1000))
+#    return s
+
+
+import datetime as dt
+def to_unix_time(datestring):
+    epoch =  dt.datetime(1970, 1, 1)
+    return (dt.datetime.strptime(datestring, '%Y-%m-%d') - epoch).total_seconds() * 1000
+
