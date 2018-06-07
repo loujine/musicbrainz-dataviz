@@ -11775,7 +11775,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="editors-vs.-edits-stats">editors vs. edits stats<a class="anchor-link" href="#editors-vs.-edits-stats">&#182;</a></h1>
+<h1 id="Distribution-of-edits-by-editor-experience">Distribution of edits by editor experience<a class="anchor-link" href="#Distribution-of-edits-by-editor-experience">&#182;</a></h1>
 </div>
 </div>
 </div>
@@ -11783,16 +11783,8 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Similar to <a href="https://twitter.com/pierzen/status/910551645498552321">this graph for OSM</a></p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Database dump from early September 2017.</p>
+<p>I was intrigued by <a href="https://twitter.com/pierzen/status/910551645498552321">this graph for OSM</a> that shows the distribution of edits on OpenStreetMap depending on their experience (apologies to the person who suggested it on IRC, I don't remember who this was). Their conclusion is that the majority of edits are actually made by a small minority of experienced editors.</p>
+<p>Is the situation similar for MusicBrainz?</p>
 
 </div>
 </div>
@@ -11827,7 +11819,7 @@ div#notebook {
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Last notebook update: 2018-06-06
+<pre>Last notebook update: 2018-06-07
 Git repo: git@bitbucket.org:loujine/musicbrainz-dataviz.git
 Importing libs
 </pre>
@@ -11890,7 +11882,7 @@ IPython 6.4.0
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>NB: a first version of this notebook was extracting the individual edits from the database, which is of course very expensive memorywise (50 millions rows DataFrame)</p>
+<p>We could limit the edit history by date (open_time &gt; ...) but let's take everything since the current edit system was created (in 2012 I think).</p>
 
 </div>
 </div>
@@ -12001,6 +11993,15 @@ IPython 6.4.0
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Those are the most active editors (i.e. highest number of edits) as of mid-2018, the results should be close to the <a href="https://musicbrainz.org/statistics/editors">official editors statistics page</a>.</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[4]:</div>
@@ -12038,7 +12039,17 @@ Number of edits: 49148162
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Store-editors-in-bins">Store editors in bins<a class="anchor-link" href="#Store-editors-in-bins">&#182;</a></h2>
+<h2 id="Split-editors-in-bins">Split editors in bins<a class="anchor-link" href="#Split-editors-in-bins">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We can split the editors in different bins to correspond to their "experience level" (from complete novice to old and wise auto-editor). In order to do that, we add a "category" column in our dataframe.</p>
+<p>Note that the limit between bins is completely arbitrary.</p>
+
 </div>
 </div>
 </div>
@@ -12157,76 +12168,43 @@ Number of edits: 49148162
 </div>
 
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cats</span> <span class="o">=</span> <span class="n">edits_count</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
-<span class="n">cats</span> <span class="o">=</span> <span class="n">cats</span><span class="o">.</span><span class="n">rename_axis</span><span class="p">({</span><span class="s2">&quot;cnt&quot;</span><span class="p">:</span> <span class="s2">&quot;nb_editors&quot;</span><span class="p">},</span> <span class="n">axis</span><span class="o">=</span><span class="s2">&quot;columns&quot;</span><span class="p">)</span>
-</pre></div>
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>So there are (currently) 4 editors in the "epic" category (more than 1 million edits).</p>
 
 </div>
 </div>
 </div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>/home/chrom/.virtualenvs/dataviz-py37/local/lib/python3.7/site-packages/ipykernel_launcher.py:2: FutureWarning:
-
-Using &#39;rename_axis&#39; to alter labels is deprecated. Use &#39;.rename&#39; instead
-
-</pre>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cats</span><span class="p">[</span><span class="s1">&#39;nb_edits&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">edits_count</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">values</span>
-</pre></div>
-
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Split-edit-count-by-category">Split edit count by category<a class="anchor-link" href="#Split-edit-count-by-category">&#182;</a></h2>
 </div>
 </div>
 </div>
-
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cats</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;</span><span class="si">{name}</span><span class="s1"> </span><span class="si">{idx}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">idx</span><span class="o">=</span><span class="n">idx</span><span class="p">)</span>
-              <span class="k">for</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">cats</span><span class="o">.</span><span class="n">index</span><span class="p">)]</span>
-<span class="c1">#cats.index = [&#39;{name} ({idx.left}—{idx.right})&#39;.format(name=name, idx=idx)</span>
-<span class="c1">#              for (name, idx) in zip(names, cats.index)]</span>
-</pre></div>
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now we want to compute the total count of edits made by editors in each category.</p>
 
 </div>
 </div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cats</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cats</span> <span class="o">=</span> <span class="n">edits_count</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+<span class="n">cats</span> <span class="o">=</span> <span class="n">cats</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;cnt&quot;</span><span class="p">:</span> <span class="s2">&quot;nb_editors&quot;</span><span class="p">},</span> <span class="n">axis</span><span class="o">=</span><span class="s2">&quot;columns&quot;</span><span class="p">)</span>
+<span class="n">cats</span><span class="p">[</span><span class="s1">&#39;nb_edits&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">edits_count</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">values</span>
+<span class="n">cats</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;</span><span class="si">{name}</span><span class="s1"> </span><span class="si">{idx}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">idx</span><span class="o">=</span><span class="n">idx</span><span class="p">)</span>
+              <span class="k">for</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">cats</span><span class="o">.</span><span class="n">index</span><span class="p">)]</span>
+<span class="n">cats</span>
 </pre></div>
 
 </div>
@@ -12328,6 +12306,15 @@ Using &#39;rename_axis&#39; to alter labels is deprecated. Use &#39;.rename&#39;
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let's plot those results as bar graph and pie charts using plotly (so that the graphs are interactive).</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[12]:</div>
@@ -12357,7 +12344,7 @@ Using &#39;rename_axis&#39; to alter labels is deprecated. Use &#39;.rename&#39;
 
 
 <div class="output_html rendered_html output_subarea ">
-<div id="ae051cb5-e14d-4e94-a462-0cf29aa6c962" style="height: 525px; width: 100%;" class="plotly-graph-div"></div><script type="text/javascript">require(["plotly"], function(Plotly) { window.PLOTLYENV=window.PLOTLYENV || {};window.PLOTLYENV.BASE_URL="https://plot.ly";Plotly.newPlot("ae051cb5-e14d-4e94-a462-0cf29aa6c962", [{"type": "bar", "x": ["hit-and-run (0, 5]", "newbie (5, 10]", "casual (10, 20]", "great (20, 50]", "heavy (50, 100]", "super (100, 1000]", "legendary (1000, 10000]", "fantastic (10000, 100000]", "mega (100000, 1000000]", "epic (1000000, 10000000]"], "y": [104858, 27866, 22096, 19110, 8549, 11006, 1925, 449, 75, 4]}], {"title": "Number of editors by category", "xaxis": {"title": "Editor category"}, "yaxis": {"title": "Number of editors"}}, {"showLink": true, "linkText": "Export to plot.ly"})});</script>
+<div id="51d43833-9604-4b9f-ac46-da06a43682e4" style="height: 525px; width: 100%;" class="plotly-graph-div"></div><script type="text/javascript">require(["plotly"], function(Plotly) { window.PLOTLYENV=window.PLOTLYENV || {};window.PLOTLYENV.BASE_URL="https://plot.ly";Plotly.newPlot("51d43833-9604-4b9f-ac46-da06a43682e4", [{"type": "bar", "x": ["hit-and-run (0, 5]", "newbie (5, 10]", "casual (10, 20]", "great (20, 50]", "heavy (50, 100]", "super (100, 1000]", "legendary (1000, 10000]", "fantastic (10000, 100000]", "mega (100000, 1000000]", "epic (1000000, 10000000]"], "y": [104858, 27866, 22096, 19110, 8549, 11006, 1925, 449, 75, 4]}], {"title": "Number of editors by category", "xaxis": {"title": "Editor category"}, "yaxis": {"title": "Number of editors"}}, {"showLink": true, "linkText": "Export to plot.ly"})});</script>
 </div>
 
 </div>
@@ -12365,6 +12352,15 @@ Using &#39;rename_axis&#39; to alter labels is deprecated. Use &#39;.rename&#39;
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>No surprise there, the immense majority of editors have only a few edits...</p>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
@@ -12395,7 +12391,7 @@ Using &#39;rename_axis&#39; to alter labels is deprecated. Use &#39;.rename&#39;
 
 
 <div class="output_html rendered_html output_subarea ">
-<div id="31c217a0-6c1b-4e8c-abbb-5072a56e8e68" style="height: 525px; width: 100%;" class="plotly-graph-div"></div><script type="text/javascript">require(["plotly"], function(Plotly) { window.PLOTLYENV=window.PLOTLYENV || {};window.PLOTLYENV.BASE_URL="https://plot.ly";Plotly.newPlot("31c217a0-6c1b-4e8c-abbb-5072a56e8e68", [{"type": "bar", "x": ["hit-and-run (0, 5]", "newbie (5, 10]", "casual (10, 20]", "great (20, 50]", "heavy (50, 100]", "super (100, 1000]", "legendary (1000, 10000]", "fantastic (10000, 100000]", "mega (100000, 1000000]", "epic (1000000, 10000000]"], "y": [231326, 212614, 324307, 609774, 606343, 3137339, 5487680, 13314860, 19410039, 5813880]}], {"title": "Number of edits by category", "xaxis": {"title": "Editor category"}, "yaxis": {"title": "Number of edits"}}, {"showLink": true, "linkText": "Export to plot.ly"})});</script>
+<div id="fa4594b9-c05b-41c9-b806-68ee6b642fbe" style="height: 525px; width: 100%;" class="plotly-graph-div"></div><script type="text/javascript">require(["plotly"], function(Plotly) { window.PLOTLYENV=window.PLOTLYENV || {};window.PLOTLYENV.BASE_URL="https://plot.ly";Plotly.newPlot("fa4594b9-c05b-41c9-b806-68ee6b642fbe", [{"type": "bar", "x": ["hit-and-run (0, 5]", "newbie (5, 10]", "casual (10, 20]", "great (20, 50]", "heavy (50, 100]", "super (100, 1000]", "legendary (1000, 10000]", "fantastic (10000, 100000]", "mega (100000, 1000000]", "epic (1000000, 10000000]"], "y": [231326, 212614, 324307, 609774, 606343, 3137339, 5487680, 13314860, 19410039, 5813880]}], {"title": "Number of edits by category", "xaxis": {"title": "Editor category"}, "yaxis": {"title": "Number of edits"}}, {"showLink": true, "linkText": "Export to plot.ly"})});</script>
 </div>
 
 </div>
@@ -12403,10 +12399,28 @@ Using &#39;rename_axis&#39; to alter labels is deprecated. Use &#39;.rename&#39;
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>... but the majority of edits are made by experienced users (more than 100 edits each).</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Same result as pie charts:</p>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">iplot</span><span class="p">({</span>
@@ -12431,7 +12445,7 @@ Using &#39;rename_axis&#39; to alter labels is deprecated. Use &#39;.rename&#39;
 
 
 <div class="output_html rendered_html output_subarea ">
-<div id="581bf4c6-95b1-4f8e-8a02-cc5de2aefaca" style="height: 525px; width: 100%;" class="plotly-graph-div"></div><script type="text/javascript">require(["plotly"], function(Plotly) { window.PLOTLYENV=window.PLOTLYENV || {};window.PLOTLYENV.BASE_URL="https://plot.ly";Plotly.newPlot("581bf4c6-95b1-4f8e-8a02-cc5de2aefaca", [{"type": "pie", "labels": ["hit-and-run (0, 5]", "newbie (5, 10]", "casual (10, 20]", "great (20, 50]", "heavy (50, 100]", "super (100, 1000]", "legendary (1000, 10000]", "fantastic (10000, 100000]", "mega (100000, 1000000]", "epic (1000000, 10000000]"], "values": [104858, 27866, 22096, 19110, 8549, 11006, 1925, 449, 75, 4], "sort": false, "direction": "clockwise"}], {"title": "Number of editors by category"}, {"showLink": true, "linkText": "Export to plot.ly"})});</script>
+<div id="9988b466-2e91-42fe-bd05-eeafeb3c2bad" style="height: 525px; width: 100%;" class="plotly-graph-div"></div><script type="text/javascript">require(["plotly"], function(Plotly) { window.PLOTLYENV=window.PLOTLYENV || {};window.PLOTLYENV.BASE_URL="https://plot.ly";Plotly.newPlot("9988b466-2e91-42fe-bd05-eeafeb3c2bad", [{"type": "pie", "labels": ["hit-and-run (0, 5]", "newbie (5, 10]", "casual (10, 20]", "great (20, 50]", "heavy (50, 100]", "super (100, 1000]", "legendary (1000, 10000]", "fantastic (10000, 100000]", "mega (100000, 1000000]", "epic (1000000, 10000000]"], "values": [104858, 27866, 22096, 19110, 8549, 11006, 1925, 449, 75, 4], "sort": false, "direction": "clockwise"}], {"title": "Number of editors by category"}, {"showLink": true, "linkText": "Export to plot.ly"})});</script>
 </div>
 
 </div>
@@ -12442,7 +12456,7 @@ Using &#39;rename_axis&#39; to alter labels is deprecated. Use &#39;.rename&#39;
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">iplot</span><span class="p">({</span>
@@ -12467,7 +12481,7 @@ Using &#39;rename_axis&#39; to alter labels is deprecated. Use &#39;.rename&#39;
 
 
 <div class="output_html rendered_html output_subarea ">
-<div id="1ab441df-677f-411e-b0f9-60773ed50dd6" style="height: 525px; width: 100%;" class="plotly-graph-div"></div><script type="text/javascript">require(["plotly"], function(Plotly) { window.PLOTLYENV=window.PLOTLYENV || {};window.PLOTLYENV.BASE_URL="https://plot.ly";Plotly.newPlot("1ab441df-677f-411e-b0f9-60773ed50dd6", [{"type": "pie", "labels": ["hit-and-run (0, 5]", "newbie (5, 10]", "casual (10, 20]", "great (20, 50]", "heavy (50, 100]", "super (100, 1000]", "legendary (1000, 10000]", "fantastic (10000, 100000]", "mega (100000, 1000000]", "epic (1000000, 10000000]"], "values": [231326, 212614, 324307, 609774, 606343, 3137339, 5487680, 13314860, 19410039, 5813880], "sort": false, "direction": "clockwise"}], {"title": "Number of edits by category"}, {"showLink": true, "linkText": "Export to plot.ly"})});</script>
+<div id="ed794754-b6ce-4d1d-8215-771c7010c6bd" style="height: 525px; width: 100%;" class="plotly-graph-div"></div><script type="text/javascript">require(["plotly"], function(Plotly) { window.PLOTLYENV=window.PLOTLYENV || {};window.PLOTLYENV.BASE_URL="https://plot.ly";Plotly.newPlot("ed794754-b6ce-4d1d-8215-771c7010c6bd", [{"type": "pie", "labels": ["hit-and-run (0, 5]", "newbie (5, 10]", "casual (10, 20]", "great (20, 50]", "heavy (50, 100]", "super (100, 1000]", "legendary (1000, 10000]", "fantastic (10000, 100000]", "mega (100000, 1000000]", "epic (1000000, 10000000]"], "values": [231326, 212614, 324307, 609774, 606343, 3137339, 5487680, 13314860, 19410039, 5813880], "sort": false, "direction": "clockwise"}], {"title": "Number of edits by category"}, {"showLink": true, "linkText": "Export to plot.ly"})});</script>
 </div>
 
 </div>
